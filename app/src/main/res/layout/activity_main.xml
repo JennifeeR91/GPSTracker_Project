@@ -28,14 +28,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="E-Mail"/>
+        android:hint="E-Mail"
+        android:inputType="textEmailAddress"
+        />
 
     <EditText
         android:id="@+id/etpass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Password"/>
+        android:hint="Password"
+        android:inputType="numberPassword"
+        />
 
 
     <Button
