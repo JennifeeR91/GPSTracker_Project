@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
+    tools:context=".CurrentActivity">
 
     <ImageView
         android:id="@+id/ivIcon"
         style="@style/Icon"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="25dp"
         android:layout_marginTop="20dp" />
 
     <TextView
@@ -22,27 +21,32 @@
         android:layout_gravity="center"
         style="@style/Title"/>
 
-
     <EditText
-        android:id="@+id/etEmail"
+        android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="E-Mail"/>
+        android:layout_margin="@dimen/padding"
+        android:hint="@string/title"/>
 
     <EditText
-        android:id="@+id/etpass"
+        android:id="@+id/etMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="Password"/>
+        android:layout_margin="@dimen/padding"
+        android:hint="@string/message"/>
 
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding"
+        android:visibility="gone"
+        style="@style/NoteText" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/Button"/>
-
+        style="@style/Button.Save"/>
 </LinearLayout>
