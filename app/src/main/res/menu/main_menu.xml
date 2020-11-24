@@ -17,6 +17,6 @@
     <item
         android:id="@+id/page_4"
         android:enabled="true"
-        android:icon="@drawable/ic_logo_transparent"
+        android:icon="@drawable/ic_action_account_circle"
         android:title="@string/myProfile"/>
 </menu>
