@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CurrentActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <Spinner
         android:id="@+id/spinner"
@@ -20,9 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:text="Activity"
-        android:textSize="30dp" />
-
-
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/tvLocation"
@@ -40,14 +44,15 @@
 
         android:layout_gravity="center"
         android:text="@string/start" />
-
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         app:menu="@menu/main_menu" />
 
 
-</LinearLayout>
+</RelativeLayout>
