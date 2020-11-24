@@ -13,4 +13,8 @@
     <string name="no">No</string>
     <string name="add">Add</string>
     <string name="start">start</string>
+    <string name="myProfile">Profile</string>
+    <string name="stats">Statistics</string>
+    <string name="activity">Activity</string>
+    <string name="history">History</string>
 </resources>
