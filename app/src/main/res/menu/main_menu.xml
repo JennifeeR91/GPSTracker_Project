@@ -8,7 +8,7 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/ic_action_name"
+        android:icon="@drawable/ic_history"
         android:title="@string/history"/>
 
     <item
