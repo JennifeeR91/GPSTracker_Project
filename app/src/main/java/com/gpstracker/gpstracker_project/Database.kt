@@ -69,43 +69,100 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
     }
 
     // Get all activities from database
-    fun getAllActivities() {
-       // TODO class Activity & getallEntries
+    fun getAllActivities(): List<Activity> {
+        val activities = ArrayList<Activity>()
+        val cursor = readableDatabase.rawQuery(SELECT_ALL, null)
+        cursor.moveToFirst().run {
+            do {
+                cursorToActivity(cursor)?.let {
+                    activities.add(it)
+                }
+            } while (cursor.moveToNext())
+        }
 
         readableDatabase.close()
 
+        return activities
     }
 
     // Insert activity into database
-    fun insertActivity() {
-        // TODO class insertActivity
+    fun insertActivity(activity: Activity): Long {
+        val values = activityToContentValues(activity)
+
+        return writableDatabase.insert(DATABASE_TABLE_NAME, null, values)
     }
 
     // Get single activity from database
-    fun getActivity(id: Long) {
-      //  TODO
+    fun getActivity(id: Long): Activity? {
+        val activity: Activity?
+        val cursor = readableDatabase.query(
+                DATABASE_TABLE_NAME, CURSOR_ARRAY, "$KEY_ID=?",
+                arrayOf(id.toString()), null, null, null, null
+        )
+
+        cursor.moveToFirst()
+        activity = cursorToActivity(cursor)
+        cursor.close()
+
+        return activity
     }
 
-    private fun cursorToNote(cursor: Cursor) {
-        //  TODO
+    private fun cursorToActivity(cursor: Cursor): Activity? {
+        var activity: Activity? = null
+        if (cursor?.count == 0) return null
+        cursor.run {
+            activity = Activity(
+                    getLong(getColumnIndex(KEY_ID)),
+                    getDouble(getColumnIndex(KEY_STARTLONG)),
+                    getDouble(getColumnIndex(KEY_ENDLONG)),
+                    getDouble(getColumnIndex(KEY_STARTLAT)),
+                    getDouble(getColumnIndex(KEY_ENDLAT)),
+                    getLong(getColumnIndex(KEY_STARTTIME)),
+                    getLong(getColumnIndex(KEY_ENDTIME)),
+                    getString(getColumnIndex(KEY_NOTE)),
+                    getInt(getColumnIndex(KEY_DELETED))>0
+            )
+        }
+        return activity
     }
 
     // Update single activity
-    fun updateNote() {
-        //  TODO
+    fun updateNote(activity: Activity): Int {
+        return writableDatabase.update(DATABASE_TABLE_NAME,
+        activityToContentValues(activity),
+        "$KEY_ID=?",
+        arrayOf(activity.id.toString()))
     }
 
     // Create new ContentValues object from Activity
-    private fun noteToContentValues() {
-        //  TODO
+    private fun activityToContentValues(activity: Activity): ContentValues {
+        val values = ContentValues()
 
-        //put values
+        values.put(KEY_STARTLONG, activity.startlong)
+        values.put(KEY_ENDLONG, activity.endlong)
+        values.put(KEY_STARTLAT, activity.startlat)
+        values.put(KEY_ENDLAT, activity.endlat)
+        values.put(KEY_STARTTIME, activity.starttime)
+        values.put(KEY_ENDTIME, activity.endtime)
+        values.put(KEY_NOTE, activity.note)
+        values.put(KEY_DELETED, activity.deleted)
 
+        return values
     }
 
     // Delete single activity
-    fun deleteNote() {
-        //  TODO
-        //set deleted flag to "true"
+    fun deleteActivity(activity: Activity): ContentValues{
+        val values = ContentValues()
+
+        values.put(KEY_STARTLONG, activity.startlong)
+        values.put(KEY_ENDLONG, activity.endlong)
+        values.put(KEY_STARTLAT, activity.startlat)
+        values.put(KEY_ENDLAT, activity.endlat)
+        values.put(KEY_STARTTIME, activity.starttime)
+        values.put(KEY_ENDTIME, activity.endtime)
+        values.put(KEY_NOTE, activity.note)
+        values.put(KEY_DELETED, 1)
+
+        return values
     }
 }
