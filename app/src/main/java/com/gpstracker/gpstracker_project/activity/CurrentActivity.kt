@@ -5,6 +5,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.R
+import kotlinx.android.synthetic.main.current_activity.*
+
 
 class CurrentActivity : AppCompatActivity() {
 

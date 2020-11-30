@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 //test
 //test 1 worked
