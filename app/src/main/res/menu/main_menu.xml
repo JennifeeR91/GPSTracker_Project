@@ -14,7 +14,7 @@
     <item
         android:id="@+id/page_3"
         android:enabled="true"
-        android:icon="@drawable/ic_logo_transparent"
+        android:icon="@drawable/ic_baseline_stats"
         android:title="@string/stats"/>
     <item
         android:id="@+id/page_4"
