@@ -40,15 +40,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
     override fun onClick(v: View?) {
         // Display Toast
-        Toast.makeText(this,
-            R.string.logged_in, Toast.LENGTH_LONG).show()
+        Toast.makeText(this,   R.string.logged_in, Toast.LENGTH_LONG).show()
 
         // Go to CurrentActivity
         val intent = Intent(this, CurrentActivity::class.java)
         startActivity(intent)
 
-        // Save login state
-        preferences.setUserLoggedIn(this, true)
+
+        // hier die inputs vom user bekommen und eintragen
+
+        //val email: String = etEmail.toString()
+        // Save login state & save e-mail
+        preferences.setUserLoggedIn(this, true, etEmail.toString())
+
+
 
         // Finish MainActivity
         finish()

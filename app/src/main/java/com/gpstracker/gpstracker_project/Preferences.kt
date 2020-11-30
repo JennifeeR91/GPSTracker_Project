@@ -13,9 +13,17 @@ class Preferences {
         return preferences.getBoolean(PREFERENCES_USER_LOGGED_IN, false)
     }
 
-    fun setUserLoggedIn(context: Context, loggedIn: Boolean) {
+    fun setUserLoggedIn(context: Context, loggedIn: Boolean, email: String) {
         val preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
         preferences.edit().putBoolean(PREFERENCES_USER_LOGGED_IN, loggedIn).apply()
+        preferences.edit().putString("email", email).apply()
+    }
+
+    fun showEmail(context: Context): String? {
+        val preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+
+        return preferences.getString("email", "default value")
+
     }
 }
