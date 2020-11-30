@@ -113,7 +113,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         cursor.run {
             activity = Activity(
                     getLong(getColumnIndex(KEY_ID)),
-                    getDouble(getColumnIndex(KEY_STARTLONG)).toLong(),
+                    getDouble(getColumnIndex(KEY_STARTLONG)),
                     getDouble(getColumnIndex(KEY_ENDLONG)),
                     getDouble(getColumnIndex(KEY_STARTLAT)),
                     getDouble(getColumnIndex(KEY_ENDLAT)),
