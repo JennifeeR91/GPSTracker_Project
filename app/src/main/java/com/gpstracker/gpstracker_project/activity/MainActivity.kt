@@ -1,4 +1,4 @@
-package com.gpstracker.gpstracker_project
+package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.gpstracker.gpstracker_project.Preferences
+import com.gpstracker.gpstracker_project.R
 
 //test
 //test 1 worked
@@ -37,7 +39,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
     override fun onClick(v: View?) {
         // Display Toast
-        Toast.makeText(this, R.string.logged_in, Toast.LENGTH_LONG).show()
+        Toast.makeText(this,
+            R.string.logged_in, Toast.LENGTH_LONG).show()
 
         // Go to CurrentActivity
         val intent = Intent(this, CurrentActivity::class.java)
