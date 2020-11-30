@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gpstracker.gpstracker_project">
+
+
+
 
     <application
         android:allowBackup="true"
@@ -19,6 +23,10 @@
 
         <activity android:name=".CurrentActivity">
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_api_key" />
     </application>
 
 </manifest>
