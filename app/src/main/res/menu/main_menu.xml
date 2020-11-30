@@ -1,23 +1,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/activity_page"
         android:enabled="true"
         android:icon="@drawable/ic_newactivity"
         android:title="@string/activity"/>
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/history_page"
         android:enabled="true"
         android:icon="@drawable/ic_history"
         android:title="@string/history"/>
 
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/stats_page"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_stats"
         android:title="@string/stats"/>
     <item
-        android:id="@+id/page_4"
+        android:id="@+id/profile_page"
         android:enabled="true"
         android:icon="@drawable/ic_action_account_circle"
         android:title="@string/myProfile"/>
