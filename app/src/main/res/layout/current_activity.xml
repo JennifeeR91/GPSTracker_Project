@@ -9,35 +9,26 @@
     tools:context=".activity.CurrentActivity">
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
+
+
+
+
+
         <TextView
-            android:id="@+id/tvPageTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/Title"/>
+            android:layout_margin="@dimen/padding"
+            android:visibility="gone"
+            style="@style/NoteText" />
 
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding"
-        android:visibility="gone"
-        style="@style/NoteText" />
 
-    <Button
-        android:id="@+id/btnStart"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_gravity="center"
-        android:text="@string/start" />
 
 
         <fragment
@@ -47,7 +38,24 @@
             android:layout_height="match_parent"
 
             />
-    </LinearLayout>
+
+        <Button
+            android:id="@+id/btnStart"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dip"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="@string/start" />
+
+        <TextView
+            android:id="@+id/tvPageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            style="@style/Title"/>
+
+    </FrameLayout>
 
 
 
