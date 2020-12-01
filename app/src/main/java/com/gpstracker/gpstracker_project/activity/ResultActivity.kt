@@ -22,26 +22,34 @@ class ResultActivity : AppCompatActivity() {
                 R.id.activity_page -> {
                     // Go to CurrentActivity
                     val intent = Intent(this, CurrentActivity::class.java)
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
+                    // Finish Activity
+                    finish()
                     true
                 }
                 R.id.history_page -> {
                     // Go to HistoryActivity
                     val intent = Intent(this, HistoryActivity::class.java)
                     startActivity(intent)
-
+                    // Finish Activity
+                    finish()
                     true
                 }
                 R.id.stats_page -> {
                     // Go to StatActivity
                     val intent = Intent(this, StatActivity::class.java)
                     startActivity(intent)
+                    // Finish Activity
+                    finish()
                     true
                 }
                 R.id.profile_page -> {
                     // Go to ProfileActivity
                     val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
+                    // Finish Activity
+                    finish()
                     true
                 }
                 else -> false
