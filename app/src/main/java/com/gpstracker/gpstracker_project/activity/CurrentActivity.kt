@@ -74,7 +74,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
+        var latitude = 0.0
+        var longitude = 0.0
+
         this.googleMap = googleMap
+
+        googleMap!!.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Current Location"))
+
     }
 
 }
