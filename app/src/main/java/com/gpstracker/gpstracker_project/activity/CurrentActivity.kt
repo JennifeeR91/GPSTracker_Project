@@ -3,8 +3,11 @@ package com.gpstracker.gpstracker_project.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,7 +20,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.current_activity.*
 
 
@@ -28,10 +33,17 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
 
+    // variable preferences instanziert Preferences
+    private val preferences = Preferences()
+
+    //create array for data to save in
+    private val data: MutableList<String> = ArrayList()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.current_activity)
-        tvPageTitle.text = "Activity"
+        tvPageTitle.text = "New Activity"
 
         //initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this!!)
@@ -80,7 +92,131 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+
+
+
+
+
+
+
+        // get reference to  Start button
+        val btnStart = findViewById(R.id.btnStart) as Button
+        // get reference to  Stop button
+        val btnStop = findViewById(R.id.btnStop) as Button
+        // get reference to Pause button
+        val btnResume = findViewById(R.id.btnResume) as Button
+        // get reference to Pause button
+        val btnEnd = findViewById(R.id.btnEnd) as Button
+
+        // set on-click listener
+        btnStart.setOnClickListener {
+            startActivity()
+        }
+
+        // btnStop
+        btnStop.setOnClickListener {
+            stopActivity()
+        }
+
+        //btnResume
+        btnResume.setOnClickListener {
+            resumeActivity()
+        }
+
+        //btnEnd
+        btnEnd.setOnClickListener {
+            endActivity()
+        }
+
     }
+
+
+
+
+    // start Activity
+    private fun startActivity(){
+        //save location to preferences
+        preferences.setStartLocation(this, "123456", currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+
+        //save to data list
+        //data.addAll( "element")
+
+
+        //Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude + " saved to prefs", Toast.LENGTH_SHORT).show()
+
+        // button ausblenden
+        btnStart.setVisibility(View.GONE)
+
+        // show stop button
+        btnStop.setVisibility(View.VISIBLE)
+
+        // timer starten und anzeigen
+
+        //save data to array
+
+        //remove bottomnav?
+
+        // alle 10 Sekunden die aktuelle position mit timestamp abspeichern
+
+        // hide text
+        tvPageTitle.text = ""
+    }
+
+    // Stop Avtivity
+    private fun stopActivity(){
+        //save location to preferences
+        preferences.setStartLocation(this, "123456", currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+
+        // timer stoppen
+
+        // hide button Stop
+        btnStop.setVisibility(View.GONE)
+
+        //show button resume
+        btnResume.setVisibility(View.VISIBLE)
+
+        //show button End
+        btnEnd.setVisibility(View.VISIBLE)
+
+        // show message
+        tvPageTitle.text = "Paused"
+    }
+
+    // Resume Activity
+    private fun resumeActivity(){
+        Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
+
+        //save location to preferences
+
+        // timer stoppen
+
+        //show stop button
+        btnStop.setVisibility(View.VISIBLE)
+
+        // hide resume button
+        btnResume.setVisibility(View.GONE)
+
+        // hide end button
+        btnEnd.setVisibility(View.GONE)
+
+        // hide message
+        tvPageTitle.text = ""
+    }
+
+    // End Activity
+    private fun endActivity(){
+        Toast.makeText(applicationContext, " Activity end, show results on map", Toast.LENGTH_SHORT).show()
+
+        // go to result acitvity and show results
+        val intent = Intent(this, ResultActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+
+
+
+
 
     private fun fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
@@ -96,7 +232,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         task.addOnSuccessListener { location ->
             if (location != null) {
                     currentLocation = location
-                    Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude, Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude, Toast.LENGTH_SHORT).show()
                     val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
                     supportMapFragment.getMapAsync(this)
             }
@@ -114,6 +250,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         googleMap?.addMarker(markerOptions)
 
+        // show start button
+        btnStart.setVisibility(View.VISIBLE)
+
 
 
       }
@@ -121,9 +260,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         when (requestCode) {
             permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] ==
-                PackageManager.PERMISSION_GRANTED) {
-            fetchLocation()
-        }
+            PackageManager.PERMISSION_GRANTED) {
+                fetchLocation()
+            }
         }
     }
+
+
+
+
+
 }

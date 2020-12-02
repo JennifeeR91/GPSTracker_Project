@@ -5,4 +5,6 @@
     <string name="activity">Activity</string>
     <string name="history">History</string>
     <string name="logged_out">logged out</string>
+    <string name="stop">stop</string>
+    <string name="resume">Resume</string>
 </resources>

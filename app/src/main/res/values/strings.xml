@@ -19,5 +19,9 @@
     <string name="history">History</string>
     <string name="test">test</string>
     <string name="logged_out">logged out</string>
+    <string name="stop">Stop / Pause</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="End">End Activity</string>
 
 </resources>
