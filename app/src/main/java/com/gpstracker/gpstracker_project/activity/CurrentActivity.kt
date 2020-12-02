@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -95,26 +96,24 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         task.addOnSuccessListener { location ->
             if (location != null) {
                     currentLocation = location
-                    Toast.makeText(applicationContext, currentLocation.latitude.toString() + "" +
-                            currentLocation.longitude, Toast.LENGTH_SHORT).show()
-                    val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as
-                            SupportMapFragment?)!!
+                    Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude, Toast.LENGTH_SHORT).show()
+                    val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
                     supportMapFragment.getMapAsync(this)
-                }
+            }
+            else {
+                Toast.makeText(applicationContext, "no location found", Toast.LENGTH_SHORT).show()
+            }
+
             }
         }
 
     override fun onMapReady(googleMap: GoogleMap?) {
-      // this.googleMap = googleMap
-       val latitudeStart = 10.3181466
-       val longitudeStart =  123.9029382
-     //  val latitudeEnd = 10.311795
-      // val longitudeEnd =  123.915864
+        val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+        val markerOptions = MarkerOptions().position(latLng).title("I am here!")
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        googleMap?.addMarker(markerOptions)
 
-         googleMap!!.addMarker(MarkerOptions().position(LatLng(latitudeStart, longitudeStart)).title("Ayala"))
-    //    googleMap!!.addMarker(MarkerOptions().position(LatLng(latitudeEnd, longitudeEnd)).title("SM City"))
-
-     //  googleMap!!.addMarker(MarkerOptions().position(LatLng(currentLocation.latitude, currentLocation.longitude)).title("Ayala"))
 
 
       }
