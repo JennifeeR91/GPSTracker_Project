@@ -3,7 +3,6 @@ package com.gpstracker.gpstracker_project.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.view.View
@@ -22,8 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.current_activity.*
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import kotlin.collections.ArrayList
 
 
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -135,8 +137,12 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // start Activity
     private fun startActivity(){
+
+        //get time.now
+        val StartTime= getDateTimeNow()
+
         //save location to preferences
-        preferences.setStartLocation(this, "123456", currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+        preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
         //save to data list
         //data.addAll( "element")
@@ -164,8 +170,11 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Stop Avtivity
     private fun stopActivity(){
+
+        //get time.now
+        val EndTime = getDateTimeNow()
         //save location to preferences
-        preferences.setStartLocation(this, "123456", currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+        preferences.setStartLocation(this, EndTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
         // timer stoppen
 
@@ -266,7 +275,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    fun getDateTimeNow():String {
+        DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 
+        return DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now())
+    }
 
 
 
