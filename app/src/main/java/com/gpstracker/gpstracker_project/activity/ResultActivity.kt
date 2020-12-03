@@ -70,8 +70,8 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun resumeActivity() {
-        TODO("Not yet implemented")
         Toast.makeText(applicationContext, " go back to current activity and resume", Toast.LENGTH_SHORT).show()
+
         // go to result acitvity and show results
         val intent = Intent(this, CurrentActivity::class.java)
         startActivity(intent)
@@ -79,8 +79,8 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun cancelActivity() {
-        TODO("Not yet implemented")
         Toast.makeText(applicationContext, " delete data array and go to history", Toast.LENGTH_SHORT).show()
+
         // go to result acitvity and show results
         val intent = Intent(this, HistoryActivity::class.java)
         startActivity(intent)
@@ -88,7 +88,6 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun saveActivity() {
-        TODO("Not yet implemented")
         Toast.makeText(applicationContext, " save to Database and go to history activity", Toast.LENGTH_SHORT).show()
 
         //Save data to database
