@@ -15,6 +15,7 @@ class ResultActivity : AppCompatActivity() {
 
     private val preferences = Preferences()
     private val data = AcitvityData()
+    //private val dataArray = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +73,7 @@ class ResultActivity : AppCompatActivity() {
     private fun resumeActivity() {
         Toast.makeText(applicationContext, " go back to current activity and resume", Toast.LENGTH_SHORT).show()
 
-        // go to result acitvity and show results
+        // go back to currentActivity
         val intent = Intent(this, CurrentActivity::class.java)
         startActivity(intent)
         finish()
@@ -80,6 +81,10 @@ class ResultActivity : AppCompatActivity() {
 
     private fun cancelActivity() {
         Toast.makeText(applicationContext, " delete data array and go to history", Toast.LENGTH_SHORT).show()
+
+        // delete Data Array
+        //data.del()
+        //dataArray delete
 
         // go to result acitvity and show results
         val intent = Intent(this, HistoryActivity::class.java)
@@ -91,6 +96,14 @@ class ResultActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, " save to Database and go to history activity", Toast.LENGTH_SHORT).show()
 
         //Save data to database
+        // vlt über eine Schleife jeder String in einen Eintrag, gesplittet mit einer autoincrement activityID
+        val dataArray = data.get()
+        for (i in dataArray) {
+            // leere zeilen auslassen
+            //split string and get separate values
+            // save dataset to database
+        }
+
 
 
         // go to result acitvity and show results
