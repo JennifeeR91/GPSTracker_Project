@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Preferences
+import com.gpstracker.gpstracker_project.AcitvityData
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.current_activity.*
 import java.time.Instant
@@ -36,11 +37,11 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private val permissionCode = 101
 
     // variable preferences instanziert Preferences
-    private val preferences = Preferences()
+    //private val preferences = Preferences()
 
     //create array for data to save in
-    val data: MutableList<String> = ArrayList()
-
+    //val data: MutableList<String> = ArrayList()
+    private val data = AcitvityData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,17 +143,11 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         val StartTime= getDateTimeNow()
 
         //save location to preferences
-        preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+        //preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
         //save datastring to array
         val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-
-        data.add(saveString)
-        for (i in data) {
-            println(i)
-        }
-        println("--- --- --- ---")
-
+        data.insterData(saveString)
 
         //Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude + " saved to prefs", Toast.LENGTH_SHORT).show()
 
@@ -172,31 +167,18 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // hide text
         tvPageTitle.text = ""
-
-
-
-
-
     }
-
-
 
     // Stop Avtivity
     private fun stopActivity(){
-
         //get time.now
         val EndTime = getDateTimeNow()
         //save location to preferences
-        preferences.setStartLocation(this, EndTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+        //preferences.setStartLocation(this, EndTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
         //save datastring to array
         val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-
-        data.add(saveString)
-        for (i in data) {
-            println(i)
-        }
-        println("--- --- --- ---")
+        data.insterData(saveString)
         // timer stoppen
 
         // hide button Stop
@@ -215,15 +197,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     // Resume Activity
     private fun resumeActivity(){
         Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
-
         //save datastring to array
         val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-
-        data.add(saveString)
-        for (i in data) {
-            println(i)
-        }
-        println("--- --- --- ---")
+        data.insterData(saveString)
 
         // timer stoppen
 
@@ -249,10 +225,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(intent)
         finish()
     }
-
-
-
-
 
 
     private fun fetchLocation() {

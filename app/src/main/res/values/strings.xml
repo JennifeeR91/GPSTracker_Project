@@ -23,5 +23,6 @@
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="End">End Activity</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
