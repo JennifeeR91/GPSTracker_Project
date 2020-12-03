@@ -20,9 +20,12 @@ class ResultActivity : AppCompatActivity() {
 
         // output data as text
         val tv_dynamic = TextView(this)
-        tv_dynamic.textSize = 21f
+        tv_dynamic.textSize = 16f
         tv_dynamic.text = preferences.getLocations(this)
         layout.addView(tv_dynamic)
+
+
+
 
     }
 

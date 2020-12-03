@@ -39,7 +39,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private val preferences = Preferences()
 
     //create array for data to save in
-    private val data: MutableList<String> = ArrayList()
+    val data: MutableList<String> = ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,8 +144,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         //save location to preferences
         preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
-        //save to data list
-        //data.addAll( "element")
+        //save datastring to array
+        val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+
+        data.add(saveString)
+        for (i in data) {
+            println(i)
+        }
+        println("--- --- --- ---")
 
 
         //Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude + " saved to prefs", Toast.LENGTH_SHORT).show()
@@ -166,7 +172,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // hide text
         tvPageTitle.text = ""
+
+
+
+
+
     }
+
+
 
     // Stop Avtivity
     private fun stopActivity(){
@@ -176,6 +189,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         //save location to preferences
         preferences.setStartLocation(this, EndTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
+        //save datastring to array
+        val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+
+        data.add(saveString)
+        for (i in data) {
+            println(i)
+        }
+        println("--- --- --- ---")
         // timer stoppen
 
         // hide button Stop
@@ -195,7 +216,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun resumeActivity(){
         Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
 
-        //save location to preferences
+        //save datastring to array
+        val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+
+        data.add(saveString)
+        for (i in data) {
+            println(i)
+        }
+        println("--- --- --- ---")
 
         // timer stoppen
 

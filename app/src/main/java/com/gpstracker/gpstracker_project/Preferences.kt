@@ -43,8 +43,9 @@ class Preferences {
         val long = preferences.getString("lat", "leerer Wert lat")
         val lat = preferences.getString("long", "leerer Wert long")
         val time = preferences.getString("timestmp", "leerer Wert time")
-        return "long: " + long + ", lat: " + lat + ", timestamp: "+ time
+        return time + ": " + long  + ",  " + lat
 
     }
+
 
 }
