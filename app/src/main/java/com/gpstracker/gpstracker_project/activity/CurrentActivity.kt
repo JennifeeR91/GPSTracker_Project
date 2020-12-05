@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
 // todo: no animation in map
+// todo: show timer on Start
 
 
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {

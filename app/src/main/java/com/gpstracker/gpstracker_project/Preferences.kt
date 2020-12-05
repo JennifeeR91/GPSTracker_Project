@@ -1,8 +1,6 @@
 package com.gpstracker.gpstracker_project
 
 import android.content.Context
-import com.google.android.gms.maps.model.LatLng
-import java.sql.Timestamp
 
 class Preferences {
 
@@ -17,15 +15,14 @@ class Preferences {
 
     fun setUserLoggedIn(context: Context, loggedIn: Boolean, email: String) {
         val preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
-
         preferences.edit().putBoolean(PREFERENCES_USER_LOGGED_IN, loggedIn).apply()
         preferences.edit().putString("email", email).apply()
     }
 
     fun showEmail(context: Context): String? {
         val preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
-
-        return preferences.getString("email", "default value")
+        val  email: String = preferences.getString("email", "default value").toString()
+        return email
 
     }
 

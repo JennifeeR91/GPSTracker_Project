@@ -1,11 +1,11 @@
 package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -48,12 +48,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
 
         // hier die inputs vom user bekommen und eintragen
+        val email = etEmail.text
 
-        //val email: String = etEmail.toString()
         // Save login state & save e-mail
-        preferences.setUserLoggedIn(this, true, etEmail.toString())
-
-
+       preferences.setUserLoggedIn(this, true, email.toString())
 
         // Finish MainActivity
         finish()

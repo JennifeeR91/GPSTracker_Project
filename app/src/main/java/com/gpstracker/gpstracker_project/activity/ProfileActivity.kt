@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.profile_activity.*
 
 class ProfileActivity : AppCompatActivity(), View.OnClickListener {
@@ -21,9 +20,9 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         tvPageTitle.text = "Profile"
 
         btnLogout.setOnClickListener(this)
-        val email = preferences.showEmail(this)
-        tvEmail.text = email
 
+        val email: String? = preferences.showEmail(this)
+        tvEmail.text = email
 
 
         // Bottom Naviagation
