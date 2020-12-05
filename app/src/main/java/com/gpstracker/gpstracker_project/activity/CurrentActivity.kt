@@ -28,6 +28,8 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
+// todo: no animation in map
+
 
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -59,12 +61,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.activity_page -> {
+                   /*
                     // Go to CurrentActivity
                     val intent = Intent(this, CurrentActivity::class.java)
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     // Finish Activity
                     finish()
+                    */
                     true
                 }
                 R.id.history_page -> {
@@ -140,7 +144,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun startActivity(){
 
         //get time.now
-        val StartTime= getDateTimeNow()
+        //val StartTime= getDateTimeNow()
 
         //save location to preferences
         //preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
@@ -153,6 +157,10 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // button ausblenden
         btnStart.setVisibility(View.GONE)
+
+        // bottom menu ausblenden
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setVisibility(View.GONE)
 
         // show stop button
         btnStop.setVisibility(View.VISIBLE)
