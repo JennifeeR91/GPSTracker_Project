@@ -5,7 +5,7 @@ import android.content.Context
 
 val data: MutableList<String> = ArrayList()
 
-class AcitvityData {
+class ActivityDataArrayHandler {
 
     //create array for data to save in
 
@@ -30,6 +30,13 @@ class AcitvityData {
         println("hier kommen jetzt die Daten, achtung")
 
         return data
+    }
+
+
+    // deliver data
+    fun del() {
+        data.clear()
+        return
     }
 
 

@@ -1,11 +1,13 @@
 package com.gpstracker.gpstracker_project.activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.gpstracker.gpstracker_project.AcitvityData
+import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
+import com.gpstracker.gpstracker_project.Database
 import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.result_activity.*
@@ -14,7 +16,8 @@ import kotlinx.android.synthetic.main.result_activity.*
 class ResultActivity : AppCompatActivity() {
 
     private val preferences = Preferences()
-    private val data = AcitvityData()
+    private val data = ActivityDataArrayHandler()
+    private val db = Database(this)
     //private val dataArray = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,12 +26,9 @@ class ResultActivity : AppCompatActivity() {
         // page Title
         tvPageTitle.text = "Activity Summary"
 
-
         // output data as text
         val tv_dynamic = TextView(this)
         tv_dynamic.textSize = 16f
-        //tv_dynamic.text = preferences.getLocations(this)
-
         val dataArray = data.get()
         // ausgabe zum testen
         //println("+++++++++ start")
@@ -40,8 +40,6 @@ class ResultActivity : AppCompatActivity() {
         for (i in dataArray) {
             tv_dynamic.append(i+  System.getProperty ("line.separator"))
         }
-
-
         layout.addView(tv_dynamic)
 
 
@@ -70,6 +68,8 @@ class ResultActivity : AppCompatActivity() {
 
     }
 
+
+    // when button resume is pressed
     private fun resumeActivity() {
         Toast.makeText(applicationContext, " go back to current activity and resume", Toast.LENGTH_SHORT).show()
 
@@ -79,41 +79,58 @@ class ResultActivity : AppCompatActivity() {
         finish()
     }
 
+    // when button cancel is pressed
     private fun cancelActivity() {
-        Toast.makeText(applicationContext, " delete data array and go to history", Toast.LENGTH_SHORT).show()
-
         // delete Data Array
-        //data.del()
-        //dataArray delete
+        data.del()
 
-        // go to result acitvity and show results
+        // go to history acitvity
         val intent = Intent(this, HistoryActivity::class.java)
         startActivity(intent)
         finish()
     }
 
+    // when button save is pressed
     private fun saveActivity() {
         Toast.makeText(applicationContext, " save to Database and go to history activity", Toast.LENGTH_SHORT).show()
+        //val activity = 1
 
-        //Save data to database
-        // vlt über eine Schleife jeder String in einen Eintrag, gesplittet mit einer autoincrement activityID
+
+        // Get AvtivityData to save to DB
         val dataArray = data.get()
+        var counter = 0
+        var startstring: String = ""
+        var endstring: String = ""
+
+
         for (i in dataArray) {
             // leere zeilen auslassen
             //split string and get separate values
             // save dataset to database
+                if(counter == 0) {  startstring = i}
+            endstring = i
+            counter++
         }
 
+        val startArr = startstring.split(" ").toTypedArray()
+        val endArr = startstring.split(" ").toTypedArray()
+
+        startArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
+        endArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
 
 
-        // go to result acitvity and show results
+        //Save to database
+        //db.insertActivity(1, val startlong: Double, var endlong: Double, val startlat: Double, var endlat: Double, var starttime: Long,
+        //var endtime: Long, var note: String, var deleted: Boolean)
+
+        // delete Data Array
+        data.del()
+
+        // go to history acitvity
         val intent = Intent(this, HistoryActivity::class.java)
         startActivity(intent)
         finish()
     }
-
-
-    // show buttons Save, Resume, Chancel
 
 }
 

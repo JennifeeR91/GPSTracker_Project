@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Preferences
-import com.gpstracker.gpstracker_project.AcitvityData
+import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.current_activity.*
 import java.time.Instant
@@ -41,7 +41,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //create array for data to save in
     //val data: MutableList<String> = ArrayList()
-    private val data = AcitvityData()
+    private val data = ActivityDataArrayHandler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
