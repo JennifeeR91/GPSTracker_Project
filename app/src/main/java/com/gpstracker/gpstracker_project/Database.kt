@@ -56,7 +56,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val DROP_TABLE = "DROP TABLE IF EXISTS $DATABASE_TABLE_NAME"
 
         // Database select all statement
-        private const val SELECT_ALL = "SELECT * FROM $DATABASE_TABLE_NAME"
+        private const val SELECT_ALL = "SELECT * FROM $DATABASE_TABLE_NAME ORDER BY id DESC"
     }
 
     override fun onCreate(db: SQLiteDatabase) {

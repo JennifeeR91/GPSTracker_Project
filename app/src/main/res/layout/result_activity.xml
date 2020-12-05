@@ -19,6 +19,16 @@
         style="@style/Title"/>
 
 
+    <fragment
+        android:id="@+id/fragment_map1"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.CurrentActivity"
+        />
+
+
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"

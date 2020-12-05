@@ -1,19 +1,28 @@
 package com.gpstracker.gpstracker_project.activity
+
+
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
 
 // todo: input Textfeld für note einfügen, oder auch dropdown für activity type
-// todo: timestamp beim zum abspeichern: getTime und eine funktion zum formatieren, falls die zeit ausgegeben wird
+// todo: map mit track anzeigen
 // todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
 
 
-class ResultActivity : AppCompatActivity() {
+class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private val preferences = Preferences()
     private val data = ActivityDataArrayHandler()
@@ -55,19 +64,21 @@ class ResultActivity : AppCompatActivity() {
             saveActivity()
         }
 
-        // btnStop
+        // set on-click listener
         btnCancel.setOnClickListener {
             cancelActivity()
         }
 
-        //btnResume
+        // set on-click listener
         btnResume.setOnClickListener {
             resumeActivity()
         }
 
+        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
+        supportMapFragment.getMapAsync(this)
+
 
     }
-
 
     // when button resume is pressed
     private fun resumeActivity() {
@@ -121,12 +132,7 @@ class ResultActivity : AppCompatActivity() {
         //Log.i(startArr[0], "-" + startArr[0])
 
         // activity erstellen
-        // wenn timestamp richtig formatiert dann das:
         val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note time", false)
-        // zum testen des eintrags das:
-       //val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), 66.toLong(), 5555554.toLong(), "note", false)
-
-
 
         //Save to database
         db.insertActivity(activity)
@@ -139,6 +145,40 @@ class ResultActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+
+        // alle daten ausgeben
+        val dataArray = data.get()
+        // get first point
+        val firstlat = dataArray.first().split(" ")[1].toDouble()
+        val firstlong = dataArray.first().split(" ")[2].toDouble()
+
+        // get last point
+        println("datadatadatadat")
+
+        println(dataArray.last())
+        //val dataArray1 = data.get()
+        //val lastlat = dataArray1.last().split(" ")[1].toDouble()
+        //val lastlong = dataArray1.last().split(" ")[2].toDouble()
+
+
+        val latLngStart = LatLng(firstlat, firstlong)
+        //val latLngEnd = LatLng(lastlat, lastlong)
+
+        val startMarker = MarkerOptions().position(latLngStart).title("Startpoint")
+        //val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint")
+
+        //googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLngStart))
+        //googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15f))
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
+
+        // add marker
+        googleMap?.addMarker(startMarker)
+        //googleMap?.addMarker(endMarker)
+    }
+
+
 
 }
 

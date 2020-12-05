@@ -30,34 +30,21 @@ class HistoryActivity : AppCompatActivity() {
         val tv_dynamic = TextView(this)
         tv_dynamic.textSize = 16f
 
+        // get data from database
         val dataArray = db.getAllActivities()
-        // ausgabe zum testen
-        println("+++++++++ start")
-        for (i in dataArray) {
-            println(i)
-        }
-        println("+++++++++ ende")
-
 
         // ausgabe der Datenbankeinträge, sollte dann in eine eigene funktion
         for (i in dataArray) {
 
-            //val name: String = readInstanceProperty(dataArray, "name")
-
-
             tv_dynamic.append(
-                   i.id.toString() +  ".  eintrag: "
-                    +System.getProperty ("line.separator")
-                    + "note: " + i.note.toString() + " "
-                    +System.getProperty ("line.separator")
-                    + "time: " + i.note.toString() + " "
-                           +System.getProperty ("line.separator")
-                          + "start lat: " +  i.startlat.toString()
-                           +System.getProperty ("line.separator")
-                           +"end lat: " +  i.startlat.toString()
-                           +System.getProperty ("line.separator")
-                           +System.getProperty ("line.separator")
+                   i.id.toString() +  ".  eintrag: " +System.getProperty ("line.separator")
+                   + "note: " + i.note.toString() + " " +System.getProperty ("line.separator")
+                   + "starttime: " + i.starttime.toString() + " " +System.getProperty ("line.separator")
+                   + "start lat: " +  i.startlat.toString() +System.getProperty ("line.separator")
+                   +"end lat: " +  i.startlat.toString() + System.getProperty ("line.separator")
+                   +System.getProperty ("line.separator")
             )
+
         }
 
 

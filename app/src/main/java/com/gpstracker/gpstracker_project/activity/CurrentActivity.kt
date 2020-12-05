@@ -262,9 +262,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // show start button
         btnStart.setVisibility(View.VISIBLE)
-
-
-
       }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
