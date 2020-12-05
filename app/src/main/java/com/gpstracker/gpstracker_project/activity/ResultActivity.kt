@@ -14,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
 
@@ -154,20 +155,15 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
-        // get last point
-        println("datadatadatadat")
-
-        println(dataArray.last())
-        //val dataArray1 = data.get()
-        //val lastlat = dataArray1.last().split(" ")[1].toDouble()
-        //val lastlong = dataArray1.last().split(" ")[2].toDouble()
-
+        // get last point, last entry could be empty therefore the length >3
+        val lastlat = dataArray.last { it.length > 3 }.split(" ")[1].toDouble()
+        val lastlong = dataArray.last { it.length > 3 }.split(" ")[2].toDouble()
 
         val latLngStart = LatLng(firstlat, firstlong)
-        //val latLngEnd = LatLng(lastlat, lastlong)
+        val latLngEnd = LatLng(lastlat, lastlong)
 
         val startMarker = MarkerOptions().position(latLngStart).title("Startpoint")
-        //val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint")
+        val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint")
 
         //googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLngStart))
         //googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15f))
@@ -175,7 +171,20 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // add marker
         googleMap?.addMarker(startMarker)
-        //googleMap?.addMarker(endMarker)
+        googleMap?.addMarker(endMarker)
+
+        // mir schleife durch alle punkte durchgehen und sie hinzufügen
+        val polyline1 = googleMap?.addPolyline(PolylineOptions()
+                .add(
+                        LatLng(47.086, 15.416),
+                        LatLng(47.186, 15.516),
+                        LatLng(47.286, 15.616),
+                        LatLng(47.386, 15.616),
+                        LatLng(47.486, 16.716),
+                        LatLng(47.086, 15.416)
+
+                ))
+
     }
 
 
