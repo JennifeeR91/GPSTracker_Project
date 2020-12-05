@@ -1,15 +1,11 @@
 package com.gpstracker.gpstracker_project.activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
-import com.gpstracker.gpstracker_project.Database
-import com.gpstracker.gpstracker_project.Preferences
-import com.gpstracker.gpstracker_project.R
+import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
 
 
@@ -115,13 +111,16 @@ class ResultActivity : AppCompatActivity() {
         val startArr = startstring.split(" ").toTypedArray()
         val endArr = startstring.split(" ").toTypedArray()
 
-        startArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
-        endArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
+        // Testausgaben
+        //startArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
+        //endArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
+        //Log.i(startArr[0], "-" + startArr[0])
 
+        // activity erstellen
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note", false)
 
         //Save to database
-        //db.insertActivity(1, val startlong: Double, var endlong: Double, val startlat: Double, var endlat: Double, var starttime: Long,
-        //var endtime: Long, var note: String, var deleted: Boolean)
+        db.insertActivity(activity)
 
         // delete Data Array
         data.del()

@@ -279,7 +279,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 
         return DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss")
+            .ofPattern("yyyy-MM-dd_HH:mm:ss")
             .withZone(ZoneOffset.UTC)
             .format(Instant.now())
     }
