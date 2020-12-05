@@ -5,7 +5,6 @@ package com.gpstracker.gpstracker_project.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -17,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
+import java.util.concurrent.TimeUnit
 
 // todo: input Textfeld für note einfügen, oder auch dropdown für activity type
 // todo: map mit track anzeigen
@@ -35,11 +35,12 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         setContentView(R.layout.result_activity)
         // page Title
         tvPageTitle.text = "Activity Summary"
+        val dataArray = data.get()
 
+        /*
         // output data as text
         val tv_dynamic = TextView(this)
         tv_dynamic.textSize = 16f
-        val dataArray = data.get()
         // ausgabe zum testen
         //println("+++++++++ start")
         //for (i in dataArray) {
@@ -48,9 +49,27 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         //println("+++++++++ ende")
 
         for (i in dataArray) {
-            tv_dynamic.append(i+  System.getProperty ("line.separator"))
+            tv_dynamic.append(i + System.getProperty("line.separator"))
         }
         layout.addView(tv_dynamic)
+        */
+
+        //show Time
+        // get time from first
+        val startTime = dataArray.first().split(" ")[0]
+        // get time from last entry
+        val endTime = dataArray.last { it.length > 3 }.split(" ")[0]
+        // get difference and show result in h:m:s
+        val diffTime = endTime.toLong() - startTime.toLong()
+        val periodAsHH_MM_SS = java.lang.String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(diffTime),
+                TimeUnit.MILLISECONDS.toMinutes(diffTime) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(diffTime) % TimeUnit.MINUTES.toSeconds(1))
+        timer.text = "Duration: " + periodAsHH_MM_SS + System.getProperty ("line.separator") + "Distance: ---- ----"
+
+
+
+
 
 
         // get reference to  Start button
@@ -174,16 +193,31 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         googleMap?.addMarker(endMarker)
 
         // mir schleife durch alle punkte durchgehen und sie hinzufügen
-        val polyline1 = googleMap?.addPolyline(PolylineOptions()
-                .add(
-                        LatLng(47.086, 15.416),
-                        LatLng(47.186, 15.516),
-                        LatLng(47.286, 15.616),
-                        LatLng(47.386, 15.616),
-                        LatLng(47.486, 16.716),
-                        LatLng(47.086, 15.416)
+        // Adding points to ArrayList
+        val coordList = ArrayList<LatLng>()
 
-                ))
+
+        // additional testpoint
+        coordList.add(LatLng(47.093, 15.436))
+
+        //println("+++++++++ start")
+        for (i in dataArray) {
+            if (i.isNotEmpty()) {
+                println(i)
+                var x = i.split(" ")
+                println(x[1])
+                println(x[2])
+                coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
+            }
+
+        }
+        //println("+++++++++ ende")
+
+        //addintional test point
+         coordList.add(LatLng(47.072, 15.396))
+
+        val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
+
 
     }
 
