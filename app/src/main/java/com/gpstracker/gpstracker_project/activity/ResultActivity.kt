@@ -8,6 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
 
+// todo: input Textfeld für note einfügen, oder auch dropdown für activity type
+// todo: timestamp beim zum abspeichern: getTime und eine funktion zum formatieren, falls die zeit ausgegeben wird
+// todo: id sollte bei activity nicht notwendig sein
+
 
 class ResultActivity : AppCompatActivity() {
 
@@ -117,7 +121,12 @@ class ResultActivity : AppCompatActivity() {
         //Log.i(startArr[0], "-" + startArr[0])
 
         // activity erstellen
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note", false)
+        // wenn timestamp richtig formatiert dann das:
+        //val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note", false)
+        // zum testen des eintrags das:
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), 555555.toLong(), 5555554.toLong(), "note", false)
+
+
 
         //Save to database
         db.insertActivity(activity)
