@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/layout"
     tools:context=".activity.HistoryActivity">
 
 
@@ -28,14 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/main_menu" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="175dp"
-        android:layout_height="149dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_history" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

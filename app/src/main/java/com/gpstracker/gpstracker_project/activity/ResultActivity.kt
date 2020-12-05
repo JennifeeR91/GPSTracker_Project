@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.result_activity.*
 
 // todo: input Textfeld für note einfügen, oder auch dropdown für activity type
 // todo: timestamp beim zum abspeichern: getTime und eine funktion zum formatieren, falls die zeit ausgegeben wird
-// todo: id sollte bei activity nicht notwendig sein
+// todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
 
 
 class ResultActivity : AppCompatActivity() {
@@ -122,9 +122,9 @@ class ResultActivity : AppCompatActivity() {
 
         // activity erstellen
         // wenn timestamp richtig formatiert dann das:
-        //val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note", false)
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note time", false)
         // zum testen des eintrags das:
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), 555555.toLong(), 5555554.toLong(), "note", false)
+       //val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), 66.toLong(), 5555554.toLong(), "note", false)
 
 
 

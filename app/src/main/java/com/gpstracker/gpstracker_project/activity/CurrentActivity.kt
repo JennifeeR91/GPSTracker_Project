@@ -146,7 +146,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         //preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
         //save datastring to array
-        val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insterData(saveString)
 
         //Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude + " saved to prefs", Toast.LENGTH_SHORT).show()
@@ -172,12 +172,12 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     // Stop Avtivity
     private fun stopActivity(){
         //get time.now
-        val EndTime = getDateTimeNow()
+        // val EndTime = getDateTimeNow()
         //save location to preferences
         //preferences.setStartLocation(this, EndTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
 
         //save datastring to array
-        val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insterData(saveString)
         // timer stoppen
 
@@ -198,7 +198,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun resumeActivity(){
         Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
         //save datastring to array
-        val saveString = getDateTimeNow() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+
+        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insterData(saveString)
 
         // timer stoppen
