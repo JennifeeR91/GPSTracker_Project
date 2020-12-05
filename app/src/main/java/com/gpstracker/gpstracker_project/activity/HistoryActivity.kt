@@ -40,16 +40,23 @@ class HistoryActivity : AppCompatActivity() {
 
 
         // ausgabe der Datenbankeinträge, sollte dann in eine eigene funktion
-        var counter = 0
         for (i in dataArray) {
-            counter ++
+
+            //val name: String = readInstanceProperty(dataArray, "name")
+
+
             tv_dynamic.append(
-                    // i
-                    counter.toString()
-                    +
-                    ".  eintrag"
-                    +
-                    System.getProperty ("line.separator")
+                   i.id.toString() +  ".  eintrag: "
+                    +System.getProperty ("line.separator")
+                    + "note: " + i.note.toString() + " "
+                    +System.getProperty ("line.separator")
+                    + "time: " + i.note.toString() + " "
+                           +System.getProperty ("line.separator")
+                          + "start lat: " +  i.startlat.toString()
+                           +System.getProperty ("line.separator")
+                           +"end lat: " +  i.startlat.toString()
+                           +System.getProperty ("line.separator")
+                           +System.getProperty ("line.separator")
             )
         }
 

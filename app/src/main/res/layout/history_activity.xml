@@ -18,6 +18,12 @@
         app:layout_constraintStart_toStartOf="parent"
         style="@style/Title"/>
 
+
+
+
+
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
@@ -29,6 +35,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/main_menu" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="192dp"
+
+        tools:layout_editor_absoluteY="245dp">
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
