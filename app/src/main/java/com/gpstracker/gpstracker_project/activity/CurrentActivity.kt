@@ -28,8 +28,9 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
-// todo: no animation in map
 // todo: show timer on Start
+// Todo: map follows gps
+// Todo: save position all x seconds
 
 
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -264,9 +265,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-        val markerOptions = MarkerOptions().position(latLng).title("I am here!")
-        googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        val markerOptions = MarkerOptions().position(latLng).title("My positin")
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
         googleMap?.addMarker(markerOptions)
 
         // show start button

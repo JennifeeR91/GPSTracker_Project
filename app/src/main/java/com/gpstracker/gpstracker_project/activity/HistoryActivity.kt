@@ -9,15 +9,19 @@ import com.gpstracker.gpstracker_project.Database
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.result_activity.*
 
-//todo: einträge korrekt auslesen und anzgeigen
+// Einträge über adapter und layout inflator anzeigen
 //todo: Detailansicht erstellen oder Result Activity verwenden
 //todo: einträge klickbar machen und zur detailansicht wechseln
+// todo: Detailansicht löschen ermöglichen
 
 
 class HistoryActivity : AppCompatActivity() {
 
-    // new Database object instance
+    // new instance of Database
     val db = Database(this)
+    // new instance of resultactivity class to use getTime function
+    val result = ResultActivity()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +39,18 @@ class HistoryActivity : AppCompatActivity() {
 
         // ausgabe der Datenbankeinträge, sollte dann in eine eigene funktion
         for (i in dataArray) {
+            // get time
+            val time = result.getDuration(i.starttime, i.endtime )
+
+
 
             tv_dynamic.append(
                    i.id.toString() +  ".  eintrag: " +System.getProperty ("line.separator")
                    + "note: " + i.note.toString() + " " +System.getProperty ("line.separator")
-                   + "starttime: " + i.starttime.toString() + " " +System.getProperty ("line.separator")
+                   + "Duration: " + time + " " +System.getProperty ("line.separator")
                    + "start lat: " +  i.startlat.toString() +System.getProperty ("line.separator")
                    +"end lat: " +  i.startlat.toString() + System.getProperty ("line.separator")
+                   + "Distance: +++"  + System.getProperty ("line.separator")
                    +System.getProperty ("line.separator")
             )
 

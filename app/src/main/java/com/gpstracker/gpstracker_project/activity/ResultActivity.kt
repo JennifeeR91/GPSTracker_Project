@@ -4,6 +4,7 @@ package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -56,27 +57,26 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         //show Time
         // get time from first
-        val startTime = dataArray.first().split(" ")[0]
+        val startTime = dataArray.first().split(" ")[0].toLong()
         // get time from last entry
-        val endTime = dataArray.last { it.length > 3 }.split(" ")[0]
-        // get difference and show result in h:m:s
-        val diffTime = endTime.toLong() - startTime.toLong()
-        val periodAsHH_MM_SS = java.lang.String.format("%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(diffTime),
-                TimeUnit.MILLISECONDS.toMinutes(diffTime) % TimeUnit.HOURS.toMinutes(1),
-                TimeUnit.MILLISECONDS.toSeconds(diffTime) % TimeUnit.MINUTES.toSeconds(1))
-        timer.text = "Duration: " + periodAsHH_MM_SS + System.getProperty ("line.separator") + "Distance: ---- ----"
+        val endTime = dataArray.last { it.length > 3 }.split(" ")[0].toLong()
+        val Time = getDuration(startTime, endTime)
+        timer.text = "Duration: " + Time + System.getProperty ("line.separator")
 
 
+        // get Distance
+        val distance = getTotalDistance()
+
+        // add up distances between each point
+
+        timer.append( "Distance: " + distance + System.getProperty ("line.separator"))
 
 
-
-
-        // get reference to  Start button
+        // get reference to Save button
         val btnSave = findViewById(R.id.btnSave) as Button
-        // get reference to  Stop button
+        // get reference to Cancel button
         val btnCancel = findViewById(R.id.btnCancel) as Button
-        // get reference to Pause button
+        // get reference to Resume button
         val btnResume = findViewById(R.id.btnResume) as Button
 
         // set on-click listener
@@ -97,6 +97,18 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
         supportMapFragment.getMapAsync(this)
 
+
+    }
+
+    // show hh:mm:ss from timestamp difference
+    public fun getDuration( start: Long,  end: Long): String {
+        // get difference and show result in h:m:s
+        val diffTime = end.toLong() - start.toLong()
+        val periodAsHH_MM_SS = java.lang.String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(diffTime),
+                TimeUnit.MILLISECONDS.toMinutes(diffTime) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(diffTime) % TimeUnit.MINUTES.toSeconds(1))
+        return periodAsHH_MM_SS
 
     }
 
@@ -129,6 +141,10 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // Get AvtivityData to save to DB
         val dataArray = data.get()
+        dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
+
+
+
         var counter = 0
         var startstring: String = ""
         var endstring: String = ""
@@ -136,23 +152,31 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         for (i in dataArray) {
             // leere zeilen auslassen
-            //split string and get separate values
-            // save dataset to database
+            if(i.isNotEmpty()){
                 if(counter == 0) {  startstring = i}
-            endstring = i
-            counter++
+                endstring = i
+                counter++
+            }
         }
+        //println("***************************************")
+        //println("startstring: "+startstring)
+        //println("endstring: " + endstring)
+        //println("***************************************")
 
+
+        //split string and get separate values
         val startArr = startstring.split(" ").toTypedArray()
-        val endArr = startstring.split(" ").toTypedArray()
+        val endArr = endstring.split(" ").toTypedArray()
 
         // Testausgaben
         //startArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
         //endArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
         //Log.i(startArr[0], "-" + startArr[0])
 
+
+
         // activity erstellen
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "note time", false)
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "Activity Type here", false)
 
         //Save to database
         db.insertActivity(activity)
@@ -221,7 +245,61 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     }
 
+    // add up all distances between all points
+    public fun getTotalDistance(): Double {
+        // get stored data
+        val dataArray = data.get()
 
+        var distance:Double = 0.0
+        var long1:Double = 0.0
+        var lat1:Double = 0.0
+
+
+
+
+        // add test points
+        dataArray.add(System.currentTimeMillis().toString() + " " + "47.093" + " " + "15.436")
+
+        println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+
+
+        // loop through all points
+        for(i in dataArray){
+            println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+            if(i.isNotEmpty()) {
+
+                if (long1 != 0.0) {
+                    distance = distance + this.getDistanceFromLatLonInKm(long1, lat1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
+                }
+
+                var long1 = i.split(" ")[1].toDouble()
+                var lat1 = i.split(" ")[2].toDouble()
+            }
+        }
+        return distance
+
+    }
+
+
+    private fun getDistanceFromLatLonInKm(lat1:Double,lon1:Double,lat2:Double,lon2:Double): Double {
+        val R = 6371; // Radius of the earth in km
+        val dLat = deg2rad(lat2-lat1);  // deg2rad below
+        val dLon = deg2rad(lon2-lon1);
+        val a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2)
+        ;
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        val d = R * c; // Distance in km
+        println("Distance p2p: "+d )
+        println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+        return d;
+    }
+
+    private fun deg2rad(deg:Double ): Double {
+        return deg * (Math.PI/180)
+    }
 
 }
 

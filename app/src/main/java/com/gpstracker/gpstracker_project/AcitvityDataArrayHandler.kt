@@ -1,7 +1,5 @@
 package com.gpstracker.gpstracker_project
 
-import android.content.Context
-
 
 val data: MutableList<String> = ArrayList()
 
@@ -12,10 +10,10 @@ class ActivityDataArrayHandler {
 
     // instert into array
     fun insterData(savestring:String ) {
-
         data.add(savestring)
 
         // ausgabe zum testen
+        println("insert this data in data array: ")
         for (i in data) {
             println(i)
         }
