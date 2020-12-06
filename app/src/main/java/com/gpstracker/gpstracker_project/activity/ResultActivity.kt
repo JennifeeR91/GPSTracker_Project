@@ -61,7 +61,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // get time from last entry
         val endTime = dataArray.last { it.length > 3 }.split(" ")[0].toLong()
         val Time = getDuration(startTime, endTime)
-        timer.text = "Duration: " + Time + System.getProperty ("line.separator")
+        timer.text = "Duration: " + Time + System.getProperty("line.separator")
 
 
         // get Distance
@@ -69,7 +69,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // add up distances between each point
 
-        timer.append( "Distance: " + distance + System.getProperty ("line.separator"))
+        timer.append("Distance: " + distance + System.getProperty("line.separator"))
 
 
         // get reference to Save button
@@ -101,7 +101,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     }
 
     // show hh:mm:ss from timestamp difference
-    public fun getDuration( start: Long,  end: Long): String {
+    public fun getDuration(start: Long, end: Long): String {
         // get difference and show result in h:m:s
         val diffTime = end.toLong() - start.toLong()
         val periodAsHH_MM_SS = java.lang.String.format("%02d:%02d:%02d",
@@ -141,7 +141,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // Get AvtivityData to save to DB
         val dataArray = data.get()
-        dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
+        dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
 
 
 
@@ -254,51 +254,77 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         var long1:Double = 0.0
         var lat1:Double = 0.0
 
-
-
-
         // add test points
-        dataArray.add(System.currentTimeMillis().toString() + " " + "47.093" + " " + "15.436")
-
-        println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-
+        dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800497 15.4105737")
 
         // loop through all points
         for(i in dataArray){
-            println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+            //println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+            //println(i)
             if(i.isNotEmpty()) {
+                //println(" - - - - IN IF 1- - - - - - - - - - - - - - - - - - - - - - - - -")
 
-                if (long1 != 0.0) {
+                if (long1 == 0.0) {
+                    println("long: ist 0")
+                }else{
+                    println(" - - - - IN IF 2  - - - - - - - - - - - - - - - - - - - - - - - -")
                     distance = distance + this.getDistanceFromLatLonInKm(long1, lat1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
+                    println(distance)
+                    println("long: "+ long1)
+                    println("lat: " + lat1)
                 }
+                long1 = i.split(" ")[1].toDouble()
+                lat1 = i.split(" ")[2].toDouble()
 
-                var long1 = i.split(" ")[1].toDouble()
-                var lat1 = i.split(" ")[2].toDouble()
             }
         }
+
+
         return distance
 
     }
 
 
-    private fun getDistanceFromLatLonInKm(lat1:Double,lon1:Double,lat2:Double,lon2:Double): Double {
+    private fun getDistanceFromLatLonInKm_old(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val R = 6371; // Radius of the earth in km
-        val dLat = deg2rad(lat2-lat1);  // deg2rad below
-        val dLon = deg2rad(lon2-lon1);
+        val dLat = deg2rad(lat2 - lat1);  // deg2rad below
+        val dLon = deg2rad(lon2 - lon1);
         val a =
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                         Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                        Math.sin(dLon/2) * Math.sin(dLon/2)
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2)
         ;
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         val d = R * c; // Distance in km
-        println("Distance p2p: "+d )
-        println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+        println("Distance p2p: " + d)
         return d;
     }
 
-    private fun deg2rad(deg:Double ): Double {
+    private fun deg2rad(deg: Double): Double {
         return deg * (Math.PI/180)
+    }
+
+
+    private fun getDistanceFromLatLonInKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val theta = lon1 - lon2
+        var dist = (Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + (Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta))))
+        dist = Math.acos(dist)
+        dist = rad2deg(dist)
+        //dist = dist * 60 * 1.1515
+        dist = dist * 60 * 1.1515 * 1.609344
+        println("Distance p2p: " + dist)
+
+        return dist
+    }
+
+
+
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180.0 / Math.PI
     }
 
 }
