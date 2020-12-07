@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit
 // todo: input Textfeld für note einfügen, oder auch dropdown für activity type
 // todo: map mit track anzeigen
 // todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
+// todo: distacnce runden
+
 
 
 class ResultActivity : AppCompatActivity() , OnMapReadyCallback {

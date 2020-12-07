@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/layout"
-    tools:context=".activity.ResultActivity">
+    tools:context=".activity.DetailViewActivity">
 
 
     <FrameLayout
@@ -23,7 +23,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".activity.ResultActivityDetail" />
+            tools:context=".activity.DetailViewActivity" />
 
 
         <TextView

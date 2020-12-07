@@ -2,26 +2,22 @@ package com.gpstracker.gpstracker_project.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.result_activity.*
 
-class ResultActivityDetail : AppCompatActivity() , OnMapReadyCallback {
+class DetailViewActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.result_activity_detail)
+        setContentView(R.layout.detail_view_activity)
         // page Title
         tvPageTitle.text = "Activity Detail"
 
-        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
-        supportMapFragment.getMapAsync(this)
+        //val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
+        //supportMapFragment.getMapAsync(this)
 
     }
+
+    /*
     override fun onMapReady(googleMap: GoogleMap?) {
 
 
@@ -38,5 +34,6 @@ class ResultActivityDetail : AppCompatActivity() , OnMapReadyCallback {
         googleMap?.addMarker(startMarker)
         googleMap?.addMarker(endMarker)
     }
+    */
 
     }

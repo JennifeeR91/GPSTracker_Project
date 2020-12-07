@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -25,7 +27,6 @@ import kotlinx.android.synthetic.main.current_activity.*
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import kotlin.collections.ArrayList
 
 // todo: show timer on Start
 // Todo: map follows gps
@@ -40,11 +41,19 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
 
-    // variable preferences instanziert Preferences
-    //private val preferences = Preferences()
+    // run task every second
+    lateinit var mainHandler: Handler
+    private val updateTextTask = object : Runnable {
+        override fun run() {
+            plusOneSecond()
+            mainHandler.postDelayed(this, 1000)
+            println("jo")
+        }
+    }
+    var secondsLeft = 0
 
-    //create array for data to save in
-    //val data: MutableList<String> = ArrayList()
+
+
     private val data = ActivityDataArrayHandler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +72,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.activity_page -> {
-                   /*
+                    /*
                     // Go to CurrentActivity
                     val intent = Intent(this, CurrentActivity::class.java)
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -137,6 +146,19 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             endActivity()
         }
 
+
+
+        // handler for looping
+        mainHandler = Handler(Looper.getMainLooper())
+
+
+
+    }
+    fun plusOneSecond() {
+        //if secondsLeft > 0 {
+            secondsLeft += 1
+            println("here--. "+secondsLeft)
+        //}
     }
 
     override fun onResume() {
@@ -282,7 +304,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
         when (requestCode) {
             permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] ==
-            PackageManager.PERMISSION_GRANTED) {
+                    PackageManager.PERMISSION_GRANTED) {
                 fetchLocation()
             }
         }
@@ -296,6 +318,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             .withZone(ZoneOffset.UTC)
             .format(Instant.now())
     }
+
+
 
 
 

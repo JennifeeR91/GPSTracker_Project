@@ -28,7 +28,7 @@
         <activity android:name=".activity.ProfileActivity"></activity>
         <activity android:name=".activity.ResultActivity"></activity>
         <activity android:name=".activity.StatActivity"></activity>
-        <activity android:name=".activity.ResultActivityDetail"></activity>
+        <activity android:name=".activity.DetailViewActivity"></activity>
 
 
 

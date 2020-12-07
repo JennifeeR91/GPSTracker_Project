@@ -4,16 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.gpstracker.gpstracker_project.*
+import com.gpstracker.gpstracker_project.Activity
+import com.gpstracker.gpstracker_project.ActivityAdapter
+import com.gpstracker.gpstracker_project.Database
+import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.history_activity.*
-import kotlinx.android.synthetic.main.result_activity.*
 import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 
-// Einträge über adapter und layout inflator anzeigen
+// todo: Einträge über adapter und layout inflator anzeigen
 //todo: Detailansicht erstellen oder Result Activity verwenden
 //todo: einträge klickbar machen und zur detailansicht wechseln
 // todo: Detailansicht löschen ermöglichen
@@ -124,7 +124,7 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
 
      override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
-        val intent = Intent(this, CurrentActivity::class.java)
+        val intent = Intent(this, DetailViewActivity::class.java)
         intent.putExtra("id", id)
         startActivity(intent)
     }
