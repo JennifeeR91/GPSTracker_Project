@@ -37,8 +37,7 @@ class HistoryActivity : AppCompatActivity(), View.OnClickListener, AdapterView.O
         tvPageTitle.text = "History"
 
 
-
-
+        // show Activity List
         val activities: List<Activity> = db.getAllActivities()
         activityAdapter = ActivityAdapter(this, activities)
         lvActivities.adapter = activityAdapter
@@ -125,9 +124,9 @@ class HistoryActivity : AppCompatActivity(), View.OnClickListener, AdapterView.O
 
 
      override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
-        val intent = Intent(this, ResultActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("id", id)
-    //    startActivity(intent)
+        startActivity(intent)
     }
 
     override fun onClick(v: View?) {
