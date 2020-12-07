@@ -124,7 +124,7 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
 
      override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, CurrentActivity::class.java)
         intent.putExtra("id", id)
         startActivity(intent)
     }
