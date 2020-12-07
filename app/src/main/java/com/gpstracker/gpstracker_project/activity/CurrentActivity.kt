@@ -231,7 +231,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun endActivity(){
         Toast.makeText(applicationContext, " Activity end, show results on map", Toast.LENGTH_SHORT).show()
 
-        // go to result acitvity and show results
+        // go to result activity and show results
         val intent = Intent(this, ResultActivity::class.java)
         startActivity(intent)
         finish()
@@ -257,7 +257,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
                     supportMapFragment.getMapAsync(this)
             }
             else {
-                Toast.makeText(applicationContext, "no location found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "No location found - please check your GPS connection", Toast.LENGTH_SHORT).show()
             }
 
             }
@@ -265,7 +265,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-        val markerOptions = MarkerOptions().position(latLng).title("My positin")
+        val markerOptions = MarkerOptions().position(latLng).title("My position")
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
         googleMap?.addMarker(markerOptions)
