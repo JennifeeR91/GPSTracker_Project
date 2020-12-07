@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
     }
 
-
+    // on login button click
     override fun onClick(v: View?) {
 
         if(etEmail.text.isNotEmpty() && etPass.text.isNotEmpty()) {
@@ -44,9 +44,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             val intent = Intent(this, CurrentActivity::class.java)
             startActivity(intent)
 
-
-            // hier die inputs vom user bekommen und eintragen
+            // get user input
             val email = etEmail.text
+            val pass = etPass.text
 
             // Save login state & save e-mail
             preferences.setUserLoggedIn(this, true, email.toString())
@@ -54,15 +54,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             // Display Toast
             Toast.makeText(this, R.string.logged_in, Toast.LENGTH_LONG).show()
 
-
             // Finish MainActivity
             finish()
         }else{
-
             // Display Toast
             Toast.makeText(this, R.string.empry_credentials, Toast.LENGTH_LONG).show()
-
-
         }
 
     }
