@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <ImageView
+
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:srcCompat="@drawable/ic_logo_transparent"
+        android:layout_row="0"
+        android:layout_column="1"
+        />
+
     <TextView
         android:id="@+id/tvActivityTitle"
-        android:layout_width="match_parent"
+        style="@style/ActivityTitle"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        style="@style/ActivityTitle"/>
+        android:layout_row="1"
+        android:layout_column="2"
+        />
 
     <TextView
         android:id="@+id/tvActivityDuration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ActivityDuration"/>
+        style="@style/ActivityDuration"
+        android:layout_row="2"
+        android:layout_column="2"
+        />
     <TextView
         android:id="@+id/tvStartLat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ActivityDuration"/>
+        style="@style/ActivityDuration"
+        android:layout_row="3"
+        android:layout_column="2"
+        />
     <TextView
         android:id="@+id/tvEndLat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ActivityDuration"/>
+        style="@style/ActivityDuration"
+        android:layout_row="4"
+        android:layout_column="2"
+        />
     <TextView
         android:id="@+id/tvDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ActivityDuration"/>
+        style="@style/ActivityDuration"
+        android:layout_row="5"
+        android:layout_column="2"
+        />
 
 </LinearLayout>
