@@ -1,4 +1,5 @@
 <resources>
     <dimen name="padding">14dp</dimen>
     <dimen name="padding_small">10dp</dimen>
+    <dimen name="margin_top_under_header">60dp</dimen>
 </resources>

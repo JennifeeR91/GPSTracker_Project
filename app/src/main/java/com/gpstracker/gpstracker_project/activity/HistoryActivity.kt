@@ -2,12 +2,16 @@ package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.gpstracker.gpstracker_project.Database
-import com.gpstracker.gpstracker_project.R
+import com.gpstracker.gpstracker_project.*
+import kotlinx.android.synthetic.main.history_activity.*
 import kotlinx.android.synthetic.main.result_activity.*
+import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 
 // Einträge über adapter und layout inflator anzeigen
 //todo: Detailansicht erstellen oder Result Activity verwenden
@@ -15,12 +19,15 @@ import kotlinx.android.synthetic.main.result_activity.*
 // todo: Detailansicht löschen ermöglichen
 
 
-class HistoryActivity : AppCompatActivity() {
+class HistoryActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemClickListener {
 
     // new instance of Database
     val db = Database(this)
     // new instance of resultactivity class to use getTime function
     val result = ResultActivity()
+
+    //initialize activityAdapter
+    private var activityAdapter: ActivityAdapter?? = null
 
 
 
@@ -30,7 +37,18 @@ class HistoryActivity : AppCompatActivity() {
         tvPageTitle.text = "History"
 
 
+
+
+        val activities: List<Activity> = db.getAllActivities()
+        activityAdapter = ActivityAdapter(this, activities)
+        lvActivities.adapter = activityAdapter
+        lvActivities.onItemClickListener = this
+
+
+
+
         // output data as text
+        /*
         val tv_dynamic = TextView(this)
         tv_dynamic.textSize = 16f
 
@@ -58,7 +76,7 @@ class HistoryActivity : AppCompatActivity() {
 
 
         layout.addView(tv_dynamic)
-
+*/
 
         // Bottom Naviagation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -106,5 +124,15 @@ class HistoryActivity : AppCompatActivity() {
 
 
 
+     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra("id", id)
+    //    startActivity(intent)
+    }
+
+    override fun onClick(v: View?) {
+        val intent = Intent(this, ResultActivity::class.java)
+      //  startActivity(intent)
+    }
 
 }
