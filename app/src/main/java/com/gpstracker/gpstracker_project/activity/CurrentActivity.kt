@@ -19,7 +19,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.current_activity.*
@@ -140,7 +139,12 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    override fun onResume() {
+        super.onResume()
 
+        //get location on resume to activity
+        fetchLocation()
+    }
 
 
     // start Activity
