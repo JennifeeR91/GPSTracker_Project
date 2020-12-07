@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 // todo: Detailansicht löschen ermöglichen
 
 
-class HistoryActivity : AppCompatActivity(), View.OnClickListener, AdapterView.OnItemClickListener {
+class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     // new instance of Database
     val db = Database(this)
@@ -129,9 +129,5 @@ class HistoryActivity : AppCompatActivity(), View.OnClickListener, AdapterView.O
         startActivity(intent)
     }
 
-    override fun onClick(v: View?) {
-        val intent = Intent(this, ResultActivity::class.java)
-      //  startActivity(intent)
-    }
 
 }
