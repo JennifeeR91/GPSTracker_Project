@@ -43,7 +43,7 @@
         />
 
     <EditText
-        android:id="@+id/etpass"
+        android:id="@+id/etPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

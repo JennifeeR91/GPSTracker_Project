@@ -10,8 +10,6 @@ import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-// Todos: check ifEmty
-
 
 class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
@@ -40,7 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
     override fun onClick(v: View?) {
 
-        if(etEmail.text.isNotEmpty()) {
+        if(etEmail.text.isNotEmpty() && etPass.text.isNotEmpty()) {
 
             // Go to CurrentActivity
             val intent = Intent(this, CurrentActivity::class.java)
