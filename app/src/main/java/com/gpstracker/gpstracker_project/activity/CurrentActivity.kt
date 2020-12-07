@@ -33,6 +33,7 @@ import kotlin.collections.ArrayList
 // Todo: save position all x seconds
 
 
+
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
    // private var googleMap: GoogleMap? = null

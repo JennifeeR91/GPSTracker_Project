@@ -10,8 +10,8 @@ import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-//test
-//test 1 worked
+// Todos: check ifEmty
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
@@ -39,21 +39,33 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
 
     override fun onClick(v: View?) {
-        // Display Toast
-        Toast.makeText(this,   R.string.logged_in, Toast.LENGTH_LONG).show()
 
-        // Go to CurrentActivity
-        val intent = Intent(this, CurrentActivity::class.java)
-        startActivity(intent)
+        if(etEmail.text.isNotEmpty()) {
+
+            // Go to CurrentActivity
+            val intent = Intent(this, CurrentActivity::class.java)
+            startActivity(intent)
 
 
-        // hier die inputs vom user bekommen und eintragen
-        val email = etEmail.text
+            // hier die inputs vom user bekommen und eintragen
+            val email = etEmail.text
 
-        // Save login state & save e-mail
-       preferences.setUserLoggedIn(this, true, email.toString())
+            // Save login state & save e-mail
+            preferences.setUserLoggedIn(this, true, email.toString())
 
-        // Finish MainActivity
-        finish()
+            // Display Toast
+            Toast.makeText(this, R.string.logged_in, Toast.LENGTH_LONG).show()
+
+
+            // Finish MainActivity
+            finish()
+        }else{
+
+            // Display Toast
+            Toast.makeText(this, R.string.empry_credentials, Toast.LENGTH_LONG).show()
+
+
+        }
+
     }
 }

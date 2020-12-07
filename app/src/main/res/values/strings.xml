@@ -24,5 +24,6 @@
     <string name="resume">Resume</string>
     <string name="End">End Activity</string>
     <string name="cancel">Cancel</string>
+    <string name="empry_credentials">please enter credentials</string>
 
 </resources>
