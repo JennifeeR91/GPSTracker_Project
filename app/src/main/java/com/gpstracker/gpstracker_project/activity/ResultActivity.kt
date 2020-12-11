@@ -17,12 +17,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
+import java.lang.Math.round
 import java.util.concurrent.TimeUnit
 
 // todo: input Textfeld für note einfügen, oder auch dropdown für activity type
 // todo: map mit track anzeigen
 // todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
-// todo: distacnce runden
 
 
 
@@ -282,25 +282,15 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         }
 
 
-        return distance
-
+        return distance.toDouble().round(2)
     }
 
-
-    private fun getDistanceFromLatLonInKm_old(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 6371; // Radius of the earth in km
-        val dLat = deg2rad(lat2 - lat1);  // deg2rad below
-        val dLon = deg2rad(lon2 - lon1);
-        val a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        ;
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        val d = R * c; // Distance in km
-        println("Distance p2p: " + d)
-        return d;
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return round(this * multiplier) / multiplier
     }
+
 
     private fun deg2rad(deg: Double): Double {
         return deg * (Math.PI/180)
