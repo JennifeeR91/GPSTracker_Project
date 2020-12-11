@@ -21,7 +21,6 @@ import java.lang.Math.round
 import java.util.concurrent.TimeUnit
 
 // todo: input Textfeld für note einfügen, oder auch dropdown für activity type
-// todo: map mit track anzeigen
 // todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
 
 
@@ -68,10 +67,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // get Distance
         val distance = getTotalDistance()
-
-        // add up distances between each point
-
         timer.append("Distance: " + distance + System.getProperty("line.separator"))
+
 
 
         // get reference to Save button
@@ -140,12 +137,9 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         Toast.makeText(applicationContext, " save to Database and go to history activity", Toast.LENGTH_SHORT).show()
         //val activity = 1
 
-
         // Get AvtivityData to save to DB
         val dataArray = data.get()
         dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
-
-
 
         var counter = 0
         var startstring: String = ""
@@ -175,10 +169,11 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         //endArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
         //Log.i(startArr[0], "-" + startArr[0])
 
-
+        // get note from input field
+        val note = activityType.text.toString()
 
         // activity erstellen
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), "Activity Type here", false)
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, false)
 
         //Save to database
         db.insertActivity(activity)

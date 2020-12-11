@@ -6,10 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.gpstracker.gpstracker_project.activity.ResultActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+    val result = ResultActivity()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -25,8 +30,8 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
             holder = ViewHolder()
             holder.acttitle = view.findViewById(R.id.tvActivityTitle) as TextView
             holder.actduration = view.findViewById(R.id.tvActivityDuration) as TextView
-            holder.startlat = view.findViewById(R.id.tvStartLat) as TextView
-            holder.endlat = view.findViewById(R.id.tvEndLat) as TextView
+            //holder.startlat = view.findViewById(R.id.tvStartLat) as TextView
+            //holder.endlat = view.findViewById(R.id.tvEndLat) as TextView
             holder.distance = view.findViewById(R.id.tvDistance) as TextView
 
             // Hang onto this holder for future recycling by using setTag() to set the tag property of the view that the holder belongs to.
@@ -41,22 +46,30 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         // Get relevant subviews of the row view.
         val tvActivityTitle = holder.acttitle
         val tvActivityDuration = holder.actduration
-        val tvStartLat = holder.startlat
-        val tvEndLat = holder.endlat
+        //val tvStartLat = holder.startlat
+        //val tvEndLat = holder.endlat
         val tvDistance = holder.distance
 
         // Get activity for current position using getItem(position).
         val activity = getItem(position) as Activity
 
         // Set text on TextViews
-        val duration = (activity.endtime - activity.starttime) / 1000.00
+        val duration = result.getDuration(activity.starttime, activity.endtime)
+        //val distance = result.getTotalDistance()
+        val distance = "llllll"
+
+        // get Date from starttime
+        val sdf = SimpleDateFormat("dd/MM/yy hh:mm") // "dd/MM/yy hh:mm"
+        val netDate = Date(activity.starttime)
+        val date =sdf.format(netDate)
 
 
-        tvActivityTitle.text = "Activity No.: " + activity.id.toString()
-        tvActivityDuration.text = "Duration: " +  duration + " s"
-        tvStartLat.text = "Start Latidude: " + activity.startlat.toString()
-        tvEndLat.text = "End Latidude: " + activity.endlat.toString()
-        tvDistance.text = "Distance: " + "x.y" + " m"
+
+        tvActivityTitle.text = activity.note.toString() + " " + date
+        tvActivityDuration.text = "Duration: " +  duration
+        //tvStartLat.text = "Start Latidude: " + activity.startlat.toString()
+        //tvEndLat.text = "End Latidude: " + activity.endlat.toString()
+        tvDistance.text = "Distance: " + distance
 
         // Return view containing all text values for current position
         return view
@@ -77,8 +90,8 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
     private class ViewHolder {
         lateinit var acttitle: TextView
         lateinit var actduration: TextView
-        lateinit var startlat: TextView
-        lateinit var endlat: TextView
+        //lateinit var startlat: TextView
+        //lateinit var endlat: TextView
         lateinit var distance: TextView
     }
 }

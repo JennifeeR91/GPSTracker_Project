@@ -44,39 +44,6 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         lvActivities.onItemClickListener = this
 
 
-
-
-        // output data as text
-        /*
-        val tv_dynamic = TextView(this)
-        tv_dynamic.textSize = 16f
-
-        // get data from database
-        val dataArray = db.getAllActivities()
-
-        // ausgabe der Datenbankeinträge, sollte dann in eine eigene funktion
-        for (i in dataArray) {
-            // get time
-            val time = result.getDuration(i.starttime, i.endtime )
-
-
-
-            tv_dynamic.append(
-                   i.id.toString() +  ".  eintrag: " +System.getProperty ("line.separator")
-                   + "note: " + i.note.toString() + " " +System.getProperty ("line.separator")
-                   + "Duration: " + time + " " +System.getProperty ("line.separator")
-                   + "start lat: " +  i.startlat.toString() +System.getProperty ("line.separator")
-                   +"end lat: " +  i.startlat.toString() + System.getProperty ("line.separator")
-                   + "Distance: +++"  + System.getProperty ("line.separator")
-                   +System.getProperty ("line.separator")
-            )
-
-        }
-
-
-        layout.addView(tv_dynamic)
-*/
-
         // Bottom Naviagation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         //set current as active in navigation
