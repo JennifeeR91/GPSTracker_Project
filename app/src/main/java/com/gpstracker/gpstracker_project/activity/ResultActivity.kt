@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.result_activity.*
 import java.lang.Math.round
 import java.util.concurrent.TimeUnit
 
-// todo: Background für input
 //  dropdown für activity type
 // todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
 

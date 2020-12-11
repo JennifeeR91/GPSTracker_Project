@@ -5,17 +5,26 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Database
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.detail_view_activity.*
 
 
+// todo: show startpoint an dendpoint on map
 
 
-class DetailViewActivity : AppCompatActivity()  {
+class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private val db = Database(this)
+    // get data from database
+
     // new instance of resultactivity class to use getTime function
     val result = ResultActivity()
 
@@ -27,17 +36,21 @@ class DetailViewActivity : AppCompatActivity()  {
         // get ID for Detailview
         val id = intent.getLongExtra("id", -1)
 
+
         // page Title
         tvPageTitle.text = "Activity Detail"
         tvPageTitle.append(" " + id)
         //val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
         //supportMapFragment.getMapAsync(this)
 
-
+        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map_detail) as SupportMapFragment?)!!
+        supportMapFragment.getMapAsync(this)
 
 
         if (id >= 0) {
+
             showDataAsText(id)
+
         }else{
             Toast.makeText(applicationContext,  "Error: No ID given!!" , Toast.LENGTH_SHORT).show()
         }
@@ -46,18 +59,16 @@ class DetailViewActivity : AppCompatActivity()  {
         // Bottom Navigation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         //set current as active in navigation
-        bottomNavigationView.getMenu().findItem(R.id.activity_page).setChecked(true)
+        bottomNavigationView.getMenu().findItem(R.id.history_page).setChecked(true)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.activity_page -> {
-                    /*
                     // Go to CurrentActivity
                     val intent = Intent(this, CurrentActivity::class.java)
                     //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     // Finish Activity
                     finish()
-                    */
                     true
                 }
                 R.id.history_page -> {
@@ -91,6 +102,8 @@ class DetailViewActivity : AppCompatActivity()  {
 
     }
 
+
+
     private fun showDataAsText(id:Long) {
         // get data from database
         var activity = db.getActivity(id)
@@ -98,6 +111,7 @@ class DetailViewActivity : AppCompatActivity()  {
         // output data as text
         val tv_dynamic = TextView(this)
         tv_dynamic.textSize = 20f
+        tv_dynamic.setBackgroundColor(333342)
 
 
         // ausgabe der Datenbankeinträge, sollte dann in eine eigene funktion
@@ -108,11 +122,11 @@ class DetailViewActivity : AppCompatActivity()  {
 
 
             tv_dynamic.append(
-                    "id: " + activity?.id  +System.getProperty ("line.separator")+
-                    "startlong: " + activity?.startlong.toString()  +System.getProperty ("line.separator")+
-                    "endlong: " + activity?.endlong  +System.getProperty ("line.separator")+
-                    "startlat: " + activity?.startlat  +System.getProperty ("line.separator")+
-                    "endlat: " + activity?.endlat  +System.getProperty ("line.separator")+
+                   // "id: " + activity?.id  +System.getProperty ("line.separator")+
+                    //"startlong: " + activity?.startlong.toString()  +System.getProperty ("line.separator")+
+                    //"endlong: " + activity?.endlong  +System.getProperty ("line.separator")+
+                    //"startlat: " + activity?.startlat  +System.getProperty ("line.separator")+
+                    //"endlat: " + activity?.endlat  +System.getProperty ("line.separator")+
                     "starttime: " + activity?.starttime  +System.getProperty ("line.separator")+
                     "endtime: " + activity?.endtime  +System.getProperty ("line.separator")+
                     "note: " + activity?.note  +System.getProperty ("line.separator")
@@ -127,15 +141,25 @@ class DetailViewActivity : AppCompatActivity()  {
 
     }
 
-    /*
+
+
+
     override fun onMapReady(googleMap: GoogleMap?) {
+        val id = intent.getLongExtra("id", -1)
+        // get data from database
+        var activity = db.getActivity(id)
 
 
-        val latLngStart = LatLng(47.0, 33.4)
-        val latLngEnd = LatLng(47.2, 33.4)
+        var startlat = activity?.startlat
+        var startlong = activity?.startlong
+        var endlat = activity?.endlat
+        var endlong = activity?.endlong
 
-        val startMarker = MarkerOptions().position(latLngStart).title("Startpoint")
-        val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint")
+        val latLngStart = LatLng(startlong!!, startlat!!)
+        val latLngEnd = LatLng(endlong!!, endlat!!)
+
+        val startMarker = MarkerOptions().position(latLngStart).title(startlong.toString() + " " + startlat.toString() )
+        val endMarker = MarkerOptions().position(latLngEnd).title(endlong.toString() + " " + endlat.toString() )
 
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
@@ -144,6 +168,6 @@ class DetailViewActivity : AppCompatActivity()  {
         googleMap?.addMarker(startMarker)
         googleMap?.addMarker(endMarker)
     }
-    */
+
 
     }
