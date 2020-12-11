@@ -20,7 +20,8 @@ import kotlinx.android.synthetic.main.result_activity.*
 import java.lang.Math.round
 import java.util.concurrent.TimeUnit
 
-// todo: input Textfeld für note einfügen, oder auch dropdown für activity type
+// todo: Background für input
+//  dropdown für activity type
 // todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
 
 
@@ -67,7 +68,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // get Distance
         val distance = getTotalDistance()
-        timer.append("Distance: " + distance + System.getProperty("line.separator"))
+        timer.append("Distance: " + distance )
 
 
 
