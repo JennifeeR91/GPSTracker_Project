@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.gpstracker.gpstracker_project.activity.ResultActivity
 import java.text.SimpleDateFormat
@@ -28,8 +29,13 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
             // Create a new ViewHolder with subviews initialized by using findViewById().
             holder = ViewHolder()
+
+            // image
+            holder.acIcon = view.findViewById(R.id.imageView_icon) as ImageView
             holder.acttitle = view.findViewById(R.id.tvActivityTitle) as TextView
             holder.actduration = view.findViewById(R.id.tvActivityDuration) as TextView
+            holder.actDate = view.findViewById(R.id.tvActivityDate) as TextView
+
             //holder.startlat = view.findViewById(R.id.tvStartLat) as TextView
             //holder.endlat = view.findViewById(R.id.tvEndLat) as TextView
             holder.distance = view.findViewById(R.id.tvDistance) as TextView
@@ -44,7 +50,9 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         }
 
         // Get relevant subviews of the row view.
+        val tvActivityIcon = holder.acIcon
         val tvActivityTitle = holder.acttitle
+        val tvActivityDate = holder.actDate
         val tvActivityDuration = holder.actduration
         //val tvStartLat = holder.startlat
         //val tvEndLat = holder.endlat
@@ -55,6 +63,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
         // Set text on TextViews
         val duration = result.getDuration(activity.starttime, activity.endtime)
+
         //val distance = result.getTotalDistance()
         val distance = "llllll"
 
@@ -64,8 +73,11 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         val date =sdf.format(netDate)
 
 
+        //tvActivityIcon.drawable = ic_logo_transparent
+        tvActivityTitle.text = activity.note.toString()
+        tvActivityDate.text =  date
+        // date
 
-        tvActivityTitle.text = activity.note.toString() + " " + date
         tvActivityDuration.text = "Duration: " +  duration
         //tvStartLat.text = "Start Latidude: " + activity.startlat.toString()
         //tvEndLat.text = "End Latidude: " + activity.endlat.toString()
@@ -88,8 +100,10 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
     }
 
     private class ViewHolder {
+        lateinit var acIcon: ImageView
         lateinit var acttitle: TextView
         lateinit var actduration: TextView
+        lateinit var actDate: TextView
         //lateinit var startlat: TextView
         //lateinit var endlat: TextView
         lateinit var distance: TextView

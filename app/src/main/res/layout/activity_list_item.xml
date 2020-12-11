@@ -21,7 +21,7 @@ android:layout_height="match_parent">
     <TextView
         android:id="@+id/tvActivityTitle"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
@@ -34,7 +34,7 @@ android:layout_height="match_parent">
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvActivityDuration"
+        android:id="@+id/tvActivityDate"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
@@ -42,15 +42,28 @@ android:layout_height="match_parent">
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="16dp"
-        android:text="Duration"
+        android:text="Date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView_icon"
         app:layout_constraintTop_toBottomOf="@+id/tvActivityTitle" />
 
     <TextView
-        android:id="@+id/tvDistance"
+        android:id="@+id/tvActivityDuration"
         android:layout_width="0dp"
         android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="16dp"
+        android:text="Duration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_icon"
+        app:layout_constraintTop_toBottomOf="@+id/tvActivityDate" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="16dp"
