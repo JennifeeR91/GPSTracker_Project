@@ -24,9 +24,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.current_activity.*
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 // todo: show timer on Start
 // Todo: map follows gps
@@ -309,18 +306,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
-    fun getDateTimeNow():String {
-        DateTimeFormatter.ISO_INSTANT.format(Instant.now())
-
-        return DateTimeFormatter
-            .ofPattern("yyyy-MM-dd_HH:mm:ss")
-            .withZone(ZoneOffset.UTC)
-            .format(Instant.now())
-    }
-
-
-
 
 
 }
