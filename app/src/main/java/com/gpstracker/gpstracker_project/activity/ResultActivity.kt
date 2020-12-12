@@ -5,7 +5,6 @@ package com.gpstracker.gpstracker_project.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -38,23 +37,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         tvPageTitle.text = "Activity Summary"
         val dataArray = data.get()
 
-        /*
-        // output data as text
-        val tv_dynamic = TextView(this)
-        tv_dynamic.textSize = 16f
-        // ausgabe zum testen
-        //println("+++++++++ start")
-        //for (i in dataArray) {
-        //    println(i)
-        //}
-        //println("+++++++++ ende")
-
-        for (i in dataArray) {
-            tv_dynamic.append(i + System.getProperty("line.separator"))
-        }
-        layout.addView(tv_dynamic)
-        */
-
         //show Time
         // get time from first
         val startTime = dataArray.first().split(" ")[0].toLong()
@@ -67,17 +49,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // get Distance
         val distance = getTotalDistance()
         timer.append("Distance: " + distance )
-
-
-        /*
-        // get reference to Save button
-        val btnSave = findViewById(R.id.btnSave) as Button
-        // get reference to Cancel button
-        val btnCancel = findViewById(R.id.btnCancel) as Button
-        // get reference to Resume button
-        val btnResume = findViewById(R.id.btnResume) as Button
-
-         */
 
         // set on-click listener
         btnSave.setOnClickListener {
@@ -114,8 +85,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     // when button resume is pressed
     private fun resumeActivity() {
-        Toast.makeText(applicationContext, " go back to current activity and resume", Toast.LENGTH_SHORT).show()
-
         // go back to currentActivity
         val intent = Intent(this, CurrentActivity::class.java)
         startActivity(intent)
@@ -133,11 +102,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         finish()
     }
 
-    // when button save is pressed
+    // when button save is pressed, save to Database and go to history activity
     private fun saveActivity() {
-        Toast.makeText(applicationContext, " save to Database and go to history activity", Toast.LENGTH_SHORT).show()
-        //val activity = 1
-
         // Get AvtivityData to save to DB
         val dataArray = data.get()
         dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
@@ -206,8 +172,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val startMarker = MarkerOptions().position(latLngStart).title("Startpoint")
         val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint")
 
-        //googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLngStart))
-        //googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15f))
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
 
         // add marker
@@ -217,8 +181,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // mir schleife durch alle punkte durchgehen und sie hinzufügen
         // Adding points to ArrayList
         val coordList = ArrayList<LatLng>()
-
-
         // additional testpoint
         coordList.add(LatLng(47.093, 15.436))
 
@@ -239,7 +201,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
          coordList.add(LatLng(47.072, 15.396))
 
         val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
-
 
     }
 

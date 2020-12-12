@@ -17,9 +17,10 @@ import kotlinx.android.synthetic.main.detail_view_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+// Todo: show Back button
+// Todo: (show edit button)
 // todo: show  distance
-// todo: delete activity
+// todo: shop path
 
 
 
@@ -49,10 +50,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
 
         if (id >= 0) {
-
             showDataAsText(id)
-
-
         }else{
             tvPageTitle.text ="Error: No ID given!!"
         }
@@ -61,8 +59,6 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         btnDelete.setOnClickListener {
             deleteActivity(id)
         }
-
-
 
         // Bottom Navigation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -111,12 +107,11 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
     }
 
     private fun deleteActivity(id:Long) {
-
         // delete from DB
         var activity = db.getActivity(id)
         if (activity != null) {
             db.delActivity(activity)
-            Toast.makeText(applicationContext, "$id Deleted! from DB", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Deleted from DB", Toast.LENGTH_SHORT).show()
         }else{
             Toast.makeText(applicationContext, "$id NOT deleted from DB", Toast.LENGTH_SHORT).show()
         }
@@ -166,8 +161,8 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val latLngStart = LatLng(startlong!!, startlat!!)
         val latLngEnd = LatLng(endlong!!, endlat!!)
 
-        val startMarker = MarkerOptions().position(latLngStart).title("startpoint" + startlong.toString() + " " + startlat.toString() )
-        val endMarker = MarkerOptions().position(latLngEnd).title("endpoint" + endlong.toString() + " " + endlat.toString() )
+        val startMarker = MarkerOptions().position(latLngStart).title("startpoint: " + startlong.toString() + " " + startlat.toString() )
+        val endMarker = MarkerOptions().position(latLngEnd).title("endpoint: " + endlong.toString() + " " + endlat.toString() )
 
         // set zoom to startpoint
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))

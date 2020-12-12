@@ -175,17 +175,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     // start Activity
     private fun startActivity(){
 
-        //get time.now
-        //val StartTime= getDateTimeNow()
-
-        //save location to preferences
-        //preferences.setStartLocation(this, StartTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
-
         //save datastring to array
         val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insterData(saveString)
-
-        //Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude + " saved to prefs", Toast.LENGTH_SHORT).show()
 
         // button ausblenden
         btnStart.setVisibility(View.GONE)
@@ -231,8 +223,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         // show title
         tvPageTitle.setVisibility(View.VISIBLE)
         tvPageTitle.text = "Paused"
-
-
     }
 
     // Resume Activity
@@ -258,10 +248,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         tvPageTitle.text = ""
     }
 
-    // End Activity
+    // End Activity, go to result activity and show results
     private fun endActivity(){
-        Toast.makeText(applicationContext, " Activity end, show results on map", Toast.LENGTH_SHORT).show()
-
         // go to result activity and show results
         val intent = Intent(this, ResultActivity::class.java)
         startActivity(intent)
@@ -289,6 +277,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             else {
                 Toast.makeText(applicationContext, "No location found - please check your GPS connection", Toast.LENGTH_SHORT).show()
+                tvPageTitle.text = "No location found - please check your GPS connection"
             }
 
             }

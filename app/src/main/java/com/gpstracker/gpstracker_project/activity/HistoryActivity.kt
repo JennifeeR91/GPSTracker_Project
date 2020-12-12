@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.history_activity.*
 import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 
 // todo: Einträge über adapter und layout inflator anzeigen
-//todo: Detailansicht erstellen oder Result Activity verwenden
-//todo: einträge klickbar machen und zur detailansicht wechseln
+// todo: Detailansicht erstellen oder Result Activity verwenden
+// todo: einträge klickbar machen und zur detailansicht wechseln
 // todo: Detailansicht löschen ermöglichen
 
 

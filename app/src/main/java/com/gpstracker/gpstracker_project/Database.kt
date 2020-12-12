@@ -13,9 +13,10 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         // Database properties
         private const val DATABASE_NAME = "gpstracker"
         private const val DATABASE_TABLE_NAME = "activities"
+        private const val DATABASE_TABLE_NAME_POINTS = "points"
         private const val DATABASE_VERSION = 1
 
-        // Database table column names
+        // Database activity table column names
         private const val KEY_ID = "id"
         private const val KEY_STARTLONG = "startlongitude"
         private const val KEY_ENDLONG = "endlongitude"
@@ -26,7 +27,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val KEY_NOTE = "note"
         private const val KEY_DELETED = "deleted"
 
-        // Database create table statement
+        // Database create avtivity table statement
         private const val CREATE_TABLE = ("""CREATE TABLE $DATABASE_TABLE_NAME(
                 $KEY_ID INTEGER PRIMARY KEY,
                 $KEY_STARTLONG FLOAT,
@@ -38,6 +39,21 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
                 $KEY_NOTE TEXT,
                 $KEY_DELETED BOOL
             )""")
+
+
+        // Database points table column names
+        private const val TIMESTMP = "timestmp"
+        private const val LONG = "long"
+        private const val LAT = "lat"
+
+        // Database create points table statement
+        private const val CREATE_TABLE_POINTS = ("""CREATE TABLE $DATABASE_TABLE_NAME_POINTS(
+                $KEY_ID INTEGER PRIMARY KEY,
+                $LONG FLOAT,
+                $LAT FLOAT,
+                $TIMESTMP INT,
+            )""")
+
 
         // Database cursor array
         private val CURSOR_ARRAY = arrayOf(
@@ -54,6 +70,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
 
         // Drop table statement
         private const val DROP_TABLE = "DROP TABLE IF EXISTS $DATABASE_TABLE_NAME"
+        private const val DROP_TABLE_POINTS = "DDATABASE_TABLE_NAME_$DATABASE_TABLE_NAME_POINTS"
 
         // Database select all statement
         private const val SELECT_ALL = "SELECT * FROM $DATABASE_TABLE_NAME WHERE $KEY_DELETED = 0 ORDER BY id DESC"
@@ -61,11 +78,15 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE)
+        db.execSQL(CREATE_TABLE_POINTS)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
         db.execSQL(DROP_TABLE)
+        db.execSQL(DROP_TABLE_POINTS)
+
         db.execSQL(CREATE_TABLE)
+        db.execSQL(CREATE_TABLE_POINTS)
     }
 
     // Get all activities from database
@@ -160,19 +181,4 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         return values
     }
 
-    // Delete single activity
-    fun deleteActivity(activity: Activity): ContentValues{
-        val values = ContentValues()
-
-        values.put(KEY_STARTLONG, activity.startlong)
-        values.put(KEY_ENDLONG, activity.endlong)
-        values.put(KEY_STARTLAT, activity.startlat)
-        values.put(KEY_ENDLAT, activity.endlat)
-        values.put(KEY_STARTTIME, activity.starttime)
-        values.put(KEY_ENDTIME, activity.endtime)
-        values.put(KEY_NOTE, activity.note)
-        values.put(KEY_DELETED, 1)
-
-        return values
-    }
 }
