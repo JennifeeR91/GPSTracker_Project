@@ -30,13 +30,19 @@
         <TextView
             android:id="@+id/tvPageTitle"
             style="@style/Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center|top" />
     </FrameLayout>
 
 
-
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="100dip"
+        android:layout_marginRight="20dp"
+        android:text="@string/stop"
+        android:visibility="gone"
+        app:backgroundTint="#FFC107"
+        style="@style/btn"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

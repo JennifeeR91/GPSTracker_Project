@@ -29,10 +29,11 @@ import kotlinx.android.synthetic.main.current_activity.*
 // Todo: map follows gps
 // Todo: save position all x seconds
 // Todo: Start Button bigger
-// Todo: Title padding
 // Todo: add Database Field "type"
 // Add new Table "waypoints" (ID, Time, Lat, Long)
 // Save waypoints to new table
+// all Texts in XML file to language file
+// all Colors to Color File
 
 
 
@@ -200,12 +201,10 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //save data to array
 
-        //remove bottomnav?
-
         // alle 10 Sekunden die aktuelle position mit timestamp abspeichern
 
-        // hide text
-        tvPageTitle.text = ""
+        // hide title
+        tvPageTitle.setVisibility(View.GONE)
     }
 
     // Stop Avtivity
@@ -229,8 +228,11 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         //show button End
         btnEnd.setVisibility(View.VISIBLE)
 
-        // show message
+        // show title
+        tvPageTitle.setVisibility(View.VISIBLE)
         tvPageTitle.text = "Paused"
+
+
     }
 
     // Resume Activity

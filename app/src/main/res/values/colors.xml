@@ -10,4 +10,6 @@
     <color name="grey">#A9A9A9</color>
     <color name="red">#B80000</color>
     <color name="green">#5B9616</color>
+    <color name="trBackgroundWhite">#9FFFFFFF</color>
+
 </resources>

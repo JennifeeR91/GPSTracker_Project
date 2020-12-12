@@ -23,7 +23,6 @@
             style="@style/NoteText" />
 
 
-
         <fragment
             android:id="@+id/fragment_map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -35,53 +34,47 @@
         <Button
             android:id="@+id/btnStart"
             android:backgroundTint="@color/green"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="100dip"
             android:layout_marginRight="20dp"
             android:layout_gravity="right|bottom"
             android:text="@string/start"
-            android:visibility="gone" />
+            android:visibility="gone"
+            style="@style/btn"/>
 
         <Button
             android:id="@+id/btnResume"
             android:backgroundTint="@color/green"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="100dip"
             android:layout_marginRight="20dp"
             android:layout_gravity="right|bottom"
             android:text="@string/resume"
-            android:visibility="gone" />
+            android:visibility="gone"
+            style="@style/btn"/>
 
         <Button
             android:id="@+id/btnStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             android:layout_marginBottom="100dip"
             android:layout_marginRight="20dp"
             android:text="@string/stop"
             android:visibility="gone"
-            app:backgroundTint="#FFC107" />
+            app:backgroundTint="#FFC107"
+            style="@style/btn"/>
 
         <Button
             android:id="@+id/btnEnd"
             android:backgroundTint="@color/red"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="left|bottom"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="100dip"
             android:text="@string/End"
-            android:visibility="gone" />
+            android:visibility="gone"
+            style="@style/btn"/>
 
 
 
         <TextView
             android:id="@+id/tvPageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center|top"
             style="@style/Title"/>
 
