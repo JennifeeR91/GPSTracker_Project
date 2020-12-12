@@ -56,7 +56,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val DROP_TABLE = "DROP TABLE IF EXISTS $DATABASE_TABLE_NAME"
 
         // Database select all statement
-        private const val SELECT_ALL = "SELECT * FROM $DATABASE_TABLE_NAME ORDER BY id DESC"
+        private const val SELECT_ALL = "SELECT * FROM $DATABASE_TABLE_NAME WHERE $KEY_DELETED = 0 ORDER BY id DESC"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -133,6 +133,16 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         "$KEY_ID=?",
         arrayOf(activity.id.toString()))
     }
+
+    // Set  single activity Deleted
+    fun delActivity(activity: Activity): Int {
+        activity.deleted = true
+        return writableDatabase.update(DATABASE_TABLE_NAME,
+            activityToContentValues(activity),
+            "$KEY_ID=?",
+            arrayOf(activity.id.toString()))
+    }
+
 
     // Create new ContentValues object from Activity
     private fun activityToContentValues(activity: Activity): ContentValues {

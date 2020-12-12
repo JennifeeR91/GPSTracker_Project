@@ -5,7 +5,6 @@ package com.gpstracker.gpstracker_project.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -70,13 +69,15 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         timer.append("Distance: " + distance )
 
 
-
+        /*
         // get reference to Save button
         val btnSave = findViewById(R.id.btnSave) as Button
         // get reference to Cancel button
         val btnCancel = findViewById(R.id.btnCancel) as Button
         // get reference to Resume button
         val btnResume = findViewById(R.id.btnResume) as Button
+
+         */
 
         // set on-click listener
         btnSave.setOnClickListener {

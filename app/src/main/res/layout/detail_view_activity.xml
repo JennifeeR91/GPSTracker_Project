@@ -31,18 +31,18 @@
             android:id="@+id/tvPageTitle"
             style="@style/Title"
             android:layout_gravity="center|top" />
+
     </FrameLayout>
 
 
     <Button
-        android:id="@+id/btnStop"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="100dip"
-        android:layout_marginRight="20dp"
-        android:text="@string/stop"
-        android:visibility="gone"
-        app:backgroundTint="#FFC107"
-        style="@style/btn"/>
+        android:id="@+id/btnDelete"
+        style="@style/btn"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="96dp"
+        android:backgroundTint="@color/red"
+        android:text="@string/delete" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -52,6 +52,16 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/main_menu" />
 
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="match_parent"
+        android:paddingTop="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="96dp"
+        android:background="@color/trBackgroundWhite"
+        android:padding="10dp"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -15,17 +14,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Database
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.detail_view_activity.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-// todo: show duration and distance
-// todo: show delete button
+// todo: show  distance
+// todo: delete activity
 
 
 
 class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private val db = Database(this)
-    // get data from database
+
+
 
     // new instance of resultactivity class to use getTime function
     val result = ResultActivity()
@@ -37,13 +39,10 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // get ID for Detailview
         val id = intent.getLongExtra("id", -1)
+        // get data from database
+        var activity = db.getActivity(id)
 
 
-        // page Title
-        tvPageTitle.text = "Activity Detail"
-        tvPageTitle.append(" " + id)
-        //val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
-        //supportMapFragment.getMapAsync(this)
 
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map_detail) as SupportMapFragment?)!!
         supportMapFragment.getMapAsync(this)
@@ -53,9 +52,16 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
             showDataAsText(id)
 
+
         }else{
-            Toast.makeText(applicationContext,  "Error: No ID given!!" , Toast.LENGTH_SHORT).show()
+            tvPageTitle.text ="Error: No ID given!!"
         }
+
+        // set on-click listener
+        btnDelete.setOnClickListener {
+            deleteActivity(id)
+        }
+
 
 
         // Bottom Navigation
@@ -104,43 +110,44 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     }
 
+    private fun deleteActivity(id:Long) {
+
+        // delete from DB
+        var activity = db.getActivity(id)
+        if (activity != null) {
+            db.delActivity(activity)
+            Toast.makeText(applicationContext, "$id Deleted! from DB", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(applicationContext, "$id NOT deleted from DB", Toast.LENGTH_SHORT).show()
+        }
+
+        // return to history activity
+        val intent = Intent(this, HistoryActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
 
     private fun showDataAsText(id:Long) {
         // get data from database
         var activity = db.getActivity(id)
 
-        // output data as text
-        val tv_dynamic = TextView(this)
-        tv_dynamic.textSize = 20f
-        tv_dynamic.setBackgroundColor(333342)
+        // get time
+        val time = result.getDuration(activity!!.starttime!!.toLong(), activity!!.endtime!!.toLong() )
 
+        // page Title
+        // get Date from starttime
+        val sdf = SimpleDateFormat("dd/MM/yy hh:mm") // "dd/MM/yy hh:mm"
+        val netDate = Date(activity.starttime)
+        val date =sdf.format(netDate)
+        tvPageTitle.text = activity.note
 
-        // ausgabe der Datenbankeinträge, sollte dann in eine eigene funktion
-
-            // get time
-        //val time = result.getDuration(i.starttime, i.endtime )
-
-
-
-            tv_dynamic.append(
-                   // "id: " + activity?.id  +System.getProperty ("line.separator")+
-                    //"startlong: " + activity?.startlong.toString()  +System.getProperty ("line.separator")+
-                    //"endlong: " + activity?.endlong  +System.getProperty ("line.separator")+
-                    //"startlat: " + activity?.startlat  +System.getProperty ("line.separator")+
-                    //"endlat: " + activity?.endlat  +System.getProperty ("line.separator")+
-                    "starttime: " + activity?.starttime  +System.getProperty ("line.separator")+
-                    "endtime: " + activity?.endtime  +System.getProperty ("line.separator")+
-                    "note: " + activity?.note  +System.getProperty ("line.separator")
-
+        summary.append(
+                    date  +System.getProperty ("line.separator")+
+                    "Duration: " + time  +System.getProperty ("line.separator")+
+                    "Distance: " + "calculated distance"
             )
-
-
-
-
-        layout.addView(tv_dynamic)
         return
-
     }
 
 
@@ -151,7 +158,6 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         // get data from database
         var activity = db.getActivity(id)
 
-
         var startlat = activity?.startlat
         var startlong = activity?.startlong
         var endlat = activity?.endlat
@@ -160,10 +166,10 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val latLngStart = LatLng(startlong!!, startlat!!)
         val latLngEnd = LatLng(endlong!!, endlat!!)
 
-        val startMarker = MarkerOptions().position(latLngStart).title(startlong.toString() + " " + startlat.toString() )
-        val endMarker = MarkerOptions().position(latLngEnd).title(endlong.toString() + " " + endlat.toString() )
+        val startMarker = MarkerOptions().position(latLngStart).title("startpoint" + startlong.toString() + " " + startlat.toString() )
+        val endMarker = MarkerOptions().position(latLngEnd).title("endpoint" + endlong.toString() + " " + endlat.toString() )
 
-
+        // set zoom to startpoint
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
 
         // add marker
@@ -172,4 +178,4 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
     }
 
 
-    }
+}
