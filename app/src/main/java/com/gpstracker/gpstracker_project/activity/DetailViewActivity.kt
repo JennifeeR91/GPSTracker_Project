@@ -17,7 +17,9 @@ import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.detail_view_activity.*
 
 
-// todo: show startpoint an dendpoint on map
+// todo: show duration and distance
+// todo: show delete button
+
 
 
 class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
