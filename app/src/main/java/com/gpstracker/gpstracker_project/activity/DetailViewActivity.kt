@@ -10,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Database
 import com.gpstracker.gpstracker_project.R
@@ -178,24 +179,29 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         var points = db.getPoints(id)
         println("GET THE WAYPOINTS: "+ points)
 
-        // mit schleife durch alle punkte durchgehen und sie hinzufügen
+        val coordList = ArrayList<LatLng>()
         // Adding points to ArrayList
 
-/*
-        //println("+++++++++ start")
+var counter = 0.00
         for (i in points) {
+
             if (i.isNotEmpty()) {
-                println(i)
+               // println("////////////////////////////////////////////////// " + i)
                 var x = i.split(" ")
                 println(x[1])
                 println(x[2])
-                coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
+                coordList.add(LatLng(x[2].toDouble()+counter, x[1].toDouble()))
+                counter = counter + 0.005
+                var marker = MarkerOptions().position(LatLng(x[2].toDouble()+counter, x[1].toDouble())).title("zwischenpunkt: Time: "+ x[0] + " place: " + x[2].toString() + " " + x[1].toString() )
+                googleMap?.addMarker(marker)
             }
 
         }
-        //println("+++++++++ ende")
+        //addintional test point
+        coordList.add(LatLng(47.072, 15.396))
 
- */
+        println(coordList)
+        val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
     }
 
 

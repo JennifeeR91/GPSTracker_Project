@@ -54,7 +54,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             // get position
             fetchLocation()
 
-            mainHandler.postDelayed(this, 10000)
+            mainHandler.postDelayed(this, 1000)
         }
     }
     var secondsLeft = 0

@@ -211,26 +211,33 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
 
     fun getPoints(id: Long): ArrayList<String> {
         val points: ArrayList<String> = ArrayList()
+
         val cursor = readableDatabase.query(
             DATABASE_TABLE_NAME_POINTS, arrayOf(KEY_ID, TIMESTMP, LAT, LONG), "$KEY_ID=?",
             arrayOf(id.toString()), null, null, null, null
         )
         println("cursor: " + cursor)
-        //was machen mit dem curser?*
         cursor.moveToFirst().run {
             do {
-                points.add(cursor.getInt(1).toString())
-                points.add(cursor.getDouble(2).toString())
-                points.add(cursor.getDouble(3).toString())
+                // hier sollte ein verschachteltes array zurückkommen, jeder punkt ist ein array
+                val p = arrayListOf<Any>()
+                var timestamp = cursor.getInt(1).toString()
+                var lat = cursor.getDouble(2).toString()
+                var long = cursor.getDouble(3).toString()
+
+                p.add(timestamp + " " + lat + " " + long  )
+
+                var string= timestamp + " " + lat + " " + long
+
+                points.add(string)
 
             } while (cursor.moveToNext())
 
 
         }
+        readableDatabase.close()
 
-            readableDatabase.close()
-
-            return points
+        return points
     }
 
 }
