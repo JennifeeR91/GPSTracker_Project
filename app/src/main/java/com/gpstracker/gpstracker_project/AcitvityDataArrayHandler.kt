@@ -25,7 +25,7 @@ class ActivityDataArrayHandler {
     fun get(): MutableList<String> {
         // keine ahnung warum man das braucht, aber ohne der vorherigen verwendung kommt nix zurück
         data.add("")
-        println("hier kommen jetzt die Daten, achtung")
+        println("get aufgerufen - daten kommen")
 
         return data
     }

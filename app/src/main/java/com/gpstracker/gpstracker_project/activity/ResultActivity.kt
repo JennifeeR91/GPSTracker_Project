@@ -4,7 +4,6 @@ package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,7 +18,6 @@ import java.lang.Math.round
 import java.util.concurrent.TimeUnit
 
 //  dropdown für activity type
-// todo: id sollte bei activity nicht notwendig sein, wird eh nicht für den Datenbank einterag verwendet
 
 
 
@@ -106,7 +104,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private fun saveActivity() {
         // Get AvtivityData to save to DB
         val dataArray = data.get()
-        dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
+        //dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
 
         var counter = 0
         var startstring: String = ""
@@ -121,29 +119,32 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 counter++
             }
         }
-        //println("***************************************")
-        //println("startstring: "+startstring)
-        //println("endstring: " + endstring)
-        //println("***************************************")
-
-
         //split string and get separate values
         val startArr = startstring.split(" ").toTypedArray()
         val endArr = endstring.split(" ").toTypedArray()
-
-        // Testausgaben
-        //startArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
-        //endArr.forEach {  Log.i("ArrayItem", " Array item=" + it ) }
-        //Log.i(startArr[0], "-" + startArr[0])
 
         // get note from input field
         val note = activityType.text.toString()
 
         // activity erstellen
         val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, false)
-
         //Save to database
         db.insertActivity(activity)
+
+
+        // SAVE waypoints
+        // get id from last activity saved
+        val activityId = db.getLastActivityID()
+
+        //write every point in DB
+        for (i in dataArray) {
+            // leere zeilen auslassen
+            if(i.isNotEmpty()){
+                val pointSet = i.split(" ")
+                println("waypoints: ID="+activityId  + " timestamp: " + pointSet[0] + " lat: " + pointSet[1].toString() + " long: " + pointSet[2].toString())
+                db.insertPosition(activityId,pointSet[0].toLong(), pointSet[1].toDouble(), pointSet[2].toDouble() )
+            }
+        }
 
         // delete Data Array
         data.del()

@@ -68,7 +68,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         val distance = "to come"
 
         // get Date from starttime
-        val sdf = SimpleDateFormat("dd/MM/yy hh:mm") // "dd/MM/yy hh:mm"
+        val sdf = SimpleDateFormat("dd/MM/yy HH:mm") // "dd/MM/yy hh:mm"
         val netDate = Date(activity.starttime)
         val date =sdf.format(netDate)
 

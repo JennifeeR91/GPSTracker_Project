@@ -27,10 +27,7 @@ import kotlinx.android.synthetic.main.current_activity.*
 
 // todo: show timer on Start
 // Todo: map follows gps
-// Todo: save position all x seconds
-// Todo: Start Button bigger
 // Todo: add Database Field "type"
-// Add new Table "waypoints" (ID, Time, Lat, Long)
 // Save waypoints to new table
 // all Texts in XML file to language file
 // all Colors to Color File
@@ -44,13 +41,20 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
 
-    // run task every second
+    // run task every 10 seconds
     lateinit var mainHandler: Handler
     private val updateTextTask = object : Runnable {
         override fun run() {
-            plusOneSecond()
-            mainHandler.postDelayed(this, 1000)
-            println("jo")
+            // TIMER
+            //plusOneSecond()
+
+            // write to DataArray
+            writeCurrentDataToArray()
+
+            // get position
+            fetchLocation()
+
+            mainHandler.postDelayed(this, 10000)
         }
     }
     var secondsLeft = 0
@@ -157,6 +161,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     }
+
     fun plusOneSecond() {
         //if secondsLeft > 0 {
             secondsLeft += 1
@@ -174,10 +179,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // start Activity
     private fun startActivity(){
-
-        //save datastring to array
-        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-        data.insterData(saveString)
+        mainHandler.post(updateTextTask)
 
         // button ausblenden
         btnStart.setVisibility(View.GONE)
@@ -201,14 +203,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Stop Avtivity
     private fun stopActivity(){
-        //get time.now
-        // val EndTime = getDateTimeNow()
-        //save location to preferences
-        //preferences.setStartLocation(this, EndTime, currentLocation.latitude.toString(), currentLocation.longitude.toString() )
+        // stop looper:
+        mainHandler.removeCallbacks(updateTextTask)
 
-        //save datastring to array
-        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-        data.insterData(saveString)
         // timer stoppen
 
         // hide button Stop
@@ -227,11 +224,11 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Resume Activity
     private fun resumeActivity(){
-        Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
-        //save datastring to array
+        // start looper again
+        mainHandler.post(updateTextTask)
 
-        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-        data.insterData(saveString)
+        Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
+
 
         // timer stoppen
 
@@ -245,7 +242,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         btnEnd.setVisibility(View.GONE)
 
         // hide message
-        tvPageTitle.text = ""
+        tvPageTitle.setVisibility(View.GONE)
     }
 
     // End Activity, go to result activity and show results
@@ -302,6 +299,12 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
+    private fun writeCurrentDataToArray(){
+        val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
+        data.insterData(saveString)
+    }
+
 
 
 }

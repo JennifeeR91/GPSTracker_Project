@@ -14,7 +14,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val DATABASE_NAME = "gpstracker"
         private const val DATABASE_TABLE_NAME = "activities"
         private const val DATABASE_TABLE_NAME_POINTS = "points"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 3
 
         // Database activity table column names
         private const val KEY_ID = "id"
@@ -48,29 +48,29 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
 
         // Database create points table statement
         private const val CREATE_TABLE_POINTS = ("""CREATE TABLE $DATABASE_TABLE_NAME_POINTS(
-                $KEY_ID INTEGER PRIMARY KEY,
-                $LONG FLOAT,
-                $LAT FLOAT,
+                $KEY_ID  INT,
                 $TIMESTMP INT,
+                $LONG FLOAT,
+                $LAT FLOAT
             )""")
 
 
         // Database cursor array
         private val CURSOR_ARRAY = arrayOf(
-                KEY_ID,
-                KEY_STARTLONG,
-                KEY_ENDLONG,
-                KEY_STARTLAT,
-                KEY_ENDLAT,
-                KEY_STARTTIME,
-                KEY_ENDTIME,
-                KEY_NOTE,
-                KEY_DELETED
+            KEY_ID,
+            KEY_STARTLONG,
+            KEY_ENDLONG,
+            KEY_STARTLAT,
+            KEY_ENDLAT,
+            KEY_STARTTIME,
+            KEY_ENDTIME,
+            KEY_NOTE,
+            KEY_DELETED
         )
 
         // Drop table statement
         private const val DROP_TABLE = "DROP TABLE IF EXISTS $DATABASE_TABLE_NAME"
-        private const val DROP_TABLE_POINTS = "DDATABASE_TABLE_NAME_$DATABASE_TABLE_NAME_POINTS"
+        private const val DROP_TABLE_POINTS = "DROP TABLE IF EXISTS $DATABASE_TABLE_NAME_POINTS"
 
         // Database select all statement
         private const val SELECT_ALL = "SELECT * FROM $DATABASE_TABLE_NAME WHERE $KEY_DELETED = 0 ORDER BY id DESC"
@@ -117,8 +117,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
     fun getActivity(id: Long): Activity? {
         val activity: Activity?
         val cursor = readableDatabase.query(
-                DATABASE_TABLE_NAME, CURSOR_ARRAY, "$KEY_ID=?",
-                arrayOf(id.toString()), null, null, null, null
+            DATABASE_TABLE_NAME, CURSOR_ARRAY, "$KEY_ID=?",
+            arrayOf(id.toString()), null, null, null, null
         )
 
         cursor.moveToFirst()
@@ -133,15 +133,15 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         if (cursor?.count == 0) return null
         cursor.run {
             activity = Activity(
-                    getLong(getColumnIndex(KEY_ID)),
-                    getDouble(getColumnIndex(KEY_STARTLONG)),
-                    getDouble(getColumnIndex(KEY_ENDLONG)),
-                    getDouble(getColumnIndex(KEY_STARTLAT)),
-                    getDouble(getColumnIndex(KEY_ENDLAT)),
-                    getLong(getColumnIndex(KEY_STARTTIME)),
-                    getLong(getColumnIndex(KEY_ENDTIME)),
-                    getString(getColumnIndex(KEY_NOTE)),
-                    getInt(getColumnIndex(KEY_DELETED))>0
+                getLong(getColumnIndex(KEY_ID)),
+                getDouble(getColumnIndex(KEY_STARTLONG)),
+                getDouble(getColumnIndex(KEY_ENDLONG)),
+                getDouble(getColumnIndex(KEY_STARTLAT)),
+                getDouble(getColumnIndex(KEY_ENDLAT)),
+                getLong(getColumnIndex(KEY_STARTTIME)),
+                getLong(getColumnIndex(KEY_ENDTIME)),
+                getString(getColumnIndex(KEY_NOTE)),
+                getInt(getColumnIndex(KEY_DELETED)) > 0
             )
         }
         return activity
@@ -149,19 +149,23 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
 
     // Update single activity
     fun updateNote(activity: Activity): Int {
-        return writableDatabase.update(DATABASE_TABLE_NAME,
-        activityToContentValues(activity),
-        "$KEY_ID=?",
-        arrayOf(activity.id.toString()))
+        return writableDatabase.update(
+            DATABASE_TABLE_NAME,
+            activityToContentValues(activity),
+            "$KEY_ID=?",
+            arrayOf(activity.id.toString())
+        )
     }
 
     // Set  single activity Deleted
     fun delActivity(activity: Activity): Int {
         activity.deleted = true
-        return writableDatabase.update(DATABASE_TABLE_NAME,
+        return writableDatabase.update(
+            DATABASE_TABLE_NAME,
             activityToContentValues(activity),
             "$KEY_ID=?",
-            arrayOf(activity.id.toString()))
+            arrayOf(activity.id.toString())
+        )
     }
 
 
@@ -179,6 +183,30 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         values.put(KEY_DELETED, activity.deleted)
 
         return values
+    }
+
+
+    //get ID from last entry in activity DB
+    fun getLastActivityID(): Long {
+        val query = "SELECT ROWID from $DATABASE_TABLE_NAME order by ROWID DESC limit 1"
+        val c: Cursor = readableDatabase.rawQuery(query, null)
+        var lastId: Long = 0
+
+        if (c != null && c.moveToFirst()) {
+            lastId = c.getLong(0) //The 0 is the column index, we only have 1 column, so the index is 0
+        }
+
+        return lastId
+    }
+
+    fun insertPosition(activityId:Long, time:Long, long:Double, lat:Double): Long {
+        val values = ContentValues()
+        values.put(KEY_ID, activityId)
+        values.put(TIMESTMP, time)
+        values.put(LONG, long)
+        values.put(LAT, lat)
+
+        return writableDatabase.insert(DATABASE_TABLE_NAME_POINTS, null, values)
     }
 
 }
