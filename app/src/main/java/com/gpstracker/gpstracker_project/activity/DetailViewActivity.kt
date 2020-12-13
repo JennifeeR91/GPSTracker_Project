@@ -24,6 +24,7 @@ import java.util.*
 
 
 
+
 class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private val db = Database(this)
@@ -42,6 +43,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val id = intent.getLongExtra("id", -1)
         // get data from database
         var activity = db.getActivity(id)
+
 
 
 
@@ -170,6 +172,30 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         // add marker
         googleMap?.addMarker(startMarker)
         googleMap?.addMarker(endMarker)
+
+
+        // get points from database to draw the path:
+        var points = db.getPoints(id)
+        println("GET THE WAYPOINTS: "+ points)
+
+        // mit schleife durch alle punkte durchgehen und sie hinzufügen
+        // Adding points to ArrayList
+
+/*
+        //println("+++++++++ start")
+        for (i in points) {
+            if (i.isNotEmpty()) {
+                println(i)
+                var x = i.split(" ")
+                println(x[1])
+                println(x[2])
+                coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
+            }
+
+        }
+        //println("+++++++++ ende")
+
+ */
     }
 
 

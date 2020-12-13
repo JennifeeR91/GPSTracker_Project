@@ -26,7 +26,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private val preferences = Preferences()
     private val data = ActivityDataArrayHandler()
     private val db = Database(this)
-    //private val dataArray = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,7 +178,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         googleMap?.addMarker(startMarker)
         googleMap?.addMarker(endMarker)
 
-        // mir schleife durch alle punkte durchgehen und sie hinzufügen
+        // mit schleife durch alle punkte durchgehen und sie hinzufügen
         // Adding points to ArrayList
         val coordList = ArrayList<LatLng>()
         // additional testpoint
