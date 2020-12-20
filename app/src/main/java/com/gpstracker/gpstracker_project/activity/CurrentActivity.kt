@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -70,55 +69,34 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.current_activity)
-        tvPageTitle.setText(R.string.newActivity)
+        tvPageTitle.text = "New Activity"
 
         //initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fetchLocation()
 
-
-
         // Bottom Navigation
         showBottomNavigation()
-
-
-
-        // get reference to  Start button
-        val btnStart = findViewById<Button>(R.id.btnStart)
-        // get reference to  Stop button
-        val btnStop = findViewById<Button>(R.id.btnStop)
-        // get reference to Pause button
-        val btnResume = findViewById<Button>(R.id.btnResume)
-        // get reference to Pause button
-        val btnEnd = findViewById<Button>(R.id.btnEnd)
 
         // set on-click listener
         btnStart.setOnClickListener {
             startActivity()
         }
-
         // btnStop
         btnStop.setOnClickListener {
             stopActivity()
         }
-
         //btnResume
         btnResume.setOnClickListener {
             resumeActivity()
         }
-
         //btnEnd
         btnEnd.setOnClickListener {
             endActivity()
         }
 
-
-
         // handler for looping
         mainHandler = Handler(Looper.getMainLooper())
-
-
-
     }
 
     private fun showBottomNavigation() {
@@ -182,7 +160,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
     // start Activity
     private fun startActivity(){
         mainHandler.post(updateTextTask)
@@ -231,7 +208,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // show title
         tvPageTitle.setVisibility(View.VISIBLE)
-        tvPageTitle.setText(R.string.paused)
+        tvPageTitle.text = "Paused"
     }
 
     // Resume Activity
@@ -265,10 +242,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(intent)
         finish()
     }
-
-
-
-
 
     private fun fetchLocation_test() {
         if (ActivityCompat.checkSelfPermission(
@@ -331,7 +304,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
         val markerOptions = MarkerOptions().position(latLng).title("My position")
@@ -357,7 +329,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         data.insterData(saveString)
         Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
     }
-
 
 
 }
