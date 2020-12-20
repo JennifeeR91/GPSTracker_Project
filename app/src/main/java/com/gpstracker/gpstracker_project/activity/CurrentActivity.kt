@@ -60,7 +60,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             mainHandler.postDelayed(this, 1000)
         }
     }
-    var secondsLeft = 0
+    private var secondsLeft = 0
 
 
 
@@ -69,7 +69,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.current_activity)
-        tvPageTitle.text = "New Activity"
+        tvPageTitle.setText(R.string.newActivity)
 
         //initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -208,7 +208,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // show title
         tvPageTitle.setVisibility(View.VISIBLE)
-        tvPageTitle.text = "Paused"
+        tvPageTitle.setText(R.string.paused)
     }
 
     // Resume Activity
