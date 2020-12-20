@@ -31,7 +31,7 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_activity)
-        tvPageTitle.text = R.string.history.toString()
+        tvPageTitle.setText(R.string.history)
 
         // show Activity List
         val activities: List<Activity> = db.getAllActivities()
