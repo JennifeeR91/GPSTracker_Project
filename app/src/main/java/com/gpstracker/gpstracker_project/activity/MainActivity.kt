@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             finish()
         }else{
             // Display Toast
-            Toast.makeText(this, R.string.empry_credentials, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.empty_credentials, Toast.LENGTH_LONG).show()
         }
 
     }
