@@ -16,6 +16,7 @@ import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.detail_view_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.*
 
 // Todo: (show edit button)
 // todo: show  distance
@@ -130,10 +131,12 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val date =sdf.format(netDate)
         tvPageTitle.text = activity.note
 
+        val distance = getTotalDistance(id)
+
         summary.append(
                     date  +System.getProperty ("line.separator")+
                     "Duration: " + time  +System.getProperty ("line.separator")+
-                    "Distance: " + "calculated distance"
+                    "Distance: " + " " + distance
             )
         return
     }
@@ -173,11 +176,12 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         for (i in points) {
 
             if (i.isNotEmpty()) {
-               // println("////////////////////////////////////////////////// " + i)
+                //println("////////////////////////////////////////////////// " + i)
                 val x = i.split(" ")
-                println(x[1])
-                println(x[2])
-                coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
+                //println(x[1])
+                //println(x[2])
+                coordList.add(LatLng(x[2].toDouble(), x[1].toDouble()))
+                /*
                 val marker = MarkerOptions()
                     .position(
                         LatLng(x[2].toDouble(),
@@ -185,6 +189,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
                     .title("zwischenpunkt: Time: "+ x[0] + " place: " + x[2] + " " + x[1])
 
                 googleMap?.addMarker(marker)
+                */
             }
 
         }
@@ -193,6 +198,71 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
         println(coordList)
         val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
+    }
+
+    private fun getTotalDistance(id: Long): Double {
+        // get stored data
+        val points = db.getPoints(id)
+        // DB: returns 0:timestamp + " " + 1:lat + " " + 2:long
+
+        var distance = 0.0
+        var long1 = 0.0
+        var lat1 = 0.0
+
+        // loop through all points
+        for(i in points){
+            if(i.isNotEmpty()) {
+                if (long1 == 0.0) {
+                    println("long: ist 0")
+                }else{
+                    println(" - - - - IN IF 2  - - - - - - - - - - - - - - - - - - - - - - - -")
+                    println("should be lat: "+ i.split(" ")[1].toDouble())
+                    println("should be long: "+ i.split(" ")[2].toDouble())
+                    distance += this.getDistanceFromLatLonInKm(lat1, long1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
+                    println(distance)
+                    println("long: $long1")
+                    println("lat:  $lat1")
+                }
+                long1 = i.split(" ")[2].toDouble()
+                lat1 = i.split(" ")[1].toDouble()
+
+            }
+        }
+
+
+        return distance.round(2)
+    }
+
+
+    private fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return (this * multiplier).roundToInt() / multiplier
+    }
+
+    private fun getDistanceFromLatLonInKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val theta = lon1 - lon2
+        var dist = (sin(deg2rad(lat1))
+                * sin(deg2rad(lat2))
+                + (cos(deg2rad(lat1))
+                * cos(deg2rad(lat2))
+                * cos(deg2rad(theta))))
+        dist = acos(dist)
+        dist = rad2deg(dist)
+        //dist = dist * 60 * 1.1515
+        dist *= 60 * 1.1515 * 1.609344
+        println("Distance p2p: $dist")
+
+        return dist
+    }
+
+
+    private fun deg2rad(deg: Double): Double {
+        return deg * (Math.PI/180)
+    }
+
+    private fun rad2deg(rad: Double): Double {
+        return rad * 180.0 / PI
     }
 
 }

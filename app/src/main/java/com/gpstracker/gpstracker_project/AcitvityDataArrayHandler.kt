@@ -9,7 +9,7 @@ class ActivityDataArrayHandler {
 
 
     // instert into array
-    fun insterData(savestring:String ) {
+    fun insertData(savestring:String ) {
         data.add(savestring)
 
         // ausgabe zum testen

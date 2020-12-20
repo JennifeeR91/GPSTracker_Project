@@ -14,7 +14,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val DATABASE_NAME = "gpstracker"
         private const val DATABASE_TABLE_NAME = "activities"
         private const val DATABASE_TABLE_NAME_POINTS = "points"
-        private const val DATABASE_VERSION = 4
+        private const val DATABASE_VERSION = 5
 
         // Database activity table column names
         private const val KEY_ID = "id"
@@ -232,8 +232,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
                 // hier sollte ein verschachteltes array zurückkommen, jeder punkt ist ein array
                 val p = arrayListOf<Any>()
                 var timestamp = cursor.getInt(1).toString()
-                var lat = cursor.getDouble(2).toString()
-                var long = cursor.getDouble(3).toString()
+                var long = cursor.getDouble(2).toString()
+                var lat = cursor.getDouble(3).toString()
 
                 p.add(timestamp + " " + lat + " " + long  )
 

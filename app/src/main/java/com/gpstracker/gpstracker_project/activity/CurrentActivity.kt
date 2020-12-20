@@ -326,7 +326,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun writeCurrentDataToArray(){
         val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
-        data.insterData(saveString)
+        data.insertData(saveString)
         Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
     }
 

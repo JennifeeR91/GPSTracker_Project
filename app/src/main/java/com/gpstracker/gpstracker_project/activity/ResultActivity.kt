@@ -213,6 +213,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private fun getTotalDistance(): Double {
         // get stored data
         val dataArray = data.get()
+        // returns 0:timestamp + " " + 1:lat + " " + 2:long
 
         var distance = 0.0
         var long1 = 0.0
@@ -236,17 +237,15 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val testlat3 = firstlat + testval
         val testlong3 = firstlong - testval
 
-
-
         // addd testpooints
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat.toString() + " " + testlong.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat3.toString() + " " + testlong3.toString())
-
-
+        // add fistpoint as last point
         dataArray.add(System.currentTimeMillis().toString() + " " + firstlat.toString() + " " + firstlong.toString())
+
 
         // loop through all points
         for(i in dataArray){
@@ -259,13 +258,13 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                     println("long: ist 0")
                 }else{
                     println(" - - - - IN IF 2  - - - - - - - - - - - - - - - - - - - - - - - -")
-                    distance += this.getDistanceFromLatLonInKm(long1, lat1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
+                    distance += this.getDistanceFromLatLonInKm(lat1,long1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
                     println(distance)
                     println("long: $long1")
                     println("lat:  $lat1")
                 }
-                long1 = i.split(" ")[1].toDouble()
-                lat1 = i.split(" ")[2].toDouble()
+                long1 = i.split(" ")[2].toDouble()
+                lat1 = i.split(" ")[1].toDouble()
 
             }
         }
