@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Activity
 import com.gpstracker.gpstracker_project.ActivityAdapter
 import com.gpstracker.gpstracker_project.Database
@@ -36,19 +35,22 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         setContentView(R.layout.history_activity)
         tvPageTitle.text = "History"
 
-
         // show Activity List
         val activities: List<Activity> = db.getAllActivities()
         activityAdapter = ActivityAdapter(this, activities)
         lvActivities.adapter = activityAdapter
         lvActivities.onItemClickListener = this
 
+        // Bottom Navigation
+        showBottomNavigation()
 
-        // Bottom Naviagation
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+    }
+
+    private fun showBottomNavigation() {
         //set current as active in navigation
-        bottomNavigationView.getMenu().findItem(R.id.history_page).setChecked(true);
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottom_navigation.getMenu().findItem(R.id.history_page).setChecked(true);
+
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.activity_page -> {
                     // Go to CurrentActivity
@@ -89,8 +91,7 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     }
 
 
-
-     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, id: Long) {
         val intent = Intent(this, DetailViewActivity::class.java)
         intent.putExtra("id", id)
         startActivity(intent)
