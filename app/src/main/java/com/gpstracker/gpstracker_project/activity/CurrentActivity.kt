@@ -54,6 +54,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             // write to DataArray
             writeCurrentDataToArray()
 
+
             // get position
             fetchLocation()
 
@@ -198,6 +199,12 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         // show stop button
         btnStop.setVisibility(View.VISIBLE)
 
+        // hide start button
+        btnStart.setVisibility(View.GONE)
+
+        // hide resume button
+        btnResume.setVisibility(View.GONE)
+
         // timer starten und anzeigen
 
         //save data to array
@@ -254,6 +261,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // End Activity, go to result activity and show results
     private fun endActivity(){
+        mainHandler.removeCallbacks(updateTextTask)
         // go to result activity and show results
         val intent = Intent(this, ResultActivity::class.java)
         startActivity(intent)
@@ -264,7 +272,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-    private fun fetchLocation2() {
+    private fun fetchLocation_test() {
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) !=
             PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -288,7 +296,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         supportMapFragment.getMapAsync(this)
     }
 
-        private fun fetchLocation() {
+    private fun fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
                         this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -300,16 +308,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
-
         val task = fusedLocationClient.lastLocation
-        println("location from fusedLocationClient"+ task)
 
         task.addOnSuccessListener { location ->
             if (location != null) {
                     currentLocation = location
                     //val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
                     supportMapFragment.getMapAsync(this)
-                println("hier ist der inhalt von this: "+ this+ "jajajajajajajajajajajajjajajajajajaj")
             }
             else {
                 locationCallback = object : LocationCallback() {
@@ -318,7 +323,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
                         for (location in locationResult.locations){
                             // Update UI with location data
                             currentLocation = location
-                            //supportMapFragment.getMapAsync(this)
                         }
                     }
                 }
@@ -353,6 +357,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun writeCurrentDataToArray(){
         val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insterData(saveString)
+        Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
     }
 
 

@@ -215,12 +215,27 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         var lat1:Double = 0.0
 
         // add test points
-        dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800497 15.4105737")
-        dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800437 15.4305728")
+        //dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800497 15.4105737")
+        //dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800437 15.4305728")
+
         // startpoint again
-        val firstlat = dataArray.first().split(" ")[1].toString()
-        val firstlong = dataArray.first().split(" ")[2].toString()
-        dataArray.add(System.currentTimeMillis().toString() + " " + firstlat + " " + firstlong)
+        val firstlat = dataArray.first().split(" ")[1].toDouble()
+        val firstlong = dataArray.first().split(" ")[2].toDouble()
+
+        val testval:Double = 0.0005
+        val testlat:Double = firstlat + testval
+        val testlong:Double = firstlong + testval
+        val testlat1:Double = firstlat - testval
+        val testlong1:Double = firstlong - testval
+
+
+
+        // addd testpooints
+        dataArray.add(System.currentTimeMillis().toString() + " " + testlat.toString() + " " + testlong.toString())
+        dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
+
+
+        dataArray.add(System.currentTimeMillis().toString() + " " + firstlat.toString() + " " + firstlong.toString())
 
         // loop through all points
         for(i in dataArray){
