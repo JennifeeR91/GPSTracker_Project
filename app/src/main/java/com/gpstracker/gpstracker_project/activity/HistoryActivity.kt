@@ -24,11 +24,8 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     val db = Database(this)
     // new instance of resultactivity class to use getTime function
     val result = ResultActivity()
-
     //initialize activityAdapter
     private var activityAdapter: ActivityAdapter?? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

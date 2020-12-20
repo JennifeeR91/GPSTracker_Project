@@ -69,7 +69,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     }
 
-    // show hh:mm:ss from timestamp difference
+    // show duration in hh:mm:ss from timestamp difference
     @SuppressLint("DefaultLocale")
     fun getDuration(start: Long, end: Long): String {
         // get difference and show result in h:m:s
