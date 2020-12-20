@@ -1,24 +1,28 @@
 package com.gpstracker.gpstracker_project.activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.history_activity.*
 
 
 class StatActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stat_activity)
+        // show title
         tvPageTitle.text = "Statistics"
 
-        // Bottom Naviagation
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        // Bottom Navigation
+        showBottomNavigation()
+    }
+
+    private fun showBottomNavigation() {
         //set current as active in navigation
-        bottomNavigationView.getMenu().findItem(R.id.stats_page).setChecked(true);
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottom_navigation.getMenu().findItem(R.id.stats_page).setChecked(true);
+
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.activity_page -> {
                     // Go to CurrentActivity
@@ -57,6 +61,7 @@ class StatActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
 

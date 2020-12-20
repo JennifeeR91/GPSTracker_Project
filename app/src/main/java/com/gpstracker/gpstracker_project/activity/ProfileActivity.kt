@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Preferences
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.profile_activity.*
@@ -12,7 +11,6 @@ import kotlinx.android.synthetic.main.profile_activity.*
 class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private val preferences = Preferences()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +22,15 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         val email: String? = preferences.showEmail(this)
         tvEmail.text = email
 
+        // Bottom Navigation
+        showBottomNavigation()
+    }
 
-        // Bottom Naviagation
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+    private fun showBottomNavigation() {
         //set current as active in navigation
-        bottomNavigationView.getMenu().findItem(R.id.profile_page).setChecked(true);
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottom_navigation.getMenu().findItem(R.id.profile_page).setChecked(true);
+
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.activity_page -> {
                     // Go to CurrentActivity
@@ -68,7 +69,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
 
     override fun onClick(v: View?) {
         // Display Toast
