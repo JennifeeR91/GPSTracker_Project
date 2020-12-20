@@ -32,7 +32,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.result_activity)
         // page Title
-        tvPageTitle.text = "Activity Summary"
+        tvPageTitle.setText(R.string.activitySummary)
         val dataArray = data.get()
 
         //show Time

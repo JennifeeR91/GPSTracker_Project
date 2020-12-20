@@ -16,6 +16,7 @@
     <string name="myProfile">Profile</string>
     <string name="stats">Statistics</string>
     <string name="newActivity">New Activity</string>
+    <string name="activitySummary">Activity Summary</string>
     <string name="activity">Activity</string>
     <string name="history">History</string>
     <string name="test">test</string>
