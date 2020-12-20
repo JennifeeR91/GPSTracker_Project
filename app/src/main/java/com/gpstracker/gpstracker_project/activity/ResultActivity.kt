@@ -18,9 +18,7 @@ import kotlinx.android.synthetic.main.result_activity.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
-//  dropdown für activity type
-// gettotalDistance is addint points for testing at every call, therefore there are too many points in the db.
-
+//  TODO: dropdown für activity type
 
 
 class ResultActivity : AppCompatActivity() , OnMapReadyCallback {

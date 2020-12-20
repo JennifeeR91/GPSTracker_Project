@@ -63,9 +63,19 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
 
         //set image:
-        //val imageView_icon.setImageDrawable(getResources().getDrawable(R.drawable.monkey, getApplicationContext().getTheme()));
-        imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
-
+        var type = activity.activitytype
+        println("type is hier"+ type)
+        if(type.equals(0)) {
+            imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+        }
+        else if(type == 1L ) {
+            imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+        }
+        else if(type == 2L ){
+            imageView_icon.setImageResource(R.drawable.ic_account)
+        }else{
+            imageView_icon.setImageResource(R.drawable.ic_newactivity)
+        }
 
         // Set text on TextViews
         val duration = result.getDuration(activity.starttime, activity.endtime)
