@@ -65,7 +65,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         val duration = result.getDuration(activity.starttime, activity.endtime)
 
         //val distance = result.getTotalDistance()
-        val distance = "to come"
+        val distance = activity.totaldistance
 
         // get Date from starttime
         val sdf = SimpleDateFormat("dd/MM/yy HH:mm") // "dd/MM/yy hh:mm"
