@@ -67,6 +67,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.current_activity)
+
         tvPageTitle.text = "New Activity"
 
         //initialize FusedLocationProviderClient

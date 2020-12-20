@@ -11,26 +11,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.Database
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.detail_view_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Todo: show Back button
 // Todo: (show edit button)
 // todo: show  distance
-
-
-
 
 class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private val db = Database(this)
-
-
-
     // new instance of resultactivity class to use getTime function
     val result = ResultActivity()
 
@@ -45,8 +37,6 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         var activity = db.getActivity(id)
 
 
-
-
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map_detail) as SupportMapFragment?)!!
         supportMapFragment.getMapAsync(this)
 
@@ -57,16 +47,20 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
             tvPageTitle.text ="Error: No ID given!!"
         }
 
-        // set on-click listener
+        // set onclick listener
         btnDelete.setOnClickListener {
             deleteActivity(id)
         }
 
         // Bottom Navigation
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        showBottomNavigation()
+    }
+
+    private fun showBottomNavigation() {
         //set current as active in navigation
-        bottomNavigationView.getMenu().findItem(R.id.history_page).setChecked(true)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        bottom_navigation.getMenu().findItem(R.id.history_page).setChecked(true)
+
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.activity_page -> {
                     // Go to CurrentActivity
@@ -104,8 +98,6 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
                 else -> false
             }
         }
-
-
     }
 
     private fun deleteActivity(id:Long) {
@@ -123,7 +115,6 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         startActivity(intent)
         finish()
     }
-
 
     private fun showDataAsText(id:Long) {
         // get data from database
@@ -146,9 +137,6 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
             )
         return
     }
-
-
-
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val id = intent.getLongExtra("id", -1)
@@ -206,6 +194,5 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         println(coordList)
         val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
     }
-
 
 }
