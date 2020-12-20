@@ -146,6 +146,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         // get data from database
         val activity = db.getActivity(id)
 
+
         val startlat = activity?.startlat
         val startlong = activity?.startlong
         val endlat = activity?.endlat
@@ -167,6 +168,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // get points from database to draw the path:
         val points = db.getPoints(id)
+        // retrungs 0:timestamp + " " + 1:lat + " " + 2:long
         println("GET THE WAYPOINTS: $points")
 
         val coordList = ArrayList<LatLng>()
@@ -180,7 +182,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
                 val x = i.split(" ")
                 //println(x[1])
                 //println(x[2])
-                coordList.add(LatLng(x[2].toDouble(), x[1].toDouble()))
+                coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
                 /*
                 val marker = MarkerOptions()
                     .position(

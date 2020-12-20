@@ -50,14 +50,15 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             // TIMER
             //plusOneSecond()
 
+            // get position
+            fetchLocation()
+
             // write to DataArray
             writeCurrentDataToArray()
 
 
-            // get position
-            fetchLocation()
 
-            mainHandler.postDelayed(this, 1000)
+            mainHandler.postDelayed(this, 10000)
         }
     }
     private var secondsLeft = 0

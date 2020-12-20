@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
 //  dropdown für activity type
+// gettotalDistance is addint points for testing at every call, therefore there are too many points in the db.
 
 
 
@@ -27,6 +28,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private val preferences = Preferences()
     private val data = ActivityDataArrayHandler()
     private val db = Database(this)
+    private var distance:Double = 0.00
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +47,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
 
         // get Distance
-        val distance = getTotalDistance()
+        distance = getTotalDistance()
         timer.append("Distance: " + distance )
 
         // set on-click listener
@@ -126,11 +128,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // get note from input field
         val note = activityType.text.toString()
 
-        //get total distance for write into db
-        val totalDistance = getTotalDistance()
-
         // Setup activity
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, totalDistance, 1, false)
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, distance, 1, false)
         //Save to database
         db.insertActivity(activity)
 
@@ -219,28 +218,27 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         var long1 = 0.0
         var lat1 = 0.0
 
-        // add test points
-        //dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800497 15.4105737")
-        //dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800437 15.4305728")
-
         // startpoint again
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
         val testval = 0.008
+
         val testlat = firstlat + testval
         val testlong = firstlong + testval
+
         val testlat1 = firstlat - testval
         val testlong1 = firstlong - testval
+
         val testlat2 = firstlat - testval
         val testlong2 = firstlong + testval
+
         val testlat3 = firstlat + testval
         val testlong3 = firstlong - testval
 
         // addd testpooints
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat.toString() + " " + testlong.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
-        dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat3.toString() + " " + testlong3.toString())
         // add fistpoint as last point
@@ -253,7 +251,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
             //println(i)
             if(i.isNotEmpty()) {
                 //println(" - - - - IN IF 1- - - - - - - - - - - - - - - - - - - - - - - - -")
-
                 if (long1 == 0.0) {
                     println("long: ist 0")
                 }else{
