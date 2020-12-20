@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,6 +42,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
+    private lateinit var locationCallback: LocationCallback
 
     // run task every 10 seconds
     lateinit var mainHandler: Handler
@@ -69,8 +72,11 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         tvPageTitle.text = "New Activity"
 
         //initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this!!)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fetchLocation()
+
+
+
 
         // Bottom Navigation
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -172,8 +178,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
-        //get location on resume to activity
+        //get last known location
         fetchLocation()
+
     }
 
 
@@ -254,7 +261,34 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-    private fun fetchLocation() {
+
+
+
+    private fun fetchLocation2() {
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+            PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+            PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), permissionCode)
+            return
+        }
+        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // Update UI with location data
+                    currentLocation = location
+
+                }
+            }
+        }
+        supportMapFragment.getMapAsync(this)
+    }
+
+        private fun fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
                         this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -264,21 +298,37 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), permissionCode)
             return
         }
+
+        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
+
         val task = fusedLocationClient.lastLocation
+        println("location from fusedLocationClient"+ task)
+
         task.addOnSuccessListener { location ->
             if (location != null) {
                     currentLocation = location
-                    // Toast.makeText(applicationContext, currentLocation.latitude.toString() + " -- " +  currentLocation.longitude, Toast.LENGTH_SHORT).show()
-                    val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
+                    //val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
                     supportMapFragment.getMapAsync(this)
+                println("hier ist der inhalt von this: "+ this+ "jajajajajajajajajajajajjajajajajajaj")
             }
             else {
-                Toast.makeText(applicationContext, "No location found - please check your GPS connection", Toast.LENGTH_SHORT).show()
-                tvPageTitle.text = "No location found - please check your GPS connection"
+                locationCallback = object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult?) {
+                        locationResult ?: return
+                        for (location in locationResult.locations){
+                            // Update UI with location data
+                            currentLocation = location
+                            //supportMapFragment.getMapAsync(this)
+                        }
+                    }
+                }
+                //Toast.makeText(applicationContext, "No location found - please check your GPS connection", Toast.LENGTH_SHORT).show()
+                //tvPageTitle.text = "No location found - please check your GPS connection"
             }
 
             }
         }
+
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)

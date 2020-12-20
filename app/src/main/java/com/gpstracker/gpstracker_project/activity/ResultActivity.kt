@@ -169,8 +169,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val latLngStart = LatLng(firstlat, firstlong)
         val latLngEnd = LatLng(lastlat, lastlong)
 
-        val startMarker = MarkerOptions().position(latLngStart).title("Startpoint")
-        val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint")
+        val startMarker = MarkerOptions().position(latLngStart).title("Startpoint: "+ firstlat + ", "+ firstlong)
+        val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint: " + lastlat + ", " + lastlong)
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
 
@@ -184,7 +184,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // additional testpoint
         //coordList.add(LatLng(47.093, 15.436))
 
-        //println("+++++++++ start")
+        println("+++++++++ start")
         for (i in dataArray) {
             if (i.isNotEmpty()) {
                 println(i)
@@ -197,7 +197,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
             }
 
         }
-        //println("+++++++++ ende")
+        println("+++++++++ ende")
 
 
 
@@ -216,6 +216,11 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // add test points
         dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800497 15.4105737")
+        dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800437 15.4305728")
+        // startpoint again
+        val firstlat = dataArray.first().split(" ")[1].toString()
+        val firstlong = dataArray.first().split(" ")[2].toString()
+        dataArray.add(System.currentTimeMillis().toString() + " " + firstlat + " " + firstlong)
 
         // loop through all points
         for(i in dataArray){

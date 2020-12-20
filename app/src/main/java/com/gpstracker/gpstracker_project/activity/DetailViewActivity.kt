@@ -21,7 +21,6 @@ import java.util.*
 // Todo: show Back button
 // Todo: (show edit button)
 // todo: show  distance
-// todo: shop path: 1. get points data from database, draw path with data from database
 
 
 
