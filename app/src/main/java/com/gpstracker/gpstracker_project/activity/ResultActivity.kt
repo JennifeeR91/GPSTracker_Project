@@ -222,17 +222,24 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
-        val testval:Double = 0.0005
+        val testval:Double = 0.008
         val testlat:Double = firstlat + testval
         val testlong:Double = firstlong + testval
         val testlat1:Double = firstlat - testval
         val testlong1:Double = firstlong - testval
+        val testlat2:Double = firstlat - testval
+        val testlong2:Double = firstlong + testval
+        val testlat3:Double = firstlat + testval
+        val testlong3:Double = firstlong - testval
 
 
 
         // addd testpooints
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat.toString() + " " + testlong.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
+        dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
+        dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
+        dataArray.add(System.currentTimeMillis().toString() + " " + testlat3.toString() + " " + testlong3.toString())
 
 
         dataArray.add(System.currentTimeMillis().toString() + " " + firstlat.toString() + " " + firstlong.toString())
