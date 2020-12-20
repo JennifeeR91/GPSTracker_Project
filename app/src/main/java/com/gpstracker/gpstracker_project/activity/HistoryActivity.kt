@@ -21,18 +21,19 @@ import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     // new instance of Database
-    private val db = Database(this)
-
+    val db = Database(this)
+    // new instance of resultactivity class to use getTime function
+    val result = ResultActivity()
 
     //initialize activityAdapter
-    private var activityAdapter: ActivityAdapter? = null
+    private var activityAdapter: ActivityAdapter?? = null
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_activity)
-        tvPageTitle.text = R.string.history.toString()
+        tvPageTitle.text = "History"
 
         // show Activity List
         val activities: List<Activity> = db.getAllActivities()
@@ -47,7 +48,7 @@ class HistoryActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private fun showBottomNavigation() {
         //set current as active in navigation
-        bottom_navigation.getMenu().findItem(R.id.history_page).setChecked(true)
+        bottom_navigation.getMenu().findItem(R.id.history_page).setChecked(true);
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
