@@ -28,5 +28,6 @@
     <string name="End">End Activity</string>
     <string name="cancel">Cancel</string>
     <string name="empty_credentials">please enter credentials</string>
+    <string name="error_no_id">Error: No ID given!</string>
 
 </resources>

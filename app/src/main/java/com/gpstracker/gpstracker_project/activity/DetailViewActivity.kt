@@ -44,7 +44,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         if (id >= 0) {
             showDataAsText(id)
         }else{
-            tvPageTitle.text ="Error: No ID given!!"
+            tvPageTitle.setText(R.string.error_no_id)
         }
 
         // set onclick listener
@@ -102,7 +102,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private fun deleteActivity(id:Long) {
         // delete from DB
-        var activity = db.getActivity(id)
+        val activity = db.getActivity(id)
         if (activity != null) {
             db.delActivity(activity)
             Toast.makeText(applicationContext, "Deleted from DB", Toast.LENGTH_SHORT).show()
@@ -118,10 +118,10 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private fun showDataAsText(id:Long) {
         // get data from database
-        var activity = db.getActivity(id)
+        val activity = db.getActivity(id)
 
         // get time
-        val time = result.getDuration(activity!!.starttime!!.toLong(), activity!!.endtime!!.toLong() )
+        val time = result.getDuration(activity!!.starttime, activity.endtime)
 
         // page Title
         // get Date from starttime
@@ -141,18 +141,18 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         val id = intent.getLongExtra("id", -1)
         // get data from database
-        var activity = db.getActivity(id)
+        val activity = db.getActivity(id)
 
-        var startlat = activity?.startlat
-        var startlong = activity?.startlong
-        var endlat = activity?.endlat
-        var endlong = activity?.endlong
+        val startlat = activity?.startlat
+        val startlong = activity?.startlong
+        val endlat = activity?.endlat
+        val endlong = activity?.endlong
 
         val latLngStart = LatLng(startlong!!, startlat!!)
         val latLngEnd = LatLng(endlong!!, endlat!!)
 
-        val startMarker = MarkerOptions().position(latLngStart).title("startpoint: " + startlong.toString() + " " + startlat.toString() )
-        val endMarker = MarkerOptions().position(latLngEnd).title("endpoint: " + endlong.toString() + " " + endlat.toString() )
+        val startMarker = MarkerOptions().position(latLngStart).title("startpoint: $startlong $startlat")
+        val endMarker = MarkerOptions().position(latLngEnd).title("endpoint: $endlong $endlat")
 
         // set zoom to startpoint
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
@@ -163,8 +163,8 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
 
         // get points from database to draw the path:
-        var points = db.getPoints(id)
-        println("GET THE WAYPOINTS: "+ points)
+        val points = db.getPoints(id)
+        println("GET THE WAYPOINTS: $points")
 
         val coordList = ArrayList<LatLng>()
         // Adding points to ArrayList
@@ -174,15 +174,15 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
             if (i.isNotEmpty()) {
                // println("////////////////////////////////////////////////// " + i)
-                var x = i.split(" ")
+                val x = i.split(" ")
                 println(x[1])
                 println(x[2])
                 coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
-                var marker = MarkerOptions()
+                val marker = MarkerOptions()
                     .position(
                         LatLng(x[2].toDouble(),
                         x[1].toDouble()))
-                    .title("zwischenpunkt: Time: "+ x[0] + " place: " + x[2].toString() + " " + x[1].toString() )
+                    .title("zwischenpunkt: Time: "+ x[0] + " place: " + x[2] + " " + x[1])
 
                 googleMap?.addMarker(marker)
             }
