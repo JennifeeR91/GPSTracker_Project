@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.current_activity.*
 
 // todo: show timer on Start
 // Todo: map follows gps
-
+// Todo: show distance
 
 
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {

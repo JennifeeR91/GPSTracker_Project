@@ -156,7 +156,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
         summary.append(
                 date + ", " + postcode[1] + System.getProperty("line.separator") +
-                        "Duration: " + time + ", " + "Distance: " + " " + distance
+                        "Duration: " + time + ", " + "Distance: " + " " + distance + " km"
 
         )
         if (activity.note.isNotEmpty()) {

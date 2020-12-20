@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.result_activity.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
-//  TODO: dropdown für activity type
+//  TODO: dropdown (Spinner) für activity type
 
 
 class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
@@ -203,8 +203,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 println(x[1])
                 println(x[2])
                 coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
-                //addintional test point
-                //coordList.add(LatLng(47.072, 15.396))
             }
 
         }
@@ -230,7 +228,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
-        val testval = 0.008
+        val testval = 0.01
 
         val testlat = firstlat + testval
         val testlong = firstlong + testval

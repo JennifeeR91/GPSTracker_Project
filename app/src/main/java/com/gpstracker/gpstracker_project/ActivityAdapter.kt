@@ -94,7 +94,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         tvActivityDuration.text = "Duration: " +  duration
         //tvStartLat.text = "Start Latidude: " + activity.startlat.toString()
         //tvEndLat.text = "End Latidude: " + activity.endlat.toString()
-        tvDistance.text = "Distance: " + activity.totaldistance
+        tvDistance.text = "Distance: " + activity.totaldistance + " km"
         // Return view containing all text values for current position
         return view
     }
