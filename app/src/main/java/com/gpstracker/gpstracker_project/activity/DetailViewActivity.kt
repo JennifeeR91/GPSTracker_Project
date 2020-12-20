@@ -1,6 +1,8 @@
 package com.gpstracker.gpstracker_project.activity
 
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +20,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.*
 
-// Todo: (show edit button)
-// todo: show  distance
+
+// Todo: show edit button
 
 class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
@@ -101,7 +103,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         }
     }
 
-    private fun deleteActivity(id:Long) {
+    private fun deleteActivity(id: Long) {
         // delete from DB
         val activity = db.getActivity(id)
         if (activity != null) {
@@ -117,27 +119,49 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         finish()
     }
 
-    private fun showDataAsText(id:Long) {
+    private fun showDataAsText(id: Long) {
         // get data from database
         val activity = db.getActivity(id)
 
         // get time
         val time = result.getDuration(activity!!.starttime, activity.endtime)
 
-        // page Title
         // get Date from starttime
-        val sdf = SimpleDateFormat("dd/MM/yy hh:mm") // "dd/MM/yy hh:mm"
+        val sdf = SimpleDateFormat("dd/MM/yy HH:mm") // "dd/MM/yy hh:mm"
         val netDate = Date(activity.starttime)
         val date =sdf.format(netDate)
-        tvPageTitle.text = activity.note
+
+
+        // set Title
+        if(activity.activitytype == 1L) {
+            tvPageTitle.text = "schweinsgalopp!"
+        }else{
+            tvPageTitle.text = activity.note
+        }
+        //...
+
+
+
+        // get City from location
+        val geocoder = Geocoder(this, Locale.getDefault())
+        val addresses: List<Address> = geocoder.getFromLocation(activity.startlat, activity.startlong, 1)
+        val address: String = addresses[0].getAddressLine(0)
+        val postcode = address.split(", ")
+
+        //val stateName: String = addresses[0].getAddressLine(1)
+        //val countryName: String = addresses[0].getAddressLine(2)
+
 
         val distance = getTotalDistance(id)
 
         summary.append(
-                    date  +System.getProperty ("line.separator")+
-                    "Duration: " + time  +System.getProperty ("line.separator")+
-                    "Distance: " + " " + distance
-            )
+                date + ", " + postcode[1] + System.getProperty("line.separator") +
+                        "Duration: " + time + ", " + "Distance: " + " " + distance
+
+        )
+        if (activity.note.isNotEmpty()) {
+            summary.append(System.getProperty("line.separator") + "Note: " + activity.note)
+        }
         return
     }
 
@@ -152,8 +176,8 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val endlat = activity?.endlat
         val endlong = activity?.endlong
 
-        val latLngStart = LatLng(startlong!!, startlat!!)
-        val latLngEnd = LatLng(endlong!!, endlat!!)
+        val latLngStart = LatLng(startlat!!, startlong!!)
+        val latLngEnd = LatLng(endlat!!, endlong!!)
 
         val startMarker = MarkerOptions().position(latLngStart).title("startpoint: $startlong $startlat")
         val endMarker = MarkerOptions().position(latLngEnd).title("endpoint: $endlong $endlat")
@@ -169,19 +193,15 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         // get points from database to draw the path:
         val points = db.getPoints(id)
         // retrungs 0:timestamp + " " + 1:lat + " " + 2:long
+
         println("GET THE WAYPOINTS: $points")
 
         val coordList = ArrayList<LatLng>()
         // Adding points to ArrayList
 
-
         for (i in points) {
-
             if (i.isNotEmpty()) {
-                //println("////////////////////////////////////////////////// " + i)
                 val x = i.split(" ")
-                //println(x[1])
-                //println(x[2])
                 coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
                 /*
                 val marker = MarkerOptions()
@@ -189,15 +209,11 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
                         LatLng(x[2].toDouble(),
                         x[1].toDouble()))
                     .title("zwischenpunkt: Time: "+ x[0] + " place: " + x[2] + " " + x[1])
-
                 googleMap?.addMarker(marker)
                 */
             }
 
         }
-        //addintional test point
-        //coordList.add(LatLng(47.072, 15.396))
-
         println(coordList)
         val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
     }
@@ -218,8 +234,8 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
                     println("long: ist 0")
                 }else{
                     println(" - - - - IN IF 2  - - - - - - - - - - - - - - - - - - - - - - - -")
-                    println("should be lat: "+ i.split(" ")[1].toDouble())
-                    println("should be long: "+ i.split(" ")[2].toDouble())
+                    println("should be lat: " + i.split(" ")[1].toDouble())
+                    println("should be long: " + i.split(" ")[2].toDouble())
                     distance += this.getDistanceFromLatLonInKm(lat1, long1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
                     println(distance)
                     println("long: $long1")

@@ -111,23 +111,33 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         var endstring = ""
 
 
-        for (i in dataArray) {
-            // leere zeilen auslassen
-            if(i.isNotEmpty()){
-                if(counter == 0) {  startstring = i}
-                endstring = i
-                counter++
-            }
-        }
-        //split string and get separate values
-        val startArr = startstring.split(" ").toTypedArray()
-        val endArr = endstring.split(" ").toTypedArray()
+        // get first point
+        val firstlat = dataArray.first().split(" ")[1].toDouble()
+        val firstlong = dataArray.first().split(" ")[2].toDouble()
+
+        // get last point, last entry could be empty therefore the length >3
+        val lastlat = dataArray.last { it.length > 3 }.split(" ")[1].toDouble()
+        val lastlong = dataArray.last { it.length > 3 }.split(" ")[2].toDouble()
+
+        val starttime = dataArray.first().split(" ")[0].toLong()
+        val endtime = dataArray.last { it.length > 3 }.split(" ")[0].toLong()
+
 
         // get note from input field
         val note = activityType.text.toString()
 
         // Setup activity
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, distance, 1, false)
+        val activity = Activity( 1, firstlong.toDouble(),
+                lastlong.toDouble(),
+                firstlat.toDouble(),
+                lastlat.toDouble(),
+                starttime,
+                endtime,
+                note,
+                distance,
+                1,
+                false )
+
         //Save to database
         db.insertActivity(activity)
 

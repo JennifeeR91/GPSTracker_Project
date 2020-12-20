@@ -100,7 +100,7 @@
         android:background="@color/trBackgroundWhite"
         android:inputType="textShortMessage"
         android:singleLine="true"
-        android:text="TEXT"
+        android:text=""
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

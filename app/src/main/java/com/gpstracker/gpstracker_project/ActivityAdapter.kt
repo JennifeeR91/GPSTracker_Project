@@ -62,19 +62,23 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         val activity = getItem(position) as Activity
 
 
-        //set image:
+        //set image & Title:
         var type = activity.activitytype
         println("type is hier"+ type)
         if(type.equals(0)) {
             imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+            tvActivityTitle.text = activity.activitytype.toString() + "City"
         }
         else if(type == 1L ) {
             imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+            tvActivityTitle.text = activity.activitytype.toString() + " Schweinsgalop, " + "Graz"
         }
         else if(type == 2L ){
             imageView_icon.setImageResource(R.drawable.ic_account)
+            tvActivityTitle.text = activity.activitytype.toString() + "City"
         }else{
             imageView_icon.setImageResource(R.drawable.ic_newactivity)
+            tvActivityTitle.text = activity.activitytype.toString() + "City"
         }
 
         // Set text on TextViews
@@ -85,8 +89,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         val netDate = Date(activity.starttime)
         val date =sdf.format(netDate)
 
-        //tvActivityIcon.drawable = ic_logo_transparent
-        tvActivityTitle.text = activity.note.toString()
+
         tvActivityDate.text =  date
         tvActivityDuration.text = "Duration: " +  duration
         //tvStartLat.text = "Start Latidude: " + activity.startlat.toString()

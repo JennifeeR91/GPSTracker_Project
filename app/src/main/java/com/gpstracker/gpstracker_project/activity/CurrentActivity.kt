@@ -28,10 +28,6 @@ import kotlinx.android.synthetic.main.current_activity.*
 
 // todo: show timer on Start
 // Todo: map follows gps
-// Todo: add Database Field "type"
-// Save waypoints to new table
-// all Texts in XML file to language file
-// all Colors to Color File
 
 
 
