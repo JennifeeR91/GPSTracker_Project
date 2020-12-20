@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -76,49 +75,28 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fetchLocation()
 
-
-
         // Bottom Navigation
         showBottomNavigation()
-
-
-
-        // get reference to  Start button
-        val btnStart = findViewById(R.id.btnStart) as Button
-        // get reference to  Stop button
-        val btnStop = findViewById(R.id.btnStop) as Button
-        // get reference to Pause button
-        val btnResume = findViewById(R.id.btnResume) as Button
-        // get reference to Pause button
-        val btnEnd = findViewById(R.id.btnEnd) as Button
 
         // set on-click listener
         btnStart.setOnClickListener {
             startActivity()
         }
-
         // btnStop
         btnStop.setOnClickListener {
             stopActivity()
         }
-
         //btnResume
         btnResume.setOnClickListener {
             resumeActivity()
         }
-
         //btnEnd
         btnEnd.setOnClickListener {
             endActivity()
         }
 
-
-
         // handler for looping
         mainHandler = Handler(Looper.getMainLooper())
-
-
-
     }
 
     private fun showBottomNavigation() {
@@ -181,7 +159,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         fetchLocation()
 
     }
-
 
     // start Activity
     private fun startActivity(){
@@ -266,10 +243,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         finish()
     }
 
-
-
-
-
     private fun fetchLocation_test() {
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -331,7 +304,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
         val markerOptions = MarkerOptions().position(latLng).title("My position")
@@ -357,7 +329,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         data.insterData(saveString)
         Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
     }
-
 
 
 }
