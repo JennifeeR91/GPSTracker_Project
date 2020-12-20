@@ -2,6 +2,7 @@ package com.gpstracker.gpstracker_project.activity
 
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.gpstracker.gpstracker_project.*
 import kotlinx.android.synthetic.main.result_activity.*
-import java.lang.Math.round
 import java.util.concurrent.TimeUnit
+import kotlin.math.*
 
 //  dropdown für activity type
 
@@ -69,14 +70,14 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     }
 
     // show hh:mm:ss from timestamp difference
-    public fun getDuration(start: Long, end: Long): String {
+    @SuppressLint("DefaultLocale")
+    fun getDuration(start: Long, end: Long): String {
         // get difference and show result in h:m:s
-        val diffTime = end.toLong() - start.toLong()
-        val periodAsHH_MM_SS = java.lang.String.format("%02d:%02d:%02d",
+        val diffTime = end - start.toLong()
+        return java.lang.String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(diffTime),
                 TimeUnit.MILLISECONDS.toMinutes(diffTime) % TimeUnit.HOURS.toMinutes(1),
                 TimeUnit.MILLISECONDS.toSeconds(diffTime) % TimeUnit.MINUTES.toSeconds(1))
-        return periodAsHH_MM_SS
 
     }
 
@@ -101,13 +102,13 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     // when button save is pressed, save to Database and go to history activity
     private fun saveActivity() {
-        // Get AvtivityData to save to DB
+        // Get ActivityData to save to DB
         val dataArray = data.get()
         //dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
 
         var counter = 0
-        var startstring: String = ""
-        var endstring: String = ""
+        var startstring = ""
+        var endstring = ""
 
 
         for (i in dataArray) {
@@ -125,8 +126,11 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // get note from input field
         val note = activityType.text.toString()
 
-        // activity erstellen
-        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, false)
+        //get total distance for write into db
+        val totalDistance = getTotalDistance()
+
+        // Setup activity
+        val activity = Activity(1, startArr[1].toDouble(), endArr[1].toDouble(), startArr[2].toDouble(), endArr[2].toDouble(), startArr[0].toLong(), endArr[0].toLong(), note, totalDistance, 1, false)
         //Save to database
         db.insertActivity(activity)
 
@@ -140,7 +144,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
             // leere zeilen auslassen
             if(i.isNotEmpty()){
                 val pointSet = i.split(" ")
-                println("waypoints: ID="+activityId  + " timestamp: " + pointSet[0] + " lat: " + pointSet[1].toString() + " long: " + pointSet[2].toString())
+                println("waypoints: ID="+activityId  + " timestamp: " + pointSet[0] + " lat: " + pointSet[1] + " long: " + pointSet[2])
                 db.insertPosition(activityId,pointSet[0].toLong(), pointSet[1].toDouble(), pointSet[2].toDouble() )
             }
         }
@@ -148,7 +152,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // delete Data Array
         data.del()
 
-        // go to history acitvity
+        // go to history activity
         val intent = Intent(this, HistoryActivity::class.java)
         startActivity(intent)
         finish()
@@ -188,7 +192,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         for (i in dataArray) {
             if (i.isNotEmpty()) {
                 println(i)
-                var x = i.split(" ")
+                val x = i.split(" ")
                 println(x[1])
                 println(x[2])
                 coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
@@ -206,13 +210,13 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     }
 
     // add up all distances between all points
-    public fun getTotalDistance(): Double {
+    private fun getTotalDistance(): Double {
         // get stored data
         val dataArray = data.get()
 
-        var distance:Double = 0.0
-        var long1:Double = 0.0
-        var lat1:Double = 0.0
+        var distance = 0.0
+        var long1 = 0.0
+        var lat1 = 0.0
 
         // add test points
         //dataArray.add(System.currentTimeMillis().toString() + " " + "47.0800497 15.4105737")
@@ -222,15 +226,15 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
-        val testval:Double = 0.008
-        val testlat:Double = firstlat + testval
-        val testlong:Double = firstlong + testval
-        val testlat1:Double = firstlat - testval
-        val testlong1:Double = firstlong - testval
-        val testlat2:Double = firstlat - testval
-        val testlong2:Double = firstlong + testval
-        val testlat3:Double = firstlat + testval
-        val testlong3:Double = firstlong - testval
+        val testval = 0.008
+        val testlat = firstlat + testval
+        val testlong = firstlong + testval
+        val testlat1 = firstlat - testval
+        val testlong1 = firstlong - testval
+        val testlat2 = firstlat - testval
+        val testlong2 = firstlong + testval
+        val testlat3 = firstlat + testval
+        val testlong3 = firstlong - testval
 
 
 
@@ -255,10 +259,10 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                     println("long: ist 0")
                 }else{
                     println(" - - - - IN IF 2  - - - - - - - - - - - - - - - - - - - - - - - -")
-                    distance = distance + this.getDistanceFromLatLonInKm(long1, lat1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
+                    distance += this.getDistanceFromLatLonInKm(long1, lat1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
                     println(distance)
-                    println("long: "+ long1)
-                    println("lat: " + lat1)
+                    println("long: $long1")
+                    println("lat:  $lat1")
                 }
                 long1 = i.split(" ")[1].toDouble()
                 lat1 = i.split(" ")[2].toDouble()
@@ -267,13 +271,13 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         }
 
 
-        return distance.toDouble().round(2)
+        return distance.round(2)
     }
 
-    fun Double.round(decimals: Int): Double {
+    private fun Double.round(decimals: Int): Double {
         var multiplier = 1.0
         repeat(decimals) { multiplier *= 10 }
-        return round(this * multiplier) / multiplier
+        return (this * multiplier).roundToInt() / multiplier
     }
 
 
@@ -284,16 +288,16 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private fun getDistanceFromLatLonInKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val theta = lon1 - lon2
-        var dist = (Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + (Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta))))
-        dist = Math.acos(dist)
+        var dist = (sin(deg2rad(lat1))
+                * sin(deg2rad(lat2))
+                + (cos(deg2rad(lat1))
+                * cos(deg2rad(lat2))
+                * cos(deg2rad(theta))))
+        dist = acos(dist)
         dist = rad2deg(dist)
         //dist = dist * 60 * 1.1515
-        dist = dist * 60 * 1.1515 * 1.609344
-        println("Distance p2p: " + dist)
+        dist *= 60 * 1.1515 * 1.609344
+        println("Distance p2p: $dist")
 
         return dist
     }
@@ -301,7 +305,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
 
     private fun rad2deg(rad: Double): Double {
-        return rad * 180.0 / Math.PI
+        return rad * 180.0 / PI
     }
 
 }

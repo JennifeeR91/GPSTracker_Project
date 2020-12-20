@@ -14,7 +14,7 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val DATABASE_NAME = "gpstracker"
         private const val DATABASE_TABLE_NAME = "activities"
         private const val DATABASE_TABLE_NAME_POINTS = "points"
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 4
 
         // Database activity table column names
         private const val KEY_ID = "id"
@@ -25,6 +25,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         private const val KEY_STARTTIME = "starttime"
         private const val KEY_ENDTIME = "endtime"
         private const val KEY_NOTE = "note"
+        private const val KEY_TOTALDISTANCE = "totaldistance"
+        private const val KEY_ACTIVITYTYPE = "activitytype"
         private const val KEY_DELETED = "deleted"
 
         // Database create avtivity table statement
@@ -37,6 +39,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
                 $KEY_STARTTIME INT,
                 $KEY_ENDTIME INT,            
                 $KEY_NOTE TEXT,
+                $KEY_TOTALDISTANCE FLOAT,
+                $KEY_ACTIVITYTYPE INT,
                 $KEY_DELETED BOOL
             )""")
 
@@ -65,6 +69,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
             KEY_STARTTIME,
             KEY_ENDTIME,
             KEY_NOTE,
+            KEY_TOTALDISTANCE,
+            KEY_ACTIVITYTYPE,
             KEY_DELETED
         )
 
@@ -133,14 +139,16 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         if (cursor?.count == 0) return null
         cursor.run {
             activity = Activity(
-                getLong(getColumnIndex(KEY_ID)),
-                getDouble(getColumnIndex(KEY_STARTLONG)),
-                getDouble(getColumnIndex(KEY_ENDLONG)),
-                getDouble(getColumnIndex(KEY_STARTLAT)),
-                getDouble(getColumnIndex(KEY_ENDLAT)),
-                getLong(getColumnIndex(KEY_STARTTIME)),
-                getLong(getColumnIndex(KEY_ENDTIME)),
-                getString(getColumnIndex(KEY_NOTE)),
+                    getLong(getColumnIndex(KEY_ID)),
+                    getDouble(getColumnIndex(KEY_STARTLONG)),
+                    getDouble(getColumnIndex(KEY_ENDLONG)),
+                    getDouble(getColumnIndex(KEY_STARTLAT)),
+                    getDouble(getColumnIndex(KEY_ENDLAT)),
+                    getLong(getColumnIndex(KEY_STARTTIME)),
+                    getLong(getColumnIndex(KEY_ENDTIME)),
+                    getString(getColumnIndex(KEY_NOTE)),
+                    getDouble(getColumnIndex(KEY_TOTALDISTANCE)),
+                    getLong(getColumnIndex(KEY_ACTIVITYTYPE)),
                 getInt(getColumnIndex(KEY_DELETED)) > 0
             )
         }
@@ -180,6 +188,8 @@ class Database(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null,
         values.put(KEY_STARTTIME, activity.starttime)
         values.put(KEY_ENDTIME, activity.endtime)
         values.put(KEY_NOTE, activity.note)
+        values.put(KEY_TOTALDISTANCE, activity.totaldistance)
+        values.put(KEY_ACTIVITYTYPE, activity.activitytype)
         values.put(KEY_DELETED, activity.deleted)
 
         return values

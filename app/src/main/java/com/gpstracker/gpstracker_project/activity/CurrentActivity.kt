@@ -61,7 +61,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             mainHandler.postDelayed(this, 1000)
         }
     }
-    var secondsLeft = 0
+    private var secondsLeft = 0
 
 
 
@@ -132,13 +132,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         // get reference to  Start button
-        val btnStart = findViewById(R.id.btnStart) as Button
+        val btnStart = findViewById<Button>(R.id.btnStart)
         // get reference to  Stop button
-        val btnStop = findViewById(R.id.btnStop) as Button
+        val btnStop = findViewById<Button>(R.id.btnStop)
         // get reference to Pause button
-        val btnResume = findViewById(R.id.btnResume) as Button
+        val btnResume = findViewById<Button>(R.id.btnResume)
         // get reference to Pause button
-        val btnEnd = findViewById(R.id.btnEnd) as Button
+        val btnEnd = findViewById<Button>(R.id.btnEnd)
 
         // set on-click listener
         btnStart.setOnClickListener {
