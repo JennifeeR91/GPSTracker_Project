@@ -326,6 +326,4 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
     }
 
-
-
 }
