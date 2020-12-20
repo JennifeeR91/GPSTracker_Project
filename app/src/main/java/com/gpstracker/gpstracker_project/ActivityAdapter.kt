@@ -50,7 +50,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         }
 
         // Get relevant subviews of the row view.
-        val tvActivityIcon = holder.acIcon
+        val imageView_icon = holder.acIcon
         val tvActivityTitle = holder.acttitle
         val tvActivityDate = holder.actDate
         val tvActivityDuration = holder.actduration
@@ -61,17 +61,19 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         // Get activity for current position using getItem(position).
         val activity = getItem(position) as Activity
 
+
+        //set image:
+        //val imageView_icon.setImageDrawable(getResources().getDrawable(R.drawable.monkey, getApplicationContext().getTheme()));
+        imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+
+
         // Set text on TextViews
         val duration = result.getDuration(activity.starttime, activity.endtime)
-
-        //val distance = result.getTotalDistance()
-        val distance = activity.totaldistance
 
         // get Date from starttime
         val sdf = SimpleDateFormat("dd/MM/yy HH:mm") // "dd/MM/yy hh:mm"
         val netDate = Date(activity.starttime)
         val date =sdf.format(netDate)
-
 
         //tvActivityIcon.drawable = ic_logo_transparent
         tvActivityTitle.text = activity.note.toString()
@@ -79,8 +81,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         tvActivityDuration.text = "Duration: " +  duration
         //tvStartLat.text = "Start Latidude: " + activity.startlat.toString()
         //tvEndLat.text = "End Latidude: " + activity.endlat.toString()
-        tvDistance.text = "Distance: " + distance
-
+        tvDistance.text = "Distance: " + activity.totaldistance
         // Return view containing all text values for current position
         return view
     }
