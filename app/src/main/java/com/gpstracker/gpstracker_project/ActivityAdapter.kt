@@ -8,11 +8,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.gpstracker.gpstracker_project.activity.ResultActivity
-import kotlinx.android.synthetic.main.result_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAdapter() {
+
+class ActivityAdapter (val context: Context, var activities: List<Activity>): BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -66,25 +66,41 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         //set image & Title:
         val type = activity.activitytype
         println("type is hier"+ type)
+
+
+        // SET TITLE
+        //get items of array
+        val gaits  = context.getResources().getStringArray(R.array.horse_gaits)
+        val gait = activity.activitytype.toInt()
+        // Title
+        tvActivityTitle.text = gaits[gait]
+
+        // Image
+        //val drawableName = gaits[gait]
+        //imageView_icon.setImageResource(R.drawable.drawableName)
+
+
+
+        // SET IMAGE
         if(type == 0L) {
             imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
-            tvActivityTitle.text = activity.activitytype.toString() + "Walk"
+            //tvActivityTitle.text = activity.activitytype.toString() + " Walk"
          //   setText(activity.activityType + arrayOf(R.array.horse_gaits))
         }
         else if(type == 1L) {
             imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
-            tvActivityTitle.text = activity.activitytype.toString() + " Trot"
+            //tvActivityTitle.text = activity.activitytype.toString() + " Trot"
         }
         else if(type == 2L){
             imageView_icon.setImageResource(R.drawable.ic_account)
-            tvActivityTitle.text = activity.activitytype.toString() + "Canter"
+            //tvActivityTitle.text = activity.activitytype.toString() + " Canter"
         }else if(type ==3L) {
-            imageView_icon.setImageResource(R.drawable.ic_newactivity)
-            tvActivityTitle.text = activity.activitytype.toString() + "Gallop"
+            imageView_icon.setImageResource(R.drawable.ic_baseline_stats)
+            //tvActivityTitle.text = activity.activitytype.toString() + " Gallop"
         }
         else if(type ==4L) {
-            imageView_icon.setImageResource(R.drawable.ic_newactivity)
-            tvActivityTitle.text = activity.activitytype.toString() + "Pace"
+            imageView_icon.setImageResource(R.drawable.ic_history)
+            //tvActivityTitle.text = activity.activitytype.toString() + " Pace"
         }
 
         // Set text on TextViews

@@ -132,13 +132,14 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val date =sdf.format(netDate)
 
 
-        // set Title
-        if(activity.activitytype == 1L) {
-            tvPageTitle.text = "schweinsgalopp!"
-        }else{
-            tvPageTitle.text = activity.note
-        }
-        //...
+        // set Title:
+
+        //get items of array
+        val gaits = resources.getStringArray(R.array.horse_gaits)
+
+        val gait = activity.activitytype.toInt()
+        tvPageTitle.text = gaits[gait]
+
 
 
 
