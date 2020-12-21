@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.gpstracker.gpstracker_project.activity.ResultActivity
+import kotlinx.android.synthetic.main.result_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,22 +64,27 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
 
         //set image & Title:
-        var type = activity.activitytype
+        val type = activity.activitytype
         println("type is hier"+ type)
-        if(type.equals(0)) {
+        if(type == 0L) {
             imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
-            tvActivityTitle.text = activity.activitytype.toString() + "City"
+            tvActivityTitle.text = activity.activitytype.toString() + "Walk"
+         //   setText(activity.activityType + arrayOf(R.array.horse_gaits))
         }
-        else if(type == 1L ) {
+        else if(type == 1L) {
             imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
-            tvActivityTitle.text = activity.activitytype.toString() + " Schweinsgalop, " + "Graz"
+            tvActivityTitle.text = activity.activitytype.toString() + " Trot"
         }
-        else if(type == 2L ){
+        else if(type == 2L){
             imageView_icon.setImageResource(R.drawable.ic_account)
-            tvActivityTitle.text = activity.activitytype.toString() + "City"
-        }else{
+            tvActivityTitle.text = activity.activitytype.toString() + "Canter"
+        }else if(type ==3L) {
             imageView_icon.setImageResource(R.drawable.ic_newactivity)
-            tvActivityTitle.text = activity.activitytype.toString() + "City"
+            tvActivityTitle.text = activity.activitytype.toString() + "Gallop"
+        }
+        else if(type ==4L) {
+            imageView_icon.setImageResource(R.drawable.ic_newactivity)
+            tvActivityTitle.text = activity.activitytype.toString() + "Pace"
         }
 
         // Set text on TextViews
