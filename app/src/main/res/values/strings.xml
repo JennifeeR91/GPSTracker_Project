@@ -29,5 +29,13 @@
     <string name="cancel">Cancel</string>
     <string name="empty_credentials">please enter credentials</string>
     <string name="error_no_id">Error: No ID given!</string>
+    <string name="selected_item">Selected item:</string>
 
+    <string-array name="horse_gaits">
+        <item>Walk</item>
+        <item>Trot</item>
+        <item>Canter</item>
+        <item>Gallop</item>
+        <item>Pace</item>
+    </string-array>
 </resources>

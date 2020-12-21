@@ -5,6 +5,11 @@ package com.gpstracker.gpstracker_project.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -27,6 +32,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private val data = ActivityDataArrayHandler()
     private val db = Database(this)
     private var distance:Double = 0.00
+    private var gaitposition:Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +54,38 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         distance = getTotalDistance()
         timer.append("Distance: " + distance )
 
-        // set on-click listener
+        //get items of array
+        val gaits = resources.getStringArray(R.array.horse_gaits)
+        // get access to spinner
+        val spinner = findViewById<Spinner>(R.id.spinner)
+
+                if (spinner != null) {
+            val adapter = ArrayAdapter(this,
+                    android.R.layout.simple_spinner_item, gaits)
+            spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object :
+                    AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>,
+                                            view: View, position: Int, id: Long) {
+                    gaitposition = position.toLong()
+                    Toast.makeText(this@ResultActivity,
+                            getString(R.string.selected_item) + " " +  "Position: " + position + "type: " + gaits[position], Toast.LENGTH_SHORT).show()
+
+                }
+
+                override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
+        }
+
+
+            // set on-click listener
         btnSave.setOnClickListener {
             saveActivity()
         }
@@ -135,7 +172,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 endtime,
                 note,
                 distance,
-                1,
+                gaitposition,
                 false )
 
         //Save to database
