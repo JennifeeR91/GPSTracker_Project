@@ -78,10 +78,22 @@
             android:layout_gravity="center|top"
             style="@style/Title"/>
 
+        <TextView
+            android:id="@+id/tvPaused"
+            android:layout_gravity="center|center"
+            android:visibility="gone"
+            android:padding="50dp"
+            style="@style/Title"/>
+
         <Chronometer
             android:id="@+id/simpleChronometer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="30dp"
+            android:textSize="28sp"
+            android:visibility="gone"
+            style="@style/Title"/>
 
     </FrameLayout>
 

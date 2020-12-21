@@ -34,9 +34,16 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private var distance:Double = 0.00
     private var gaitposition:Long = 0
 
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.result_activity)
+
+
+
         // page Title
         tvPageTitle.setText(R.string.activitySummary)
         val dataArray = data.get()
@@ -52,7 +59,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // get Distance
         distance = getTotalDistance()
-        timer.append("Distance: " + distance )
+        timer.append("Distance: " + distance)
 
         //get items of array
         val gaits = resources.getStringArray(R.array.horse_gaits)
@@ -70,7 +77,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                                             view: View, position: Int, id: Long) {
                     gaitposition = position.toLong()
                     Toast.makeText(this@ResultActivity,
-                            getString(R.string.selected_item) + " " +  "Position: " + position + "type: " + gaits[position], Toast.LENGTH_SHORT).show()
+                            getString(R.string.selected_item) + " " + "Position: " + position + "type: " + gaits[position], Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -122,6 +129,13 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private fun resumeActivity() {
         // go back to currentActivity
         val intent = Intent(this, CurrentActivity::class.java)
+
+        // give back the time elapsed to resume counting
+        val resumeTime = intent.getLongExtra("resumeTime", -1)
+        println("resume Time here: " + resumeTime)
+
+        intent.putExtra("mLastStopTime", resumeTime)
+
         startActivity(intent)
         finish()
     }
@@ -164,7 +178,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val note = activityType.text.toString()
 
         // Setup activity
-        val activity = Activity( 1, firstlong,
+        val activity = Activity(1, firstlong,
                 lastlong,
                 firstlat,
                 lastlat,
@@ -173,7 +187,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 note,
                 distance,
                 gaitposition,
-                false )
+                false)
 
         //Save to database
         db.insertActivity(activity)
@@ -188,8 +202,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
             // leere zeilen auslassen
             if(i.isNotEmpty()){
                 val pointSet = i.split(" ")
-                println("waypoints: ID="+activityId  + " timestamp: " + pointSet[0] + " lat: " + pointSet[1] + " long: " + pointSet[2])
-                db.insertPosition(activityId,pointSet[0].toLong(), pointSet[1].toDouble(), pointSet[2].toDouble() )
+                println("waypoints: ID=" + activityId + " timestamp: " + pointSet[0] + " lat: " + pointSet[1] + " long: " + pointSet[2])
+                db.insertPosition(activityId, pointSet[0].toLong(), pointSet[1].toDouble(), pointSet[2].toDouble())
             }
         }
 
@@ -281,8 +295,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // addd testpooints
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat.toString() + " " + testlong.toString())
-        dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
+        dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
         dataArray.add(System.currentTimeMillis().toString() + " " + testlat3.toString() + " " + testlong3.toString())
         // add fistpoint as last point
         dataArray.add(System.currentTimeMillis().toString() + " " + firstlat.toString() + " " + firstlong.toString())
@@ -298,7 +312,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                     println("long: ist 0")
                 }else{
                     println(" - - - - IN IF 2  - - - - - - - - - - - - - - - - - - - - - - - -")
-                    distance += this.getDistanceFromLatLonInKm(lat1,long1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
+                    distance += this.getDistanceFromLatLonInKm(lat1, long1, i.split(" ")[1].toDouble(), i.split(" ")[2].toDouble())
                     println(distance)
                     println("long: $long1")
                     println("lat:  $lat1")

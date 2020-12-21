@@ -7,6 +7,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,7 @@ import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
 import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.current_activity.*
 
-// todo: show timer on Start
+// todo: resume timer after resultActivity with correct time
 // Todo: map follows gps
 // Todo: show distance
 
@@ -38,6 +39,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
     private lateinit var locationCallback: LocationCallback
+
+
 
     // run task every 10 seconds
     lateinit var mainHandler: Handler
@@ -57,7 +60,17 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             mainHandler.postDelayed(this, 10000)
         }
     }
-    private var secondsLeft = 0
+
+    // timer variable
+    var mLastStopTime:Long = 0
+
+    /*
+    var mIntent = intent
+    var resumeTime = mIntent.getIntExtra("resumeTime", 0L)
+
+
+     */
+
 
 
 
@@ -94,6 +107,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // handler for looping
         mainHandler = Handler(Looper.getMainLooper())
+
+        // set button start visable
+        btnStart.setVisibility(View.VISIBLE)
     }
 
     private fun showBottomNavigation() {
@@ -142,12 +158,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    fun plusOneSecond() {
-        //if secondsLeft > 0 {
-            secondsLeft += 1
-            println("here--. "+secondsLeft)
-        //}
-    }
 
     override fun onResume() {
         super.onResume()
@@ -161,30 +171,31 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun startActivity(){
         mainHandler.post(updateTextTask)
 
-        // button ausblenden
-        btnStart.setVisibility(View.GONE)
 
         // bottom menu ausblenden
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setVisibility(View.GONE)
 
-        // show stop button
-        btnStop.setVisibility(View.VISIBLE)
 
         // hide start button
         btnStart.setVisibility(View.GONE)
-
         // hide resume button
         btnResume.setVisibility(View.GONE)
+        // show stop button
+        btnStop.setVisibility(View.VISIBLE)
 
         // timer starten und anzeigen
+        /*
+        simpleChronometer.setVisibility(View.VISIBLE)
+        simpleChronometer.setBase(SystemClock.elapsedRealtime())
+        simpleChronometer.start()
 
-        //save data to array
-
-        // alle 10 Sekunden die aktuelle position mit timestamp abspeichern
+         */
+        chronoStart()
 
         // hide title
         tvPageTitle.setVisibility(View.GONE)
+        tvPaused.setVisibility(View.GONE)
     }
 
     // Stop Avtivity
@@ -193,6 +204,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         mainHandler.removeCallbacks(updateTextTask)
 
         // timer stoppen
+        chronoPause()
 
         // hide button Stop
         btnStop.setVisibility(View.GONE)
@@ -204,9 +216,31 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         btnEnd.setVisibility(View.VISIBLE)
 
         // show title
-        tvPageTitle.setVisibility(View.VISIBLE)
-        tvPageTitle.setText(R.string.paused)
+        tvPaused.setVisibility(View.VISIBLE)
+        tvPaused.setText(R.string.paused)
     }
+
+
+    private fun chronoStart() {
+        // on first start
+        //var mLastStopTime:Long  = intent.getLongExtra("mLastStopTime", 0)
+        if (mLastStopTime === 0L) {
+            simpleChronometer.setBase(SystemClock.elapsedRealtime())
+        }
+        else {
+            val intervalOnPause: Long = SystemClock.elapsedRealtime() - mLastStopTime
+            simpleChronometer.setBase(simpleChronometer.getBase() + intervalOnPause)
+        }
+        simpleChronometer.setVisibility(View.VISIBLE)
+        simpleChronometer.start()
+    }
+
+    private fun chronoPause() {
+        simpleChronometer.stop()
+        mLastStopTime = SystemClock.elapsedRealtime()
+    }
+
+
 
     // Resume Activity
     private fun resumeActivity(){
@@ -216,7 +250,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
 
 
-        // timer stoppen
+        // resume timer
+        chronoStart()
 
         //show stop button
         btnStop.setVisibility(View.VISIBLE)
@@ -228,26 +263,28 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         btnEnd.setVisibility(View.GONE)
 
         // hide message
-        tvPageTitle.setVisibility(View.GONE)
+        tvPaused.setVisibility(View.GONE)
     }
 
     // End Activity, go to result activity and show results
     private fun endActivity(){
         mainHandler.removeCallbacks(updateTextTask)
+
         // go to result activity and show results
         val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra("resumeTime", mLastStopTime)
         startActivity(intent)
         finish()
     }
 
     private fun fetchLocation_test() {
         if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                        this, Manifest.permission.ACCESS_FINE_LOCATION) !=
             PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
             PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), permissionCode)
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), permissionCode)
             return
         }
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
@@ -308,8 +345,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
         googleMap?.addMarker(markerOptions)
 
-        // show start button
-        btnStart.setVisibility(View.VISIBLE)
       }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
@@ -324,7 +359,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun writeCurrentDataToArray(){
         val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insertData(saveString)
-        Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
+        //Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
     }
 
 
