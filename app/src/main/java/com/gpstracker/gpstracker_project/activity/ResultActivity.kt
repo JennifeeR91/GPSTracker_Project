@@ -73,7 +73,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     @SuppressLint("DefaultLocale")
     fun getDuration(start: Long, end: Long): String {
         // get difference and show result in h:m:s
-        val diffTime = end - start.toLong()
+        val diffTime = end - start
         return java.lang.String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(diffTime),
                 TimeUnit.MILLISECONDS.toMinutes(diffTime) % TimeUnit.HOURS.toMinutes(1),
@@ -127,10 +127,10 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val note = activityType.text.toString()
 
         // Setup activity
-        val activity = Activity( 1, firstlong.toDouble(),
-                lastlong.toDouble(),
-                firstlat.toDouble(),
-                lastlat.toDouble(),
+        val activity = Activity( 1, firstlong,
+                lastlong,
+                firstlat,
+                lastlat,
                 starttime,
                 endtime,
                 note,
@@ -180,8 +180,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val latLngStart = LatLng(firstlat, firstlong)
         val latLngEnd = LatLng(lastlat, lastlong)
 
-        val startMarker = MarkerOptions().position(latLngStart).title("Startpoint: "+ firstlat + ", "+ firstlong)
-        val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint: " + lastlat + ", " + lastlong)
+        val startMarker = MarkerOptions().position(latLngStart).title("Startpoint: $firstlat, $firstlong")
+        val endMarker = MarkerOptions().position(latLngEnd).title("Endpoint: $lastlat, $lastlong")
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngStart, 15F))
 
