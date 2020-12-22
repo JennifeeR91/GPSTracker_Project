@@ -245,8 +245,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // mit schleife durch alle punkte durchgehen und sie hinzufügen
         // Adding points to ArrayList
         val coordList = ArrayList<LatLng>()
-        // additional testpoint
-        //coordList.add(LatLng(47.093, 15.436))
 
         println("+++++++++ start")
         for (i in dataArray) {
@@ -260,8 +258,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         }
         println("+++++++++ ende")
-
-
 
         val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
 
@@ -281,7 +277,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
-        val testval = 0.01
+        val testval = 0.005
 
         val testlat = firstlat + testval
         val testlong = firstlong + testval

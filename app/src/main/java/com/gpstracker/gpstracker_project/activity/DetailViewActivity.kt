@@ -132,15 +132,10 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         val date =sdf.format(netDate)
 
 
-        // set Title:
 
         //get items of array
         val gaits = resources.getStringArray(R.array.horse_gaits)
-
         val gait = activity.activitytype.toInt()
-        tvPageTitle.text = gaits[gait]
-
-
 
 
         // get City from location
@@ -152,16 +147,20 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         //val stateName: String = addresses[0].getAddressLine(1)
         //val countryName: String = addresses[0].getAddressLine(2)
 
+        tvPageTitle.text = gaits[gait] + ", " + postcode[1]
 
         val distance = getTotalDistance(id)
 
         summary.append(
-                date + ", " + postcode[1] + System.getProperty("line.separator") +
-                        "Duration: " + time + ", " + "Distance: " + " " + distance + " km"
+                date + System.getProperty("line.separator") +
+                        "Duration: " + time
 
         )
+        summary_right.append(
+                "Distance: " + " " + distance + " km")
+
         if (activity.note.isNotEmpty()) {
-            summary.append(System.getProperty("line.separator") + "Note: " + activity.note)
+            summary_right.append(System.getProperty("line.separator") + "Note: " + activity.note)
         }
         return
     }
