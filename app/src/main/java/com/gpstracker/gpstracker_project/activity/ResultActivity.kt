@@ -59,7 +59,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // get time from last entry
         val endTime = dataArray.last { it.length > 3 }.split(" ")[0].toLong()
         val Time = getDuration(startTime, endTime)
-        timer.text = "Duration: " + Time + System.getProperty("line.separator")
+        timer.text = "Total Duration: " + Time + System.getProperty("line.separator")
 
 
         // get Distance
