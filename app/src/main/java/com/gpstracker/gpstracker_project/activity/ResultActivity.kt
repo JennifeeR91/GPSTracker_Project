@@ -9,9 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,12 +17,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
-
 import com.gpstracker.gpstracker_project.*
-import kotlinx.android.synthetic.main.current_activity.*
 import kotlinx.android.synthetic.main.result_activity.*
-import kotlinx.android.synthetic.main.result_activity.btnResume
-import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
@@ -81,8 +75,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 override fun onItemSelected(parent: AdapterView<*>,
                                             view: View, position: Int, id: Long) {
                     gaitposition = position.toLong()
-                    Toast.makeText(this@ResultActivity,
-                            getString(R.string.selected_item) + " " + "Position: " + position + "type: " + gaits[position], Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@ResultActivity, getString(R.string.selected_item) + " " + "Position: " + position + "type: " + gaits[position], Toast.LENGTH_SHORT).show()
 
                 }
 

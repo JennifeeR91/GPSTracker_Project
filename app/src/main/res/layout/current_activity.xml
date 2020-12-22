@@ -34,7 +34,7 @@
         <Button
             android:id="@+id/btnStart"
             android:backgroundTint="@color/green"
-            android:layout_marginBottom="100dip"
+            android:layout_marginBottom="80dp"
             android:layout_marginRight="20dp"
             android:layout_gravity="right|bottom"
             android:text="@string/start"
@@ -44,7 +44,7 @@
         <Button
             android:id="@+id/btnResume"
             android:backgroundTint="@color/green"
-            android:layout_marginBottom="100dip"
+            android:layout_marginBottom="80dp"
             android:layout_marginRight="20dp"
             android:layout_gravity="right|bottom"
             android:text="@string/resume"
@@ -54,7 +54,7 @@
         <Button
             android:id="@+id/btnStop"
             android:layout_gravity="right|bottom"
-            android:layout_marginBottom="100dip"
+            android:layout_marginBottom="80dp"
             android:layout_marginRight="20dp"
             android:text="@string/stop"
             android:visibility="gone"
@@ -66,7 +66,7 @@
             android:backgroundTint="@color/red"
             android:layout_gravity="left|bottom"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="100dip"
+            android:layout_marginBottom="80dp"
             android:text="@string/End"
             android:visibility="gone"
             style="@style/btn"/>
