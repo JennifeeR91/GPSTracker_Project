@@ -21,7 +21,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
 import com.gpstracker.gpstracker_project.*
+import kotlinx.android.synthetic.main.current_activity.*
 import kotlinx.android.synthetic.main.result_activity.*
+import kotlinx.android.synthetic.main.result_activity.btnResume
+import kotlinx.android.synthetic.main.result_activity.tvPageTitle
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
@@ -44,7 +47,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.result_activity)
 
-
+        btnResume.setVisibility(View.GONE)
 
         // page Title
         tvPageTitle.setText(R.string.activitySummary)
@@ -103,11 +106,13 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         btnCancel.setOnClickListener {
             cancelActivity()
         }
-
+/*
         // set on-click listener
         btnResume.setOnClickListener {
             resumeActivity()
         }
+
+ */
 
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
         supportMapFragment.getMapAsync(this)
@@ -126,7 +131,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 TimeUnit.MILLISECONDS.toSeconds(diffTime) % TimeUnit.MINUTES.toSeconds(1))
 
     }
-
+/*
     // when button resume is pressed
     private fun resumeActivity() {
         // go back to currentActivity
@@ -142,6 +147,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         finish()
     }
 
+
+ */
     // when button cancel is pressed
     private fun cancelActivity() {
         // delete Data Array
