@@ -3,25 +3,23 @@ package com.gpstracker.gpstracker_project.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color.RED
 import android.location.Location
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
+import android.os.*
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.RoundCap
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gpstracker.gpstracker_project.ActivityDataArrayHandler
 import com.gpstracker.gpstracker_project.R
@@ -39,16 +37,16 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
     private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
 
+
+    val coordList = ArrayList<LatLng>()
 
 
     // run task every 10 seconds
     lateinit var mainHandler: Handler
     private val updateTextTask = object : Runnable {
         override fun run() {
-            // TIMER
-            //plusOneSecond()
-
             // get position
             fetchLocation()
 
@@ -57,7 +55,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-            mainHandler.postDelayed(this, 10000)
+            mainHandler.postDelayed(this, 1000)
+
         }
     }
 
@@ -76,6 +75,67 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val data = ActivityDataArrayHandler()
 
+
+
+
+    private fun getLocationUpdates()
+    {
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = LocationRequest()
+        locationRequest.interval = 50000
+        locationRequest.fastestInterval = 50000
+        locationRequest.smallestDisplacement = 170f // 170 m = 0.1 mile
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY //set according to your app function
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+
+                if (locationResult.locations.isNotEmpty()) {
+                    // get latest location
+                    val location =
+                            locationResult.lastLocation
+                    // use your location object
+                    // get latitude , longitude and other info from this
+                }
+
+
+            }
+        }
+    }
+
+    //start location updates
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null /* Looper */
+        )
+    }
+
+    // stop location updates
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    // stop receiving location update when activity not visible/foreground
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.current_activity)
@@ -84,6 +144,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         //initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fetchLocation()
+        getLocationUpdates()
 
         // Bottom Navigation
         showBottomNavigation()
@@ -119,14 +180,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.activity_page -> {
-                    /*
-                    // Go to CurrentActivity
-                    val intent = Intent(this, CurrentActivity::class.java)
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    startActivity(intent)
-                    // Finish Activity
-                    finish()
-                    */
                     true
                 }
                 R.id.history_page -> {
@@ -161,7 +214,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-
+        startLocationUpdates()
         //get last known location
         fetchLocation()
 
@@ -170,7 +223,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     // start Activity
     private fun startActivity(){
         mainHandler.post(updateTextTask)
-
 
         // bottom menu ausblenden
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -191,6 +243,10 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         simpleChronometer.start()
 
          */
+
+
+
+
         chronoStart()
 
         // hide title
@@ -338,12 +394,26 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
         val markerOptions = MarkerOptions().position(latLng).title("My position")
 
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
-        googleMap?.addMarker(markerOptions)
+        //drow path:
+        coordList.add(LatLng(currentLocation.latitude, currentLocation.longitude))
+
+        val polyline2 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
+        polyline2?.color = RED
+        polyline2?.endCap = RoundCap()
+        //polyline2?.startCap = CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_logo_transparent), 1f)
+
+
+
+
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17F))
+        //googleMap?.addMarker(markerOptions)
+
+
 
       }
 
@@ -359,7 +429,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun writeCurrentDataToArray(){
         val saveString = System.currentTimeMillis().toString() + " " + currentLocation.latitude.toString() + " " + currentLocation.longitude.toString()
         data.insertData(saveString)
-        //Toast.makeText(applicationContext, " savestring: " + saveString, Toast.LENGTH_LONG).show()
+
     }
 
 

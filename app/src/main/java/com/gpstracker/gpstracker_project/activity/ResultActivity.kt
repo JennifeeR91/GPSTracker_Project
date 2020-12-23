@@ -65,7 +65,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // get access to spinner
         val spinner = findViewById<Spinner>(R.id.spinner)
 
-                if (spinner != null) {
+        if (spinner != null) {
             val adapter = ArrayAdapter(this,
                     android.R.layout.simple_spinner_item, gaits)
             spinner.adapter = adapter
@@ -277,6 +277,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlat = dataArray.first().split(" ")[1].toDouble()
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
+
+        /*
         val testval = 0.005
 
         val testlat = firstlat + testval
@@ -299,7 +301,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // add fistpoint as last point
         dataArray.add(System.currentTimeMillis().toString() + " " + firstlat.toString() + " " + firstlong.toString())
 
-
+*/
         // loop through all points
         for(i in dataArray){
             //println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
