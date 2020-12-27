@@ -26,22 +26,16 @@ import com.gpstracker.gpstracker_project.R
 import kotlinx.android.synthetic.main.current_activity.*
 
 // todo: resume timer after resultActivity with correct time
-// Todo: map follows gps
-// Todo: show distance
-
 
 class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
-   // private var googleMap: GoogleMap? = null
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val permissionCode = 101
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
-
-
-    val coordList = ArrayList<LatLng>()
-
+    private val coordList = ArrayList<LatLng>()
+    private val data = ActivityDataArrayHandler()
 
     // run task every 10 seconds
     lateinit var mainHandler: Handler
@@ -49,14 +43,10 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         override fun run() {
             // get position
             fetchLocation()
-
             // write to DataArray
             writeCurrentDataToArray()
-
-
-
+            // delay 1 sec.
             mainHandler.postDelayed(this, 1000)
-
         }
     }
 
@@ -66,89 +56,25 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     /*
     var mIntent = intent
     var resumeTime = mIntent.getIntExtra("resumeTime", 0L)
-
-
      */
 
+    
 
-
-
-    private val data = ActivityDataArrayHandler()
-
-
-
-
-    private fun getLocationUpdates()
-    {
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        locationRequest = LocationRequest()
-        locationRequest.interval = 50000
-        locationRequest.fastestInterval = 50000
-        locationRequest.smallestDisplacement = 170f // 170 m = 0.1 mile
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY //set according to your app function
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
-
-                if (locationResult.locations.isNotEmpty()) {
-                    // get latest location
-                    val location =
-                            locationResult.lastLocation
-                    // use your location object
-                    // get latitude , longitude and other info from this
-                }
-
-
-            }
-        }
-    }
-
-    //start location updates
-    private fun startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                null /* Looper */
-        )
-    }
-
-    // stop location updates
-    private fun stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
-
-    // stop receiving location update when activity not visible/foreground
-    override fun onPause() {
-        super.onPause()
-        stopLocationUpdates()
-    }
-
-
-
+    // fist method called
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.current_activity)
+        // set title
         tvPageTitle.setText(R.string.newActivity)
-
         //initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fetchLocation()
         getLocationUpdates()
 
+
+
         // Bottom Navigation
         showBottomNavigation()
-
         // set on-click listener
         btnStart.setOnClickListener {
             startActivity()
@@ -165,14 +91,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         btnEnd.setOnClickListener {
             endActivity()
         }
-
         // handler for looping
         mainHandler = Handler(Looper.getMainLooper())
-
         // set button start visable
         btnStart.setVisibility(View.VISIBLE)
     }
 
+    // show bottom navigation
     private fun showBottomNavigation() {
         //set current as active in navigation
         bottom_navigation.getMenu().findItem(R.id.activity_page).setChecked(true)
@@ -211,7 +136,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-
+    // when resuming activity
     override fun onResume() {
         super.onResume()
         startLocationUpdates()
@@ -222,60 +147,70 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // start Activity
     private fun startActivity(){
+        // start looper
         mainHandler.post(updateTextTask)
-
         // bottom menu ausblenden
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setVisibility(View.GONE)
-
-
         // hide start button
         btnStart.setVisibility(View.GONE)
         // hide resume button
         btnResume.setVisibility(View.GONE)
         // show stop button
         btnStop.setVisibility(View.VISIBLE)
-
-        // timer starten und anzeigen
-        /*
-        simpleChronometer.setVisibility(View.VISIBLE)
-        simpleChronometer.setBase(SystemClock.elapsedRealtime())
-        simpleChronometer.start()
-
-         */
-
-
-
-
+        // Timer starten
         chronoStart()
-
         // hide title
         tvPageTitle.setVisibility(View.GONE)
+        // hide "paused"
         tvPaused.setVisibility(View.GONE)
     }
 
     // Stop Avtivity
     private fun stopActivity(){
-        // stop looper:
+        // stop looper
         mainHandler.removeCallbacks(updateTextTask)
-
         // timer stoppen
         chronoPause()
-
         // hide button Stop
         btnStop.setVisibility(View.GONE)
-
         //show button resume
         btnResume.setVisibility(View.VISIBLE)
-
         //show button End
         btnEnd.setVisibility(View.VISIBLE)
-
         // show title
         tvPaused.setVisibility(View.VISIBLE)
         tvPaused.setText(R.string.paused)
     }
 
+    // Resume Activity
+    private fun resumeActivity(){
+        // start looper again
+        mainHandler.post(updateTextTask)
+        // show Toast info
+        Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
+        // resume timer
+        chronoStart()
+        //show stop button
+        btnStop.setVisibility(View.VISIBLE)
+        // hide resume button
+        btnResume.setVisibility(View.GONE)
+        // hide end button
+        btnEnd.setVisibility(View.GONE)
+        // hide "paused"
+        tvPaused.setVisibility(View.GONE)
+    }
+
+    // End Activity, go to result activity and show results
+    private fun endActivity(){
+        //stop looper
+        mainHandler.removeCallbacks(updateTextTask)
+        // go to result activity and show results
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra("resumeTime", mLastStopTime)
+        startActivity(intent)
+        finish()
+    }
 
     private fun chronoStart() {
         // on first start
@@ -294,67 +229,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun chronoPause() {
         simpleChronometer.stop()
         mLastStopTime = SystemClock.elapsedRealtime()
-    }
-
-
-
-    // Resume Activity
-    private fun resumeActivity(){
-        // start looper again
-        mainHandler.post(updateTextTask)
-
-        Toast.makeText(applicationContext, " Activity resumed", Toast.LENGTH_SHORT).show()
-
-
-        // resume timer
-        chronoStart()
-
-        //show stop button
-        btnStop.setVisibility(View.VISIBLE)
-
-        // hide resume button
-        btnResume.setVisibility(View.GONE)
-
-        // hide end button
-        btnEnd.setVisibility(View.GONE)
-
-        // hide message
-        tvPaused.setVisibility(View.GONE)
-    }
-
-    // End Activity, go to result activity and show results
-    private fun endActivity(){
-        mainHandler.removeCallbacks(updateTextTask)
-
-        // go to result activity and show results
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra("resumeTime", mLastStopTime)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun fetchLocation_test() {
-        if (ActivityCompat.checkSelfPermission(
-                        this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-            PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-            PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), permissionCode)
-            return
-        }
-        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
-                for (location in locationResult.locations){
-                    // Update UI with location data
-                    currentLocation = location
-
-                }
-            }
-        }
-        supportMapFragment.getMapAsync(this)
     }
 
     private fun fetchLocation() {
@@ -432,5 +306,55 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    private fun getLocationUpdates()    {
+        //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = LocationRequest()
+        locationRequest.interval = 50000
+        locationRequest.fastestInterval = 50000
+        locationRequest.smallestDisplacement = 170f // 170 m
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY //set according to your app function
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+
+                if (locationResult.locations.isNotEmpty()) {
+                    // get latest location
+                    val location = locationResult.lastLocation
+                }
+
+
+            }
+        }
+    }
+
+    //start location updates
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null /* Looper */
+        )
+    }
+
+    // stop location updates
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    // stop receiving location update when activity not visible/foreground
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
 
 }
