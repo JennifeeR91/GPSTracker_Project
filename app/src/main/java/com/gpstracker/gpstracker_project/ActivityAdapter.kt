@@ -66,24 +66,25 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
         //set image & Title:
         val type = activity.activitytype
+        val horseimg = "horse_gait_"
         println("type is hier"+ type)
         if(type == 0L) {
-            imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+            imageView_icon.setImageResource(R.drawable.horse_gait_0)
             tvActivityTitle.text = gaittypes[0]
         }
         else if(type == 1L) {
-            imageView_icon.setImageResource(R.drawable.ic_logo_transparent)
+            imageView_icon.setImageResource(R.drawable.horse_gait_1)
             tvActivityTitle.text = gaittypes[1]
         }
         else if(type == 2L){
-            imageView_icon.setImageResource(R.drawable.ic_account)
+            imageView_icon.setImageResource(R.drawable.horse_gait_2)
             tvActivityTitle.text = gaittypes[2]
         }else if(type ==3L) {
-            imageView_icon.setImageResource(R.drawable.ic_newactivity)
+            imageView_icon.setImageResource(R.drawable.horse_gait_3)
             tvActivityTitle.text = gaittypes[3]
         }
         else if(type ==4L) {
-            imageView_icon.setImageResource(R.drawable.ic_newactivity)
+            imageView_icon.setImageResource(R.drawable.horse_gait_4)
             tvActivityTitle.text = gaittypes[4]
         }
 
