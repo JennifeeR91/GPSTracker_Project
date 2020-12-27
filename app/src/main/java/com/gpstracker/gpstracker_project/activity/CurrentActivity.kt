@@ -214,7 +214,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun chronoStart() {
         // on first start
-        //var mLastStopTime:Long  = intent.getLongExtra("mLastStopTime", 0)
         if (mLastStopTime == 0L) {
             simpleChronometer.base = SystemClock.elapsedRealtime()
         }
@@ -248,7 +247,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         task.addOnSuccessListener { location ->
             if (location != null) {
                     currentLocation = location
-                    //val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment?)!!
                     supportMapFragment.getMapAsync(this)
             }
             else {
@@ -261,11 +259,9 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
                 }
-                //Toast.makeText(applicationContext, "No location found - please check your GPS connection", Toast.LENGTH_SHORT).show()
-                //tvPageTitle.text = "No location found - please check your GPS connection"
+                tvPageTitle.setText(R.string.no_location)
             }
-
-            }
+        }
         }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -279,15 +275,8 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         val polyline2 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
         polyline2?.color = RED
         polyline2?.endCap = RoundCap()
-        //polyline2?.startCap = CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_logo_transparent), 1f)
-
-
-
 
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17F))
-        //googleMap?.addMarker(markerOptions)
-
-
 
       }
 
@@ -307,7 +296,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getLocationUpdates()    {
-        //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest()
         locationRequest.interval = 50000
         locationRequest.fastestInterval = 50000
@@ -321,8 +309,6 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
                     // get latest location
                     locationResult.lastLocation
                 }
-
-
             }
         }
     }

@@ -31,6 +31,9 @@
     <string name="error_no_id">Error: No ID given!</string>
     <string name="selected_item">Selected item:</string>
     <string name="duration">Duration: </string>
+    <string name="no_location">No location found - please check your GPS connection</string>
+    <string name="statistics">Statistics</string>
+    <string name="coming_soon">Coming soon</string>
 
     <string-array name="horse_gaits">
         <item>Walk</item>
