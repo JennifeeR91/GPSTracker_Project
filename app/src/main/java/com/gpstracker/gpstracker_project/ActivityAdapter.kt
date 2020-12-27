@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.gpstracker.gpstracker_project.activity.ResultActivity
-import kotlinx.android.synthetic.main.result_activity.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,8 +16,10 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-    val result = ResultActivity()
-    val gaittypes = context.resources.getStringArray(R.array.horse_gaits)
+    private val result = ResultActivity()
+    private val gaittypes: Array<String> = context.resources.getStringArray(R.array.horse_gaits)
+
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -68,25 +70,15 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         val type = activity.activitytype
         val horseimg = "horse_gait_"
         println("type is hier"+ type)
-        if(type == 0L) {
-            imageView_icon.setImageResource(R.drawable.horse_gait_0)
-            tvActivityTitle.text = gaittypes[0]
-        }
-        else if(type == 1L) {
-            imageView_icon.setImageResource(R.drawable.horse_gait_1)
-            tvActivityTitle.text = gaittypes[1]
-        }
-        else if(type == 2L){
-            imageView_icon.setImageResource(R.drawable.horse_gait_2)
-            tvActivityTitle.text = gaittypes[2]
-        }else if(type ==3L) {
-            imageView_icon.setImageResource(R.drawable.horse_gait_3)
-            tvActivityTitle.text = gaittypes[3]
-        }
-        else if(type ==4L) {
-            imageView_icon.setImageResource(R.drawable.horse_gait_4)
-            tvActivityTitle.text = gaittypes[4]
-        }
+
+
+        val viewContext = parent!!.context
+        val imageName = "horse_gait_$type"
+        val id: Int = viewContext.resources.getIdentifier(imageName, "drawable", viewContext.packageName)
+
+        imageView_icon.setImageResource(id)
+        tvActivityTitle.text = gaittypes[type.toInt()]
+
 
         // Set text on TextViews
         val duration = result.getDuration(activity.starttime, activity.endtime)
