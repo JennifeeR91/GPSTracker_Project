@@ -58,10 +58,33 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         distance = getTotalDistance()
         timer.append("Distance: $distance")
 
+        //show Spinner
+        showSpinner()
+
+        // set on-click listener
+        btnSave.setOnClickListener {
+            saveActivity()
+        }
+        // set on-click listener
+        btnCancel.setOnClickListener {
+            cancelActivity()
+        }
+/*
+        // set on-click listener
+        btnResume.setOnClickListener {
+            resumeActivity()
+        }
+
+ */
+
+        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
+        supportMapFragment.getMapAsync(this)
 
 
-        //SPINNER start
+    }
 
+    // show spinner to select gait
+    private fun showSpinner() {
         //get items of array
         val gaits = resources.getStringArray(R.array.horse_gaits)
         // get access to spinner
@@ -86,31 +109,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                 }
             }
         }
-
-        // SPINNER end
-
-
-        // set on-click listener
-        btnSave.setOnClickListener {
-            saveActivity()
-        }
-
-        // set on-click listener
-        btnCancel.setOnClickListener {
-            cancelActivity()
-        }
-/*
-        // set on-click listener
-        btnResume.setOnClickListener {
-            resumeActivity()
-        }
-
- */
-
-        val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map1) as SupportMapFragment?)!!
-        supportMapFragment.getMapAsync(this)
-
-
     }
 
     // show duration in hh:mm:ss from timestamp difference
