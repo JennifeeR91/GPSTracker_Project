@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.gpstracker.gpstracker_project.activity.ResultActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAdapter() {
+class ActivityAdapter (context: Context, private var activities: List<Activity>): BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -54,7 +53,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
         }
 
         // Get relevant subviews of the row view.
-        val imageView_icon = holder.acIcon
+        val imageViewIcon = holder.acIcon
         val tvActivityTitle = holder.acttitle
         val tvActivityDate = holder.actDate
         val tvActivityDuration = holder.actduration
@@ -68,15 +67,14 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
         //set image & Title:
         val type = activity.activitytype
-        val horseimg = "horse_gait_"
-        println("type is hier"+ type)
+        println("type is hier$type")
 
 
         val viewContext = parent!!.context
         val imageName = "horse_gait_$type"
         val id: Int = viewContext.resources.getIdentifier(imageName, "drawable", viewContext.packageName)
 
-        imageView_icon.setImageResource(id)
+        imageViewIcon.setImageResource(id)
         tvActivityTitle.text = gaittypes[type.toInt()]
 
 
@@ -90,7 +88,7 @@ class ActivityAdapter (context: Context, var activities: List<Activity>): BaseAd
 
 
         tvActivityDate.text =  date
-        tvActivityDuration.text = "Duration: " +  duration
+        tvActivityDuration.text = "Duration: " + duration
         //tvStartLat.text = "Start Latidude: " + activity.startlat.toString()
         //tvEndLat.text = "End Latidude: " + activity.endlat.toString()
         tvDistance.text = "Distance: " + activity.totaldistance + " km"

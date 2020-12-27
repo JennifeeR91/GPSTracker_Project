@@ -30,6 +30,7 @@
     <string name="empty_credentials">please enter credentials</string>
     <string name="error_no_id">Error: No ID given!</string>
     <string name="selected_item">Selected item:</string>
+    <string name="duration">Duration: </string>
 
     <string-array name="horse_gaits">
         <item>Walk</item>
