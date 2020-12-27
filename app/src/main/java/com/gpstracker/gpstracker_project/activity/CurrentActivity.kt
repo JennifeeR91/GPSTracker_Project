@@ -94,13 +94,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         // handler for looping
         mainHandler = Handler(Looper.getMainLooper())
         // set button start visable
-        btnStart.setVisibility(View.VISIBLE)
+        btnStart.visibility = View.VISIBLE
     }
 
     // show bottom navigation
     private fun showBottomNavigation() {
         //set current as active in navigation
-        bottom_navigation.getMenu().findItem(R.id.activity_page).setChecked(true)
+        bottom_navigation.menu.findItem(R.id.activity_page).isChecked = true
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -151,19 +151,19 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         mainHandler.post(updateTextTask)
         // bottom menu ausblenden
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setVisibility(View.GONE)
+        bottomNavigationView.visibility = View.GONE
         // hide start button
-        btnStart.setVisibility(View.GONE)
+        btnStart.visibility = View.GONE
         // hide resume button
-        btnResume.setVisibility(View.GONE)
+        btnResume.visibility = (View.GONE)
         // show stop button
-        btnStop.setVisibility(View.VISIBLE)
+        btnStop.visibility = (View.VISIBLE)
         // Timer starten
         chronoStart()
         // hide title
-        tvPageTitle.setVisibility(View.GONE)
+        tvPageTitle.visibility = (View.GONE)
         // hide "paused"
-        tvPaused.setVisibility(View.GONE)
+        tvPaused.visibility = (View.GONE)
     }
 
     // Stop Avtivity
@@ -173,13 +173,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         // timer stoppen
         chronoPause()
         // hide button Stop
-        btnStop.setVisibility(View.GONE)
+        btnStop.visibility = View.GONE
         //show button resume
-        btnResume.setVisibility(View.VISIBLE)
+        btnResume.visibility = View.VISIBLE
         //show button End
-        btnEnd.setVisibility(View.VISIBLE)
+        btnEnd.visibility = (View.VISIBLE)
         // show title
-        tvPaused.setVisibility(View.VISIBLE)
+        tvPaused.visibility = (View.VISIBLE)
         tvPaused.setText(R.string.paused)
     }
 
@@ -192,13 +192,13 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
         // resume timer
         chronoStart()
         //show stop button
-        btnStop.setVisibility(View.VISIBLE)
+        btnStop.visibility = (View.VISIBLE)
         // hide resume button
-        btnResume.setVisibility(View.GONE)
+        btnResume.visibility = (View.GONE)
         // hide end button
-        btnEnd.setVisibility(View.GONE)
+        btnEnd.visibility = (View.GONE)
         // hide "paused"
-        tvPaused.setVisibility(View.GONE)
+        tvPaused.visibility = (View.GONE)
     }
 
     // End Activity, go to result activity and show results
@@ -215,14 +215,14 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun chronoStart() {
         // on first start
         //var mLastStopTime:Long  = intent.getLongExtra("mLastStopTime", 0)
-        if (mLastStopTime === 0L) {
-            simpleChronometer.setBase(SystemClock.elapsedRealtime())
+        if (mLastStopTime == 0L) {
+            simpleChronometer.base = SystemClock.elapsedRealtime()
         }
         else {
             val intervalOnPause: Long = SystemClock.elapsedRealtime() - mLastStopTime
-            simpleChronometer.setBase(simpleChronometer.getBase() + intervalOnPause)
+            simpleChronometer.base = (simpleChronometer.base + intervalOnPause)
         }
-        simpleChronometer.setVisibility(View.VISIBLE)
+        simpleChronometer.visibility = (View.VISIBLE)
         simpleChronometer.start()
     }
 
@@ -271,7 +271,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onMapReady(googleMap: GoogleMap?) {
         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-        val markerOptions = MarkerOptions().position(latLng).title("My position")
+        MarkerOptions().position(latLng).title("My position")
 
         //drow path:
         coordList.add(LatLng(currentLocation.latitude, currentLocation.longitude))
@@ -319,7 +319,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 if (locationResult.locations.isNotEmpty()) {
                     // get latest location
-                    val location = locationResult.lastLocation
+                    locationResult.lastLocation
                 }
 
 
