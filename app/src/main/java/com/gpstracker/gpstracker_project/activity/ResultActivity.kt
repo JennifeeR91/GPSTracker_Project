@@ -58,7 +58,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         // get Distance
         distance = getTotalDistance()
-        timer.append("Distance: " + distance)
+        timer.append("Distance: $distance")
 
         //get items of array
         val gaits = resources.getStringArray(R.array.horse_gaits)
@@ -263,10 +263,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         var distance = 0.0
         var long1 = 0.0
         var lat1 = 0.0
-
-        // startpoint again
-        val firstlat = dataArray.first().split(" ")[1].toDouble()
-        val firstlong = dataArray.first().split(" ")[2].toDouble()
 
 
         // loop through all points

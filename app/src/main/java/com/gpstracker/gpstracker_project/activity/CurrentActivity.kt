@@ -51,7 +51,7 @@ class CurrentActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // timer variable
-    var mLastStopTime:Long = 0
+    private var mLastStopTime:Long = 0
 
     /*
     var mIntent = intent

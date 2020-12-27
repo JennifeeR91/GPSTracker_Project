@@ -27,7 +27,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private val db = Database(this)
     // new instance of resultactivity class to use getTime function
-    val result = ResultActivity()
+    private val result = ResultActivity()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
         // get ID for Detailview
         val id = intent.getLongExtra("id", -1)
         // get data from database
-        var activity = db.getActivity(id)
+        db.getActivity(id)
 
 
         val supportMapFragment = (supportFragmentManager.findFragmentById(R.id.fragment_map_detail) as SupportMapFragment?)!!
@@ -61,14 +61,14 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
     private fun showBottomNavigation() {
         //set current as active in navigation
-        bottom_navigation.getMenu().findItem(R.id.history_page).setChecked(true)
+        bottom_navigation.menu.findItem(R.id.history_page).isChecked = true
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.activity_page -> {
                     // Go to CurrentActivity
                     val intent = Intent(this, CurrentActivity::class.java)
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
                     startActivity(intent)
                     // Finish Activity
                     finish()
@@ -157,7 +157,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
 
         )
         summary_right.append(
-                "Distance: " + " " + distance + " km")
+                "Distance:  $distance km")
 
         if (activity.note.isNotEmpty()) {
             summary_right.append(System.getProperty("line.separator") + "Note: " + activity.note)
@@ -203,19 +203,10 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
             if (i.isNotEmpty()) {
                 val x = i.split(" ")
                 coordList.add(LatLng(x[1].toDouble(), x[2].toDouble()))
-                /*
-                val marker = MarkerOptions()
-                    .position(
-                        LatLng(x[2].toDouble(),
-                        x[1].toDouble()))
-                    .title("zwischenpunkt: Time: "+ x[0] + " place: " + x[2] + " " + x[1])
-                googleMap?.addMarker(marker)
-                */
             }
-
         }
         println(coordList)
-        val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
+
     }
 
     private fun getTotalDistance(id: Long): Double {
