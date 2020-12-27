@@ -22,8 +22,6 @@ import kotlinx.android.synthetic.main.result_activity.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
-//  TODO: dropdown (Spinner) für activity type
-
 
 class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
@@ -60,14 +58,17 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         distance = getTotalDistance()
         timer.append("Distance: $distance")
 
+
+
+        //SPINNER start
+
         //get items of array
         val gaits = resources.getStringArray(R.array.horse_gaits)
         // get access to spinner
         val spinner = findViewById<Spinner>(R.id.spinner)
 
         if (spinner != null) {
-            val adapter = ArrayAdapter(this,
-                    android.R.layout.simple_spinner_item, gaits)
+            val adapter = ArrayAdapter(this,  R.layout.spinner_item, gaits)
             spinner.adapter = adapter
 
             spinner.onItemSelectedListener = object :
@@ -86,8 +87,10 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
             }
         }
 
+        // SPINNER end
 
-            // set on-click listener
+
+        // set on-click listener
         btnSave.setOnClickListener {
             saveActivity()
         }
@@ -251,6 +254,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         }
         println("+++++++++ ende")
+        val polyline = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
 
     }
 

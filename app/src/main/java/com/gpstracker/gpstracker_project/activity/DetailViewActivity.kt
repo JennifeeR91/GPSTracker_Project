@@ -206,6 +206,7 @@ class DetailViewActivity : AppCompatActivity() , OnMapReadyCallback {
             }
         }
         println(coordList)
+        val polyline = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
 
     }
 
