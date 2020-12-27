@@ -41,7 +41,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.result_activity)
 
-        btnResume.setVisibility(View.GONE)
+        btnResume.visibility = (View.GONE)
 
         // page Title
         tvPageTitle.setText(R.string.activitySummary)
@@ -52,8 +52,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val startTime = dataArray.first().split(" ")[0].toLong()
         // get time from last entry
         val endTime = dataArray.last { it.length > 3 }.split(" ")[0].toLong()
-        val Time = getDuration(startTime, endTime)
-        timer.text = "Total Duration: " + Time + System.getProperty("line.separator")
+        val time = getDuration(startTime, endTime)
+        timer.text = "Total Duration: " + time + System.getProperty("line.separator")
 
 
         // get Distance
@@ -74,10 +74,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
                     AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>,
                                             view: View, position: Int, id: Long) {
-                    gaitposition = position.toLong()
-                    //Toast.makeText(this@ResultActivity, getString(R.string.selected_item) + " " + "Position: " + position + "type: " + gaits[position], Toast.LENGTH_SHORT).show()
-
-                }
+                    gaitposition = position.toLong()}
 
                 override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     TODO("Not yet implemented")
@@ -157,12 +154,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
     private fun saveActivity() {
         // Get ActivityData to save to DB
         val dataArray = data.get()
-        //dataArray.forEach {  Log.i("ArrayItem", " Array item=" + it) }
-
-        var counter = 0
-        var startstring = ""
-        var endstring = ""
-
 
         // get first point
         val firstlat = dataArray.first().split(" ")[1].toDouble()
@@ -201,7 +192,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         //write every point in DB
         for (i in dataArray) {
-            // leere zeilen auslassen
+            // skip empty db entries
             if(i.isNotEmpty()){
                 val pointSet = i.split(" ")
                 println("waypoints: ID=" + activityId + " timestamp: " + pointSet[0] + " lat: " + pointSet[1] + " long: " + pointSet[2])
@@ -220,7 +211,7 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
 
-        // alle daten ausgeben
+        // get all data
         val dataArray = data.get()
         // get first point
         val firstlat = dataArray.first().split(" ")[1].toDouble()
@@ -246,6 +237,8 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         // Adding points to ArrayList
         val coordList = ArrayList<LatLng>()
 
+
+        // use for loop for checking all points and add to list
         println("+++++++++ start")
         for (i in dataArray) {
             if (i.isNotEmpty()) {
@@ -258,8 +251,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
 
         }
         println("+++++++++ ende")
-
-        val polyline1 = googleMap?.addPolyline(PolylineOptions().addAll(coordList))
 
     }
 
@@ -278,30 +269,6 @@ class ResultActivity : AppCompatActivity() , OnMapReadyCallback {
         val firstlong = dataArray.first().split(" ")[2].toDouble()
 
 
-        /*
-        val testval = 0.005
-
-        val testlat = firstlat + testval
-        val testlong = firstlong + testval
-
-        val testlat1 = firstlat - testval
-        val testlong1 = firstlong - testval
-
-        val testlat2 = firstlat - testval
-        val testlong2 = firstlong + testval
-
-        val testlat3 = firstlat + testval
-        val testlong3 = firstlong - testval
-
-        // addd testpooints
-        dataArray.add(System.currentTimeMillis().toString() + " " + testlat.toString() + " " + testlong.toString())
-        dataArray.add(System.currentTimeMillis().toString() + " " + testlat2.toString() + " " + testlong2.toString())
-        dataArray.add(System.currentTimeMillis().toString() + " " + testlat1.toString() + " " + testlong1.toString())
-        dataArray.add(System.currentTimeMillis().toString() + " " + testlat3.toString() + " " + testlong3.toString())
-        // add fistpoint as last point
-        dataArray.add(System.currentTimeMillis().toString() + " " + firstlat.toString() + " " + firstlong.toString())
-
-*/
         // loop through all points
         for(i in dataArray){
             //println(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
